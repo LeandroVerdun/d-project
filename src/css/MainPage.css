@@ -1,0 +1,39 @@
+/* Ajuste del carrusel */
+.carousel {
+    width: 80vw;
+  }
+  
+  /* Card de película (aprox 20% del ancho) */
+  .movie-card {
+    width: 20vw;
+    height: auto;
+    overflow: hidden;
+    position: relative;
+    border: none;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  /* Imagen de película */
+  .movie-img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  /* Overlay oculto por defecto */
+  .movie-overlay {
+    background-color: rgba(0, 0, 0, 0.7);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem;
+  }
+  
+  /* Mostrar overlay al hacer hover */
+  .movie-card:hover .movie-overlay {
+    opacity: 1;
+  }
+  
