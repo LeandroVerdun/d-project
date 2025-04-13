@@ -37,3 +37,22 @@
     opacity: 1;
   }
   
+
+  /* VerticalTableRow.css */
+.table-container {
+  height: 80vh;            /* Mantiene la altura total de 80vh */
+  width: 65vw;             /* Mantiene el ancho de 65vw */
+  display: flex;
+  flex-direction: column;  /* Organiza las tarjetas en una columna */
+  justify-content: space-between; /* Distribuye las tarjetas con espacio entre ellas */
+}
+
+.table-container > div {
+  flex: 1;  /* Asegura que las tarjetas ocupen el espacio disponible de manera uniforme */
+}
+
+.table-container > div > .card {
+  height: 20vh;   /* Establece la altura de cada tarjeta para que quepan las 4 */
+  width: 100%;    /* Cada tarjeta ocupa el 100% del ancho disponible del contenedor */
+  margin-bottom: 1rem;  /* Espacio entre las tarjetas */
+}
