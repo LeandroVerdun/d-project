@@ -1,19 +1,21 @@
-import React from 'react';
-import { Navbar } from '../layout/navbar';
+import React, { useState } from 'react';
 import { MovieCarousel } from '../../component/MovieCarousel';
 import { MovieCardWithSubcards } from '../../component/MovieCardWithSubcards';
 import MovieCard from '../../component/SaleCard';
 import VerticalTableRow from '../../component/MovieList';
+import { useFetchMovies } from '../../hook/useFetchMovies';
 import '../../css/MainPage.css';
 
 export const MainPage = () => {
+  const [searchTerm, setSearchTerm] = useState('a'); // valor inicial por defecto
+  const { movies, loading } = useFetchMovies(searchTerm, 10); // podés ajustar el límite
+
   return (
     <>
-      <Navbar />
       <div
         className="d-flex flex-column align-items-center"
         style={{
-          height: '100vh',
+          minHeight: '100vh',
           width: '100vw',
           overflowY: 'auto',
         }}
@@ -21,7 +23,11 @@ export const MainPage = () => {
         <MovieCarousel />
         <MovieCardWithSubcards />
         <MovieCard />
-        <VerticalTableRow />
+        {loading ? (
+          <p className="mt-4">Cargando películas...</p>
+        ) : (
+          <VerticalTableRow movies={movies} />
+        )}
       </div>
     </>
   );

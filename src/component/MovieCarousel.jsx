@@ -4,17 +4,14 @@ import '../css/MainPage.css';
 
 export const MovieCarousel = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  
-  // Términos aleatorios para la búsqueda
+
   const terms = ['a', 'the', 'star', 'man', 'love', 'action', 'life', 'adventure', 'space', 'hero'];
 
   useEffect(() => {
-    // Seleccionar un término aleatorio solo cuando el componente se monta
     const randomTerm = terms[Math.floor(Math.random() * terms.length)];
     setSearchTerm(randomTerm);
-  }, []); // Solo al montar el componente
+  }, []);
 
-  // Llamamos al hook con el término aleatorio
   const { movies, loading } = useFetchMovies(searchTerm, 5);
 
   if (loading) return <div>Loading...</div>;
@@ -30,7 +27,7 @@ export const MovieCarousel = () => {
         {movies.map((movie, index) => (
           <div className={`carousel-item ${index === 0 ? 'active' : ''}`} key={movie.imdbID}>
             <div className="d-flex justify-content-center align-items-center" style={{ height: '100%' }}>
-              <div className="card bg-dark text-white" style={{ width: '50vw', height: 'auto' }}>
+              <div className="card bg-dark text-white position-relative" style={{ width: '50vw', height: 'auto' }}>
                 <div className="row g-0" style={{ height: '100%' }}>
                   <div className="col-md-5">
                     <img
@@ -41,42 +38,37 @@ export const MovieCarousel = () => {
                     />
                   </div>
 
-                  <div className="col-md-7 d-flex flex-column justify-content-between p-3">
-                    <div className="d-flex flex-wrap gap-2 mb-3 justify-content-center align-items-center" style={{ paddingTop: '20px' }}>
-                      {[1, 2, 3, 4].map((n) => (
-                        <img
-                          key={n}
-                          src="https://via.placeholder.com/150x100"
-                          className="img-fluid rounded-3"
-                          alt={`Escena ${n}`}
-                          style={{
-                            width: '45%',
-                            height: '100px',
-                            objectFit: 'cover',
-                            margin: '5px',
-                          }}
-                        />
-                      ))}
-                    </div>
-
-                    <div>
-                      <h5 className="card-title">{movie.Title}</h5>
-                      <p className="card-text" style={{ maxHeight: '150px', overflowY: 'auto' }}>
+                  <div className="col-md-7 d-flex flex-column justify-content-between p-3 position-relative">
+                    <div className="text-center">
+                      <h5 className="card-title" style={{ marginBottom: '1rem' }}>{movie.Title}</h5>
+                      <p
+                        className="card-text mx-auto"
+                        style={{
+                          maxHeight: '150px',
+                          overflowY: 'auto',
+                          maxWidth: '90%',
+                          textAlign: 'center',
+                        }}
+                      >
                         {movie.Plot}
                       </p>
                     </div>
 
-                    <div className="d-flex flex-wrap justify-content-center gap-2 mt-2 mb-3">
-                      <span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>Genre:</span>
+                    <div
+                      className="d-flex flex-wrap justify-content-center gap-2 mt-3 mb-5"
+                      style={{ padding: '10px' }}
+                    >
+                      <span style={{ fontSize: '1.1rem', fontWeight: 'bold' }}>Genre:</span>
                       {movie.Genre.split(',').map((genre, idx) => (
                         <div
                           key={idx}
                           className="genre-box"
                           style={{
-                            padding: '5px 10px',
+                            padding: '6px 12px',
                             backgroundColor: '#444',
                             borderRadius: '5px',
                             cursor: 'pointer',
+                            fontSize: '0.8rem', // <--- Tamaño reducido aquí
                           }}
                         >
                           {genre.trim()}
@@ -84,7 +76,7 @@ export const MovieCarousel = () => {
                       ))}
                     </div>
 
-                    <div className="d-flex gap-2 mt-2" style={{ position: 'absolute', bottom: '20px', right: '20px' }}>
+                    <div className="d-flex gap-2" style={{ position: 'absolute', bottom: '20px', right: '20px' }}>
                       <button className="btn btn-primary">Comprar</button>
                       <button className="btn btn-secondary">Alquilar</button>
                     </div>
