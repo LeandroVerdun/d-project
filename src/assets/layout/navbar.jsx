@@ -1,23 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { FaSearch } from 'react-icons/fa';
 import { useFetchMovies } from '../../hook/useFetchMovies';
-
+import { Link } from 'react-router-dom'; // Importa Link
 export const Navbar = () => {
   const [query, setQuery] = useState('');
   const [search, setSearch] = useState('');
-  const { movies, loading } = useFetchMovies(search, 10); // Mostramos más resultados
+  const { movies, loading } = useFetchMovies(search, 10); 
 
-  // 🔁 Actualizamos el término de búsqueda con un retraso de 500ms cada vez que el usuario escribe
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
       if (query.trim() !== '') {
-        setSearch(query.trim());  // Solo actualiza la búsqueda si hay algo que buscar
+        setSearch(query.trim());  
       } else {
-        setSearch('');  // Si no hay texto, se limpia la búsqueda
+        setSearch('');  
       }
     }, 500);
 
-    // Limpiamos el timeout si el componente se actualiza antes de que transcurran los 500ms
     return () => clearTimeout(delayDebounce);
   }, [query]);
 
@@ -40,14 +38,14 @@ export const Navbar = () => {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="#">Categoria</a>
+                <Link className="nav-link active" to="/categoria">Categoria</Link> 
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">Popular</a>
+                <Link className="nav-link" to="/popular">Popular</Link> 
               </li>
             </ul>
 
-            {/* 🔍 Barra de búsqueda reactiva */}
+            {/* Barra de búsqueda */}
             <div className="d-flex position-relative" role="search">
               <div className="input-group">
                 <span className="input-group-text bg-white border-end-0">
@@ -58,11 +56,11 @@ export const Navbar = () => {
                   type="search"
                   placeholder="Buscar película..."
                   value={query}
-                  onChange={(e) => setQuery(e.target.value)}  // Cada vez que cambia el valor, se actualiza 'query'
+                  onChange={(e) => setQuery(e.target.value)} 
                 />
               </div>
 
-              {/* 📽 Resultados en vivo con overflow */}
+              {/*  Resultados */}
               {query && !loading && movies.length > 0 && (
                 <div
                   className="position-absolute top-100 start-0 bg-white border rounded shadow p-3 mt-2"
@@ -102,21 +100,21 @@ export const Navbar = () => {
 
             <ul className="navbar-nav ms-3 mb-2 mb-lg-0">
               <li className="nav-item">
-                <a className="nav-link active" href="#">Registrar</a>
+                <Link className="nav-link active" to="/Register">Registrar</Link> 
               </li>
               <li className="nav-item">
-                <a className="nav-link active" href="#">Login</a>
+                <Link className="nav-link active" to="/Login">Login</Link> 
               </li>
               <li className="nav-item dropdown">
                 <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Cuenta
                 </a>
                 <ul className="dropdown-menu">
-                  <li><a className="dropdown-item" href="#">Favorito</a></li>
-                  <li><a className="dropdown-item" href="#">Carrito</a></li>
-                  <li><hr className="dropdown-divider" /></li>
-                  <li><a className="dropdown-item" href="#">Opciones</a></li>
-                  <li><a className="dropdown-item" href="#">Desconectar</a></li>
+                 {/* <li><Link className="dropdown-item" to="/favorito">Favorito</Link></li> */}
+                 <Link className="dropdown-item" to="/cart">Carrito</Link>
+                 {/* <li><hr className="dropdown-divider" /></li>
+                  <li><Link className="dropdown-item" to="/opciones">Opciones</Link></li> {/* Usamos Link en vez de a */}
+                  {/*<li><Link className="dropdown-item" to="/desconectar">Desconectar</Link></li> {/* Usamos Link en vez de a */}
                 </ul>
               </li>
             </ul>

@@ -7,8 +7,8 @@ import { useFetchMovies } from '../../hook/useFetchMovies';
 import '../../css/MainPage.css';
 
 export const MainPage = () => {
-  const [searchTerm, setSearchTerm] = useState('a'); // valor inicial por defecto
-  const { movies, loading } = useFetchMovies(searchTerm, 10); // podés ajustar el límite
+  const [searchTerm, setSearchTerm] = useState('a'); 
+  const { movies, loading } = useFetchMovies(searchTerm, 10); 
 
   return (
     <>
