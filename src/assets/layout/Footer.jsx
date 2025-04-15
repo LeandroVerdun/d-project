@@ -31,7 +31,7 @@ export const Footer = () => {
           <div className="col-md-3 mb-4">
             <h5 className="text-uppercase mb-3">Cuenta</h5>
             <ul className="list-unstyled">
-              <li><a href="#" className="text-light text-decoration-none">Mi perfil</a></li>
+              <li><a href="#" className="text-light text-decoration-none">Mi Perfil</a></li>
               <li><a href="#" className="text-light text-decoration-none">Suscripciones</a></li>
               <li><a href="#" className="text-light text-decoration-none">Historial</a></li>
               <li><a href="#" className="text-light text-decoration-none">Favoritos</a></li>
@@ -42,7 +42,7 @@ export const Footer = () => {
           <div className="col-md-3 mb-4">
             <h5 className="text-uppercase mb-3">Síguenos</h5>
             <div className="d-flex gap-3">
-              <a href="#" className="text-light fs-5"><FaFacebookF /></a>
+              {/*<a href="#" className="text-light fs-5"><FaFacebookF /></a>*/}
               <a href="#" className="text-light fs-5"><FaTwitter /></a>
               <a href="#" className="text-light fs-5"><FaInstagram /></a>
               <a href="#" className="text-light fs-5"><FaYoutube /></a>
