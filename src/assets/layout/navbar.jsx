@@ -35,14 +35,72 @@ export const Navbar = () => {
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
+            {/* Categorias */}
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item">
-                <Link className="nav-link active" to="/categories">
-                  Categoria
-                </Link>
+              <li className="nav-item dropdown">
+                <a
+                  className="nav-link dropdown-toggle"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Categories
+                </a>
+
+                <ul className="dropdown-menu">
+                  <li>
+                    <Link
+                      className="dropdown-item"
+                      to="/categories?category=comedy"
+                    >
+                      Comedy
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className="dropdown-item"
+                      to="/categories?category=animation"
+                    >
+                      Animation
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className="dropdown-item"
+                      to="/categories?category=family"
+                    >
+                      Family
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className="dropdown-item"
+                      to="/categories?category=adventure"
+                    >
+                      Adventure
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className="dropdown-item"
+                      to="/categories?category=action"
+                    >
+                      Action
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className="dropdown-item"
+                      to="/categories?category=horror"
+                    >
+                      Horror
+                    </Link>
+                  </li>
+                </ul>
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to="/popular">
