@@ -53,7 +53,7 @@ const PrincipalCategorias = () => {
     };
 
     fetchAllMovies();
-  }, [categories, apiKey]);
+  }, []);
 
   if (loading) {
     console.log("Loading state");
