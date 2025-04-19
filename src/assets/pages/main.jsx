@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-// import { MovieCarousel } from "../../component/MovieCarousel";
+import { MovieCarousel } from "../../component/MovieCarousel";
 // import { MovieCardWithSubcards } from "../../component/MovieCardWithSubcards";
 // import MovieCard from "../../component/SaleCard";
 import VerticalTableRow from "../../component/MovieList";
@@ -21,8 +21,9 @@ export const MainPage = () => {
         //   overflowY: "auto",
         // }}
       >
-        {/* <MovieCarousel /> */}
         <h1>Bienvenido a la página principal</h1>
+        <MovieCarousel />
+
         <PrincipalCategorias />
         {/* <MovieCardWithSubcards /> */}
         {/* <MovieCard /> */}

@@ -1,25 +1,28 @@
+import { useEffect, useState } from "react";
 
-import { useEffect, useState } from 'react';
-
-export const useFetchMovies = (searchTerm = 'a', limit = 5) => {
+export const useFetchMovies = (searchTerm = "a", limit = 5) => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
-  const apiKey = 'd511530c';
+  const apiKey = "d511530c";
 
   useEffect(() => {
     const fetchMovies = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`https://www.omdbapi.com/?apikey=${apiKey}&s=${searchTerm}&type=movie&page=1`);
+        const res = await fetch(
+          `https://www.omdbapi.com/?apikey=${apiKey}&s=${searchTerm}&type=movie&page=1`
+        );
         const data = await res.json();
 
-        if (data.Response === 'True') {
+        if (data.Response === "True" && data.Search) {
           const shuffled = data.Search.sort(() => 0.5 - Math.random());
           const selected = shuffled.slice(0, limit);
 
           const detailedMovies = await Promise.all(
             selected.map(async (movie) => {
-              const res = await fetch(`https://www.omdbapi.com/?apikey=${apiKey}&i=${movie.imdbID}&plot=full`);
+              const res = await fetch(
+                `https://www.omdbapi.com/?apikey=${apiKey}&i=${movie.imdbID}&plot=full`
+              );
               const fullDetails = await res.json();
               return fullDetails;
             })
@@ -27,10 +30,10 @@ export const useFetchMovies = (searchTerm = 'a', limit = 5) => {
 
           setMovies(detailedMovies);
         } else {
-          setMovies([]); 
+          setMovies([]);
         }
       } catch (err) {
-        console.error('Error fetching movies:', err);
+        console.error("Error fetching movies:", err);
         setMovies([]);
       } finally {
         setLoading(false);
@@ -38,7 +41,10 @@ export const useFetchMovies = (searchTerm = 'a', limit = 5) => {
     };
 
     fetchMovies();
-  }, [searchTerm, limit]); 
+  }, [searchTerm, limit]);
+
+  // Agrega este console.log para ver el valor de 'movies' antes de ser retornado
+  console.log("useFetchMovies - Movies:", movies);
 
   return { movies, loading };
 };

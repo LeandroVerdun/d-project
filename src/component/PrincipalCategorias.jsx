@@ -4,7 +4,7 @@ import MovieSlider from "./MovieSlider";
 
 const PrincipalCategorias = () => {
   const apiKey = "d511530c";
-  const categories = ["Comedy", "Animation", "Family"];
+  const categories = ["Action", "Comedy", "Drama"];
   const [movies, setMovies] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
