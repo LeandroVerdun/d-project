@@ -1,0 +1,44 @@
+.body {
+    background-color: goldenrod;
+}
+.responsive-container { /* Apply this class to your div */
+    display: flex;
+    flex-direction: column; /* Stack items vertically by default */
+    align-items: center; /* Center items horizontally */
+    width: 100%;
+  }
+  .responsive-container button{
+    margin-top: 30px;
+    margin-bottom: 20px;;
+  }
+  
+  .responsive-container img{
+    margin-top: 15px;
+    margin-bottom: 10px;
+    border: 5px solid silver;
+    border-radius: 5%;
+    opacity: 90%;
+  }
+
+  /* In your CSS file (e.g., styles.css) */
+.responsive-container img {
+    transition: transform 0.4s ease-in-out; /* Animate transform and color */;
+  }
+  
+  .responsive-container img:hover {
+    transform: translateX(10px) rotate(360deg); /* Move right and rotate on hover */
+    border-radius: 50%;
+  
+  }
+
+  .pulsating {
+    animation: move 1s infinite alternate ease-in-out;
+    color: whitesmoke;
+  }
+
+  
+  @keyframes move {
+
+    from { transform: translateY(20%); }
+    
+  }
