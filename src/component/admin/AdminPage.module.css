@@ -1,0 +1,20 @@
+.adminContainer {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.newMovieButton {
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.newMovieButton:hover {
+  background-color: #0056b3;
+}
