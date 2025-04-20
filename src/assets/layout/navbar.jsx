@@ -7,11 +7,18 @@ export const Navbar = () => {
   const [query, setQuery] = useState("");
   const [triggerSearch, setTriggerSearch] = useState(false);
   const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // ✅ NUEVO ESTADO
   const navigate = useNavigate();
   const location = useLocation();
   const dropdownRef = useRef(null);
 
   const { movies, loading } = useFetchMovies(query, 10);
+
+  useEffect(() => {
+    // Verifica si hay un usuario logueado (podés usar cualquier lógica aquí)
+    const user = localStorage.getItem("user");
+    setIsLoggedIn(!!user);
+  }, [location]); // Se actualiza cada vez que cambia la ruta
 
   const handleInputChange = (e) => {
     setQuery(e.target.value);
@@ -29,7 +36,13 @@ export const Navbar = () => {
   };
 
   const handleCartClick = () => {
-    navigate("/cart"); // <-- Navega a CartPage
+    navigate("/cart");
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setIsLoggedIn(false);
+    navigate("/login");
   };
 
   useEffect(() => {
@@ -97,7 +110,7 @@ export const Navbar = () => {
             </li>
           </ul>
 
-          {/* Formulario de búsqueda con lupa */}
+          {/* Formulario de búsqueda */}
           <form className="d-flex align-items-center position-relative me-3" role="search" onSubmit={handleSubmit}>
             <input
               className="form-control me-2"
@@ -143,6 +156,42 @@ export const Navbar = () => {
               </div>
             )}
           </form>
+
+          {/* Botones de usuario según login */}
+          <div className="d-flex align-items-center me-3">
+            {!isLoggedIn ? (
+              <>
+                <Link to="/register" className="btn btn-outline-primary me-2">
+                  Crear Usuario
+                </Link>
+                <Link to="/login" className="btn btn-outline-success me-2">
+                  Iniciar Sesión
+                </Link>
+              </>
+            ) : (
+              <div className="dropdown">
+                <button
+                  className="btn btn-outline-secondary dropdown-toggle"
+                  type="button"
+                  id="dropdownAccount"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Mi Cuenta
+                </button>
+                <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                  <li><Link className="dropdown-item" to="/profile">Perfil</Link></li>
+                  <li><Link className="dropdown-item" to="/orders">Mis Pedidos</Link></li>
+                  <li><hr className="dropdown-divider" /></li>
+                  <li>
+                    <button className="dropdown-item" onClick={handleLogout}>
+                      Cerrar Sesión
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            )}
+          </div>
 
           {/* Botón de carrito */}
           <button className="btn btn-outline-dark" onClick={handleCartClick}>
