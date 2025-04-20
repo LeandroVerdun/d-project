@@ -24,29 +24,38 @@ const Descripcion = () => {
   }
 
   return (
-    <div className="descripcion-container">
-      <div className="descripcion-header">
-        <img
-          src={movie.Poster}
-          alt={movie.Title}
-          className="descripcion-poster"
-        />
-        <div className="descripcion-info">
+    <div className="descripcion-container container mt-5">
+      <div className="row">
+        {/* Cartelera a la izquierda */}
+        <div className="col-md-4">
+          <img
+            src={movie.Poster}
+            alt={movie.Title}
+            className="img-fluid rounded"
+          />
+        </div>
+
+        <div className="col-md-8">
+          {/* Título de la película arriba */}
           <h1>{movie.Title}</h1>
+          
+          {/* Sinopsis de la película */}
           <p>{movie.Plot}</p>
-          <div className="descripcion-buttons">
-            <button className="btn btn-primary">Alquilar</button>
+          
+          {/* Detalles debajo de la sinopsis */}
+          <div className="descripcion-details">
+            <h2>Detalles</h2>
+            <p><strong>Director:</strong> {movie.Director}</p>
+            <p><strong>Género:</strong> {movie.Genre}</p>
+            <p><strong>Año:</strong> {movie.Year}</p>
+          </div>
+          
+          {/* Botones de acción */}
+          <div className="descripcion-buttons mt-3">
+            <button className="btn btn-primary me-2">Alquilar</button>
             <button className="btn btn-success">Comprar</button>
           </div>
         </div>
-      </div>
-
-      {/* Aquí podrías agregar más detalles o una sección de comentarios */}
-      <div className="descripcion-details">
-        <h2>Detalles</h2>
-        <p><strong>Director:</strong> {movie.Director}</p>
-        <p><strong>Genero:</strong> {movie.Genre}</p>
-        <p><strong>Año:</strong> {movie.Year}</p>
       </div>
     </div>
   );

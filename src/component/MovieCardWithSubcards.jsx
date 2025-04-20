@@ -1,9 +1,9 @@
 import React from 'react';
-import { useFetchMovies } from '../hook/useFetchMovies'; // Asegúrate de tener la ruta correcta
+import { useFetchMovies } from '../hook/useFetchMovies'; 
 
-// Componente para cargar una película aleatoria en cada sub-tarjeta
+
 const MovieSubcard = ({ term }) => {
-  const { movies, loading } = useFetchMovies(term, 1); // Usamos el hook para obtener 1 película por término
+  const { movies, loading } = useFetchMovies(term, 1); 
 
   return (
     <div className="col-md-3 mb-3">

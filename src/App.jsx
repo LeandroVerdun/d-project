@@ -8,6 +8,8 @@ import NoFound from "./assets/pages/Error404";
 import AdminPage from "./component/admin/AdminPage";
 import SearchResult from "./component/SearchResult";
 import Descripcion from "./component/Description";
+import CartPage from "./component/CartPage"; // ✅ Nuevo import
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
@@ -20,7 +22,8 @@ function App() {
         <Route path="/categories" element={<Categories />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/search/:query" element={<SearchResult />} />
-        <Route path="/descripcion/:id" element={<Descripcion />} /> 
+        <Route path="/descripcion/:id" element={<Descripcion />} />
+        <Route path="/cart" element={<CartPage />} /> {/* ✅ Nueva ruta */}
         <Route path="/404" element={<NoFound />} />
         <Route path="*" element={<NoFound />} />
       </Routes>

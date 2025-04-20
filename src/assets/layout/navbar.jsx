@@ -28,13 +28,16 @@ export const Navbar = () => {
     }
   };
 
+  const handleCartClick = () => {
+    navigate("/cart"); // <-- Navega a CartPage
+  };
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setDropdownVisible(false);
       }
     };
-
     document.addEventListener("click", handleClickOutside);
     return () => document.removeEventListener("click", handleClickOutside);
   }, []);
@@ -47,6 +50,7 @@ export const Navbar = () => {
     <nav className="navbar navbar-expand-lg bg-body-tertiary w-100 position-relative">
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">Logo</Link>
+
         <button
           className="navbar-toggler"
           type="button"
@@ -74,8 +78,12 @@ export const Navbar = () => {
               >
                 Categories
               </a>
-              <ul className="dropdown-menu">
-                {["comedy", "animation", "family", "adventure", "action", "horror"].map((genre) => (
+              <ul className="dropdown-menu genre-scroll">
+                {[
+                  "action", "adventure", "animation", "biography", "comedy", "crime", "drama", "family",
+                  "fantasy", "film-noir", "history", "horror", "music", "musical", "mystery", "romance",
+                  "sci-fi", "short", "sport", "thriller", "war", "western"
+                ].map((genre) => (
                   <li key={genre}>
                     <Link className="dropdown-item" to={`/categories?category=${genre}`}>
                       {genre.charAt(0).toUpperCase() + genre.slice(1)}
@@ -89,7 +97,8 @@ export const Navbar = () => {
             </li>
           </ul>
 
-          <form className="d-flex position-relative" role="search" onSubmit={handleSubmit}>
+          {/* Formulario de búsqueda con lupa */}
+          <form className="d-flex align-items-center position-relative me-3" role="search" onSubmit={handleSubmit}>
             <input
               className="form-control me-2"
               type="search"
@@ -99,7 +108,7 @@ export const Navbar = () => {
               aria-label="Search"
             />
             <button className="btn btn-outline-success" type="submit">
-              Search
+              <i className="bi bi-search"></i>
             </button>
 
             {query && !triggerSearch && !loading && movies.length > 0 && dropdownVisible && (
@@ -108,7 +117,7 @@ export const Navbar = () => {
                   <div
                     key={movie.imdbID}
                     className="movie-result-item"
-                    onClick={() => navigate(`/descripcion/${movie.imdbID}`)} 
+                    onClick={() => navigate(`/descripcion/${movie.imdbID}`)}
                   >
                     <img
                       src={movie.Poster}
@@ -134,6 +143,11 @@ export const Navbar = () => {
               </div>
             )}
           </form>
+
+          {/* Botón de carrito */}
+          <button className="btn btn-outline-dark" onClick={handleCartClick}>
+            <i className="bi bi-cart"></i>
+          </button>
         </div>
       </div>
     </nav>

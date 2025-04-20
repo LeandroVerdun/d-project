@@ -1,0 +1,11 @@
+.movie-card {
+    background-color: #111;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  
+  .movie-card:hover {
+    background-color: #001f3f; /* azul marino */
+    cursor: pointer;
+  }
+  

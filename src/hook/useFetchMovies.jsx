@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 export const useFetchMovies = (searchTerm = "a", limit = 5) => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
-  const apiKey = "d511530c";
+  const apiKey = "d511530c"; // Usa tu propia API Key
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -20,14 +20,14 @@ export const useFetchMovies = (searchTerm = "a", limit = 5) => {
           if (data.Response === "True") {
             setMovies([data]); // Sólo una película, por eso se guarda en un arreglo
           } else {
-            setMovies([]);
+            setMovies([]); // Si no hay resultados, se vacía el array
           }
         } catch (err) {
           console.error("Error fetching movie details:", err);
-          setMovies([]);
+          setMovies([]); // En caso de error, vaciar el array
         }
       } else {
-        // Si no es un ID, buscamos por nombre
+        // Si no es un ID, buscamos por categoría (searchTerm)
         try {
           const res = await fetch(
             `https://www.omdbapi.com/?apikey=${apiKey}&s=${searchTerm}&type=movie&page=1`
@@ -35,30 +35,38 @@ export const useFetchMovies = (searchTerm = "a", limit = 5) => {
           const data = await res.json();
 
           if (data.Response === "True" && data.Search) {
+            // Mezclar las películas de manera aleatoria
             const shuffled = data.Search.sort(() => 0.5 - Math.random());
             const selected = shuffled.slice(0, limit);
 
+            // Filtrar las películas con datos incompletos
             const detailedMovies = await Promise.all(
               selected.map(async (movie) => {
                 const res = await fetch(
                   `https://www.omdbapi.com/?apikey=${apiKey}&i=${movie.imdbID}&plot=full`
                 );
                 const fullDetails = await res.json();
-                return fullDetails;
+
+                // Verificar si la película tiene datos completos
+                if (fullDetails.Response === "True" && fullDetails.Plot !== "N/A" && fullDetails.Poster !== "N/A") {
+                  return fullDetails; // Agregar solo películas válidas
+                }
+                return null; // Si los datos son inválidos, no los agregamos
               })
             );
 
-            setMovies(detailedMovies);
+            // Filtrar películas nulas (sin datos completos)
+            setMovies(detailedMovies.filter(movie => movie !== null));
           } else {
-            setMovies([]);
+            setMovies([]); // Si no hay películas, vaciar el array
           }
         } catch (err) {
           console.error("Error fetching movies:", err);
-          setMovies([]);
+          setMovies([]); // En caso de error, vaciar el array
         }
       }
 
-      setLoading(false);
+      setLoading(false); // Terminar el loading
     };
 
     fetchMovies();

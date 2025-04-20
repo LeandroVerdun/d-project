@@ -1,4 +1,4 @@
-export const MovieList = ({ movies }) => {
+export const SearchMovie = ({ movies }) => {
     return (
       <div className="container mt-4">
         <div className="row">
