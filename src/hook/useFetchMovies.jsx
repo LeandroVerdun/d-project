@@ -8,43 +8,61 @@ export const useFetchMovies = (searchTerm = "a", limit = 5) => {
   useEffect(() => {
     const fetchMovies = async () => {
       setLoading(true);
-      try {
-        const res = await fetch(
-          `https://www.omdbapi.com/?apikey=${apiKey}&s=${searchTerm}&type=movie&page=1`
-        );
-        const data = await res.json();
 
-        if (data.Response === "True" && data.Search) {
-          const shuffled = data.Search.sort(() => 0.5 - Math.random());
-          const selected = shuffled.slice(0, limit);
-
-          const detailedMovies = await Promise.all(
-            selected.map(async (movie) => {
-              const res = await fetch(
-                `https://www.omdbapi.com/?apikey=${apiKey}&i=${movie.imdbID}&plot=full`
-              );
-              const fullDetails = await res.json();
-              return fullDetails;
-            })
+      // Si searchTerm es un 'id', obtenemos los detalles completos de la película.
+      if (searchTerm.length === 9) { // El imdbID siempre tiene 9 caracteres
+        try {
+          const res = await fetch(
+            `https://www.omdbapi.com/?apikey=${apiKey}&i=${searchTerm}&plot=full`
           );
+          const data = await res.json();
 
-          setMovies(detailedMovies);
-        } else {
+          if (data.Response === "True") {
+            setMovies([data]); // Sólo una película, por eso se guarda en un arreglo
+          } else {
+            setMovies([]);
+          }
+        } catch (err) {
+          console.error("Error fetching movie details:", err);
           setMovies([]);
         }
-      } catch (err) {
-        console.error("Error fetching movies:", err);
-        setMovies([]);
-      } finally {
-        setLoading(false);
+      } else {
+        // Si no es un ID, buscamos por nombre
+        try {
+          const res = await fetch(
+            `https://www.omdbapi.com/?apikey=${apiKey}&s=${searchTerm}&type=movie&page=1`
+          );
+          const data = await res.json();
+
+          if (data.Response === "True" && data.Search) {
+            const shuffled = data.Search.sort(() => 0.5 - Math.random());
+            const selected = shuffled.slice(0, limit);
+
+            const detailedMovies = await Promise.all(
+              selected.map(async (movie) => {
+                const res = await fetch(
+                  `https://www.omdbapi.com/?apikey=${apiKey}&i=${movie.imdbID}&plot=full`
+                );
+                const fullDetails = await res.json();
+                return fullDetails;
+              })
+            );
+
+            setMovies(detailedMovies);
+          } else {
+            setMovies([]);
+          }
+        } catch (err) {
+          console.error("Error fetching movies:", err);
+          setMovies([]);
+        }
       }
+
+      setLoading(false);
     };
 
     fetchMovies();
   }, [searchTerm, limit]);
-
-  // Agrega este console.log para ver el valor de 'movies' antes de ser retornado
-  console.log("useFetchMovies - Movies:", movies);
 
   return { movies, loading };
 };
