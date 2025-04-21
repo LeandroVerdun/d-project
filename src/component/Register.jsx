@@ -27,7 +27,15 @@ const Register = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    if (name === "cardNumber") {
+      // Formatear el número de tarjeta con espacios cada 4 dígitos
+      let formattedValue = value.replace(/\D/g, "").substring(0, 16); // Eliminar caracteres no numéricos y limitar a 16 dígitos
+      formattedValue = formattedValue.replace(/(\d{4})(?=\d)/g, "$1 "); // Separar cada 4 dígitos con un espacio
+      setFormData((prev) => ({ ...prev, [name]: formattedValue }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSubmit = (e) => {
@@ -57,12 +65,12 @@ const Register = () => {
   };
 
   const formatExpirationDate = (e) => {
-    let value = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+    let value = e.target.value.replace(/\D/g, "");
     if (value.length > 2) {
-      value = value.substring(0, 2) + "/" + value.substring(2, 4); // MM/YY format
+      value = value.substring(0, 2) + "/" + value.substring(2, 4);
     }
     e.target.value = value;
-    handleChange(e); // Update state
+    handleChange(e);
   };
 
   return (

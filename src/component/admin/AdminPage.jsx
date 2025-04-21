@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Navbar from "../../assets/layout/Navbar";
+import Navbar from "../../assets/layout/navbar";
 import MovieTable from "./MovieTable";
 import AddMovieModal from "./AddMovieModal";
 import styles from "./AdminPage.module.css";

@@ -1,6 +1,5 @@
-// components/MovieSlider.jsx
 import React from "react";
-import { useNavigate } from "react-router-dom"; // 🔄 para navegación
+import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../css/MovieSlider.css";
 
@@ -11,6 +10,30 @@ const MovieSlider = ({ category, movies }) => {
     navigate(`/descripcion/${id}`);
   };
 
+  const addToCart = (movie, isRental) => {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    const existingIndex = cart.findIndex(
+      (item) => item.imdbID === movie.imdbID && item.isRental === isRental
+    );
+
+    if (existingIndex !== -1) {
+      cart[existingIndex].quantity += 1;
+    } else {
+      const itemToAdd = {
+        imdbID: movie.imdbID,
+        Title: movie.Title,
+        Poster: movie.Poster,
+        size: "Default",
+        quantity: 1,
+        isRental: isRental,
+      };
+      cart.push(itemToAdd);
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+  };
+
   return (
     <div className="mb-4 px-3">
       <h2 className="mb-3">{category}</h2>
@@ -18,12 +41,9 @@ const MovieSlider = ({ category, movies }) => {
         {movies.map((movie) => (
           <div
             key={movie.imdbID}
-            className="card movie-card me-3 text-white"
-            style={{
-              minWidth: "160px",
-              transition: "background-color 0.3s ease",
-            }}
-            onClick={() => handleCardClick(movie.imdbID)} // 🔄 Redirigir al hacer click
+            className="card movie-card me-3 text-white position-relative"
+            style={{ minWidth: "160px", cursor: "pointer" }}
+            onClick={() => handleCardClick(movie.imdbID)}
           >
             <img
               src={
@@ -35,18 +55,37 @@ const MovieSlider = ({ category, movies }) => {
               className="img-fluid mb-2 rounded"
             />
             <p className="card-text small mb-2 text-truncate">{movie.Title}</p>
-            <div className="d-flex justify-content-between">
+
+            {/* Overlay con título y sinopsis */}
+            <div className="overlay-description p-2">
+              <h6 className="overlay-title text-center fw-bold mb-2">
+                {movie.Title}
+              </h6>
+              <p className="synopsis-text mb-0">
+                {movie.Plot || "No description available."}
+              </p>
+            </div>
+
+            <div className="d-flex justify-content-between z-2 position-relative mb-2 px-1">
               <button
-                className="btn btn-sm btn-primary"
-                onClick={(e) => e.stopPropagation()} // Para que no redirija al hacer click en botón
+                className="btn btn-primary btn-sm flex-grow-1 me-1"
+                style={{ minWidth: "70px" }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  addToCart(movie, false);
+                }}
               >
-                Comprar
+                Buy
               </button>
               <button
-                className="btn btn-sm btn-outline-light"
-                onClick={(e) => e.stopPropagation()}
+                className="btn btn-outline-light btn-sm flex-grow-1 ms-1"
+                style={{ minWidth: "70px" }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  addToCart(movie, true);
+                }}
               >
-                Alquilar
+                Rent
               </button>
             </div>
           </div>

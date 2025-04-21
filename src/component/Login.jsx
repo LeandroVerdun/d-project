@@ -10,28 +10,28 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Obtener todos los usuarios registrados
+    // Get all registered users
     const users = JSON.parse(localStorage.getItem("users")) || [];
 
-    // Buscar un usuario que coincida con email y contraseña
+    // Find a user that matches the email and password
     const foundUser = users.find(
       (user) => user.email === email && user.password === password
     );
 
     if (foundUser) {
-      // Guardar al usuario logueado en localStorage
+      // Save the logged-in user to localStorage
       localStorage.setItem("user", JSON.stringify(foundUser));
 
-      // Redirigir a inicio
+      // Redirect to the home page
       navigate("/");
     } else {
-      setError("Email o contraseña incorrectos.");
+      setError("Incorrect email or password.");
     }
   };
 
   return (
     <div className="container mt-5">
-      <h2>Iniciar Sesión</h2>
+      <h2>Login</h2>
       {error && <div className="alert alert-danger">{error}</div>}
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
@@ -45,7 +45,7 @@ const Login = () => {
           />
         </div>
         <div className="mb-3">
-          <label>Contraseña</label>
+          <label>Password</label>
           <input
             type="password"
             className="form-control"
@@ -55,9 +55,19 @@ const Login = () => {
           />
         </div>
         <button type="submit" className="btn btn-success">
-          Iniciar Sesión
+          Login
         </button>
       </form>
+
+      {/* Link to the registration page */}
+      <div className="mt-3">
+        <p>
+          Don't have an account?{" "}
+          <a href="/register" className="text-primary">
+            Register
+          </a>
+        </p>
+      </div>
     </div>
   );
 };

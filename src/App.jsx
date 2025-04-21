@@ -1,7 +1,7 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { MainPage } from "./assets/pages/main";
-import { Navbar } from "./assets/layout/Navbar";
+import Navbar from "./assets/layout/navbar";
 import { Footer } from "./assets/layout/Footer";
 import Categories from "./component/Categories";
 import NoFound from "./assets/pages/Error404";
@@ -10,7 +10,8 @@ import SearchResult from "./component/SearchResult";
 import Descripcion from "./component/Description";
 import CartPage from "./component/CartPage";
 import Register from "./component/Register";
-import Login from "./component/Login"; // ✅ NUEVO IMPORT
+import Login from "./component/Login";
+import MyPurchases from "./component/MyPurchases";  // Import MyPurchases
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
@@ -27,7 +28,8 @@ function App() {
         <Route path="/descripcion/:id" element={<Descripcion />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} /> {/* ✅ NUEVA RUTA */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/mypurchases" element={<MyPurchases />} /> {/* Ruta para MyPurchases */}
         <Route path="/404" element={<NoFound />} />
         <Route path="*" element={<NoFound />} />
       </Routes>

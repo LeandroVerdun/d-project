@@ -7,7 +7,8 @@ export const Navbar = () => {
   const [query, setQuery] = useState("");
   const [triggerSearch, setTriggerSearch] = useState(false);
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // ✅ NUEVO ESTADO
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
   const dropdownRef = useRef(null);
@@ -15,10 +16,10 @@ export const Navbar = () => {
   const { movies, loading } = useFetchMovies(query, 10);
 
   useEffect(() => {
-    // Verifica si hay un usuario logueado (podés usar cualquier lógica aquí)
-    const user = localStorage.getItem("user");
+    const user = JSON.parse(localStorage.getItem("user"));
     setIsLoggedIn(!!user);
-  }, [location]); // Se actualiza cada vez que cambia la ruta
+    setCurrentUser(user);
+  }, [location]);
 
   const handleInputChange = (e) => {
     setQuery(e.target.value);
@@ -42,6 +43,7 @@ export const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem("user");
     setIsLoggedIn(false);
+    setCurrentUser(null);
     navigate("/login");
   };
 
@@ -79,7 +81,7 @@ export const Navbar = () => {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <Link className="nav-link active" to="/">Inicio</Link>
+              <Link className="nav-link active" to="/">Home</Link>
             </li>
             <li className="nav-item dropdown">
               <a
@@ -105,12 +107,8 @@ export const Navbar = () => {
                 ))}
               </ul>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/admin">Administrar</Link>
-            </li>
           </ul>
 
-          {/* Formulario de búsqueda */}
           <form className="d-flex align-items-center position-relative me-3" role="search" onSubmit={handleSubmit}>
             <input
               className="form-control me-2"
@@ -147,8 +145,8 @@ export const Navbar = () => {
                         ))}
                       </div>
                       <div>
-                        <button className="btn btn-sm btn-primary me-2">Alquilar</button>
-                        <button className="btn btn-sm btn-success">Comprar</button>
+                        <button className="btn btn-sm btn-primary me-2">Rent</button>
+                        <button className="btn btn-sm btn-success">Buy</button>
                       </div>
                     </div>
                   </div>
@@ -157,15 +155,14 @@ export const Navbar = () => {
             )}
           </form>
 
-          {/* Botones de usuario según login */}
           <div className="d-flex align-items-center me-3">
             {!isLoggedIn ? (
               <>
                 <Link to="/register" className="btn btn-outline-primary me-2">
-                  Crear Usuario
+                  Register
                 </Link>
                 <Link to="/login" className="btn btn-outline-success me-2">
-                  Iniciar Sesión
+                  Login
                 </Link>
               </>
             ) : (
@@ -177,15 +174,21 @@ export const Navbar = () => {
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  Mi Cuenta
+                  My Account
                 </button>
                 <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
-                  <li><Link className="dropdown-item" to="/profile">Perfil</Link></li>
-                  <li><Link className="dropdown-item" to="/orders">Mis Pedidos</Link></li>
+                  <li><Link className="dropdown-item" to="/profile">Profile</Link></li>
+                  <li><Link className="dropdown-item" to="/mypurchases">My Purchases</Link></li>
+                  {currentUser?.username === "Chisato" && (
+                    <>
+                      <li><hr className="dropdown-divider" /></li>
+                      <li><Link className="dropdown-item" to="/admin">Admin</Link></li>
+                    </>
+                  )}
                   <li><hr className="dropdown-divider" /></li>
                   <li>
                     <button className="dropdown-item" onClick={handleLogout}>
-                      Cerrar Sesión
+                      Logout
                     </button>
                   </li>
                 </ul>
@@ -193,7 +196,6 @@ export const Navbar = () => {
             )}
           </div>
 
-          {/* Botón de carrito */}
           <button className="btn btn-outline-dark" onClick={handleCartClick}>
             <i className="bi bi-cart"></i>
           </button>
