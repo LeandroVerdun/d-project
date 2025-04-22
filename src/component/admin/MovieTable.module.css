@@ -1,0 +1,22 @@
+.movieTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.movieTable th,
+.movieTable td {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.movieTable th {
+  background-color: #f2f2f2;
+}
+
+.movieTable button {
+  margin-right: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+}

@@ -1,0 +1,56 @@
+/* Hover effect for the card */
+.my-card:hover {
+    border-color: #00bfff; /* Celeste border color */
+    box-shadow: 0 4px 8px rgba(0, 191, 255, 0.2); /* Optional shadow effect */
+  }
+  
+  /* Contenedor de la sinopsis con overflow */
+  .card-text-container {
+    max-height: 120px;  /* Ajusta según el espacio que deseas para la sinopsis */
+    overflow-y: auto;   /* Permite desplazamiento si la sinopsis es larga */
+    margin-bottom: 15px;
+  }
+  
+  /* Estilo de la sinopsis */
+  .card-text {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  
+  /* Asegurarse de que la tarjeta sea flexible y no se recorte */
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;  /* No poner el espacio entre los elementos */
+    height: 100%;
+  }
+  
+  /* Asegurarse de que las imágenes no se recorten */
+  .card-img-top {
+    height: 200px;
+    object-fit: contain;  /* Cambié a 'contain' para que la imagen no se recorte */
+    width: 100%;
+    border-bottom: 1px solid #ddd; /* Línea separadora entre la imagen y el contenido */
+  }
+  
+  /* Ajuste para los géneros */
+  .badge {
+    margin: 2px 0;
+  }
+  
+  /* Estilo adicional para la tarjeta */
+  .my-card {
+    transition: all 0.3s ease; /* Suavizar el hover */
+  }
+  
+  .my-card:hover {
+    border-color: #00bfff; /* Celeste border color */
+    box-shadow: 0 4px 8px rgba(0, 191, 255, 0.2); /* Optional shadow effect */
+    transform: scale(1.05); /* Efecto de agrandar ligeramente la tarjeta */
+  }
+  
+  .card-body {
+    padding: 15px;
+  }
+  
