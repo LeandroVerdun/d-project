@@ -1,0 +1,47 @@
+/* Estilo para el dropdown de búsqueda */
+.search-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  width: 100%;
+  max-height: 300px;
+  overflow-y: auto;
+  background-color: white;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.15);
+  border-radius: 0.375rem;
+  padding: 0.5rem;
+}
+
+/* Estilo para cada item del resultado de búsqueda */
+.movie-result-item {
+  display: flex;
+  align-items: start;
+  border: 1px solid #dee2e6;
+  border-radius: 0.375rem;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  background-color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Estilo para las imágenes de las películas */
+.movie-poster {
+  width: 60px;
+  height: 90px;
+  object-fit: cover;
+}
+
+/* Efecto hover para los items del dropdown */
+.movie-result-item:hover {
+  background-color: #003366;
+  color: white;
+  border-color: #003366;
+}
+
+/* 🎯 Nuevo: scroll vertical en lista de géneros */
+.genre-scroll {
+  max-height: 200px;
+  overflow-y: auto;
+}
