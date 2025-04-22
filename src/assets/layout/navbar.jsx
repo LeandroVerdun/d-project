@@ -94,11 +94,7 @@ export const Navbar = () => {
                 Categories
               </a>
               <ul className="dropdown-menu genre-scroll">
-                {[
-                  "action", "adventure", "animation", "biography", "comedy", "crime", "drama", "family",
-                  "fantasy", "film-noir", "history", "horror", "music", "musical", "mystery", "romance",
-                  "sci-fi", "short", "sport", "thriller", "war", "western"
-                ].map((genre) => (
+                {["action", "adventure", "animation", "biography", "comedy", "crime", "drama", "family", "fantasy", "film-noir", "history", "horror", "music", "musical", "mystery", "romance", "sci-fi", "short", "sport", "thriller", "war", "western"].map((genre) => (
                   <li key={genre}>
                     <Link className="dropdown-item" to={`/categories?category=${genre}`}>
                       {genre.charAt(0).toUpperCase() + genre.slice(1)}
@@ -174,35 +170,25 @@ export const Navbar = () => {
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  My Account
+                  {currentUser?.username || "My Account"}
                 </button>
                 <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
-                  <li><Link className="dropdown-item" to="/profile">Profile</Link></li>
-                  <li><Link className="dropdown-item" to="/mypurchases">My Purchases</Link></li>
+                  <li><Link className="dropdown-item" to="/profile">Profile</Link></li> {/* Enlace de perfil */}
+                  <li><Link className="dropdown-item" to="/mypurchases">My Movie</Link></li>
                   {currentUser?.username === "Chisato" && (
                     <>
                       <li><hr className="dropdown-divider" /></li>
-                      <li><Link className="dropdown-item" to="/admin">Admin</Link></li>
+                      <li><Link className="dropdown-item" to="/admin">Movie</Link></li>
+                      <li><Link className="dropdown-item" to="/useradmin">User Admin</Link></li>
                     </>
                   )}
-                  <li><hr className="dropdown-divider" /></li>
-                  <li>
-                    <button className="dropdown-item" onClick={handleLogout}>
-                      Logout
-                    </button>
-                  </li>
+                  <li><button className="dropdown-item" onClick={handleLogout}>Logout</button></li>
                 </ul>
               </div>
             )}
           </div>
-
-          <button className="btn btn-outline-dark" onClick={handleCartClick}>
-            <i className="bi bi-cart"></i>
-          </button>
         </div>
       </div>
     </nav>
   );
 };
-
-export default Navbar;

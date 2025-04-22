@@ -1,7 +1,7 @@
 import React from "react";
-import styles from "./MovieTable.module.css"; // Si usas CSS Modules
+import styles from "./MovieTable.module.css";
 
-const MovieTable = () => {
+const MovieTable = ({ movies, onDelete, onEdit }) => {
   return (
     <table className={styles.movieTable}>
       <thead>
@@ -14,51 +14,19 @@ const MovieTable = () => {
         </tr>
       </thead>
       <tbody>
-        {/* Aquí iría el mapeo de los datos de las películas */}
-        <tr>
-          <td>Star wars-IV</td>
-          <td>Clasicas</td>
-          <td>descripcion</td>
-          <td>☑</td>
-          <td>
-            <button>Borrar</button>
-            <button>Editar</button>
-            <button>Destacar</button>
-          </td>
-        </tr>
-        <tr>
-          <td>Karate kid</td>
-          <td>Clasicas</td>
-          <td>descripcion.....</td>
-          <td></td>
-          <td>
-            <button>Borrar</button>
-            <button>Editar</button>
-            <button>Destacar</button>
-          </td>
-        </tr>
-        <tr>
-          <td>Rocky</td>
-          <td>Clasicas</td>
-          <td>descripcion.....</td>
-          <td>☑</td>
-          <td>
-            <button>Borrar</button>
-            <button>Editar</button>
-            <button>Destacar</button>
-          </td>
-        </tr>
-        <tr>
-          <td>Volver al futuro</td>
-          <td>Clasicas</td>
-          <td>descripcion......</td>
-          <td></td>
-          <td>
-            <button>Borrar</button>
-            <button>Editar</button>
-            <button>Destacar</button>
-          </td>
-        </tr>
+        {movies.map((movie) => (
+          <tr key={movie.id}>
+            <td>{movie.nombre}</td>
+            <td>{movie.categoria}</td>
+            <td>{movie.descripcion}</td>
+            <td>{movie.publicado ? "☑" : "☐"}</td>
+            <td>
+              <button onClick={() => onDelete(movie.id)}>Borrar</button>
+              <button onClick={() => onEdit(movie)}>Editar</button>
+              <button>Destacar</button>
+            </td>
+          </tr>
+        ))}
       </tbody>
     </table>
   );

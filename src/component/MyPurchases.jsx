@@ -1,15 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "../css/MyPurchases.css";
 
 export const MyPurchases = () => {
-  // State to store purchased items
   const [purchasedItems, setPurchasedItems] = useState([]);
+  const navigate = useNavigate();
 
-  // Load purchased items from localStorage
   useEffect(() => {
     const storedPurchases = JSON.parse(localStorage.getItem("purchased")) || [];
     setPurchasedItems(storedPurchases);
   }, []);
+
+  const handleCardClick = (item) => {
+    navigate("/play", { state: { item } });
+  };
 
   return (
     <div>
@@ -21,15 +25,19 @@ export const MyPurchases = () => {
           <p className="text-center">You have no purchases yet.</p>
         ) : (
           purchasedItems.map(item => (
-            <div className="col-sm-12 col-md-6 col-lg-4 mb-4" key={item.imdbID}>
+            <div
+              className="col-sm-12 col-md-6 col-lg-4 mb-4"
+              key={item.imdbID}
+              onClick={() => handleCardClick(item)}
+              style={{ cursor: 'pointer' }}
+            >
               <div className="card h-100 border border-light my-card">
                 <img src={item.Poster} className="card-img-top" alt={item.Title} />
                 <div className="card-body d-flex flex-column">
                   <h5 className="card-title">{item.Title} ({item.size})</h5>
-                  {/* Contenedor de la sinopsis con overflow */}
                   <div className="card-text-container">
                     <p className="card-text">
-                      {item.Plot || 'No synopsis available.'} {/* Default message if no plot */}
+                      {item.Plot || 'No synopsis available.'}
                     </p>
                   </div>
                   <div className="d-flex flex-wrap mb-2">

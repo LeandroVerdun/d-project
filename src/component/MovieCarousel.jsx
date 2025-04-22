@@ -18,7 +18,7 @@ export const MovieCarousel = () => {
       className="carousel slide w-100"
       data-bs-ride="carousel"
       data-bs-interval="5000"
-      style={{ height: "400px", marginBottom: "2rem" }}
+      style={{ marginBottom: "2rem" }}
     >
       <div
         className="carousel-inner h-100 d-flex"
@@ -37,8 +37,14 @@ export const MovieCarousel = () => {
           >
             <div
               className="card bg-dark text-white h-100 overflow-hidden"
-              style={{ borderRadius: "10px" }}
+              style={{
+                borderRadius: "10px",
+                display: "flex",
+                flexDirection: "row",
+                overflow: "visible",  // Aquí se elimina el overflow
+              }}
             >
+              {/* Cartelera de la película a la izquierda */}
               <img
                 src={
                   movie.Poster !== "N/A"
@@ -53,11 +59,21 @@ export const MovieCarousel = () => {
                   maxHeight: "100%",
                 }}
               />
-              <div className="card-img-overlay d-flex flex-column justify-content-end p-3">
-                <h5 className="card-title">{movie.Title}</h5>
-                <p className="card-text small">
-                  {movie.Plot && movie.Plot.substring(0, 100)}...
+              {/* Contenido de la película a la derecha */}
+              <div className="d-flex flex-column justify-content-between p-3" style={{ flex: 1, textAlign: "left" }}>
+                <h3 className="card-title" style={{ fontSize: "2rem" }}>
+                  {movie.Title}
+                </h3>
+                <p className="card-text" style={{ fontSize: "1rem", marginBottom: "10px" }}>
+                  {movie.Plot}
                 </p>
+                <div className="movie-genres" style={{ marginTop: "10px" }}>
+                  {movie.Genre.split(",").map((genre, idx) => (
+                    <span key={idx} className="badge bg-primary" style={{ marginRight: "5px" }}>
+                      {genre.trim()}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
