@@ -1,38 +1,37 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const UserAdmin = () => {
   const [users, setUsers] = useState([]);
   const [loggedInUser, setLoggedInUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Obtén el usuario logueado
+    // Verificar si el usuario tiene acceso
     const user = JSON.parse(localStorage.getItem("user"));
+    if (!user || user.username !== "Chisato") {
+      navigate("/"); // Redirige si no es Chisato
+      return;
+    }
+
     setLoggedInUser(user);
 
-    // Obtén la lista de usuarios desde localStorage
+    // Obtener y filtrar usuarios
     const usersList = JSON.parse(localStorage.getItem("users")) || [];
-    // Filtrar al usuario logueado de la lista
     const filteredUsers = usersList.filter((u) => u.username !== user.username);
     setUsers(filteredUsers);
-  }, []);
+  }, [navigate]);
 
   const handleDelete = (username) => {
-    // Elimina el usuario de la lista de usuarios en localStorage
     const usersList = JSON.parse(localStorage.getItem("users")) || [];
     const updatedUsersList = usersList.filter((user) => user.username !== username);
     localStorage.setItem("users", JSON.stringify(updatedUsersList));
-
-    // Actualiza el estado de los usuarios para reflejar los cambios
     setUsers(updatedUsersList);
   };
 
   const handleViewPurchases = (username) => {
-    // Obtiene las compras del usuario desde localStorage
     const purchases = JSON.parse(localStorage.getItem("purchases")) || [];
     const userPurchases = purchases.filter((purchase) => purchase.username === username);
-    
-    // Muestra las compras (puedes personalizarlo para que se muestre en un modal o en otra página)
     alert(`Compras de ${username}: ${userPurchases.map((p) => p.item).join(", ")}`);
   };
 

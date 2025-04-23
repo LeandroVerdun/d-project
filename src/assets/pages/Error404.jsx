@@ -1,7 +1,7 @@
 import {Link} from "react-router-dom"
 import Button from 'react-bootstrap/Button';
 import "../../css/error.css";
-import error404Image from '../pages/img/404.jpeg';
+import error404Image from '../img/404.png';
 
 const NoFound= () =>{
     return <>

@@ -1,46 +1,47 @@
 import React from 'react';
 import { FaFacebookF, FaTwitter, FaInstagram, FaYoutube } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 export const Footer = () => {
   return (
     <footer className="bg-dark text-light pt-5 pb-4">
       <div className="container">
         <div className="row">
-          {/* Navegación */}
+          {/* Navigation */}
           <div className="col-md-3 mb-4">
-            <h5 className="text-uppercase mb-3">Navegación</h5>
+            <h5 className="text-uppercase mb-3">Navigation</h5>
             <ul className="list-unstyled">
-              <li><a href="#" className="text-light text-decoration-none">Inicio</a></li>
-              <li><a href="#" className="text-light text-decoration-none">Películas</a></li>
-              <li><a href="#" className="text-light text-decoration-none">Nuevos lanzamientos</a></li>
+              <li><Link to="/" className="text-light text-decoration-none">Home</Link></li>
+              <li><Link to="/movies" className="text-light text-decoration-none">Movies</Link></li>
+              <li><Link to="/new-releases" className="text-light text-decoration-none">New Releases</Link></li>
             </ul>
           </div>
 
-          {/* Ayuda */}
+          {/* Help */}
           <div className="col-md-3 mb-4">
-            <h5 className="text-uppercase mb-3">Ayuda</h5>
+            <h5 className="text-uppercase mb-3">Help</h5>
             <ul className="list-unstyled">
-              <li><a href="#" className="text-light text-decoration-none">Centro de soporte</a></li>
-              <li><a href="#" className="text-light text-decoration-none">Términos de servicio</a></li>
-              <li><a href="#" className="text-light text-decoration-none">Política de privacidad</a></li>
-              <li><a href="#" className="text-light text-decoration-none">Contacto</a></li>
+              <li><Link to="/about-us" className="text-light text-decoration-none">About Us</Link></li>
+              <li><a href="#" className="text-light text-decoration-none">Terms of Service</a></li>
+              <li><a href="#" className="text-light text-decoration-none">Privacy Policy</a></li>
+              <li><a href="#" className="text-light text-decoration-none">Contact</a></li>
             </ul>
           </div>
 
-          {/* Cuenta */}
+          {/* Account */}
           <div className="col-md-3 mb-4">
-            <h5 className="text-uppercase mb-3">Cuenta</h5>
+            <h5 className="text-uppercase mb-3">Account</h5>
             <ul className="list-unstyled">
-              <li><a href="#" className="text-light text-decoration-none">Mi Perfil</a></li>
-              <li><a href="#" className="text-light text-decoration-none">Suscripciones</a></li>
-              <li><a href="#" className="text-light text-decoration-none">Historial</a></li>
-              <li><a href="#" className="text-light text-decoration-none">Favoritos</a></li>
+              <li><a href="#" className="text-light text-decoration-none">My Profile</a></li>
+              <li><a href="#" className="text-light text-decoration-none">Subscriptions</a></li>
+              <li><a href="#" className="text-light text-decoration-none">History</a></li>
+              <li><a href="#" className="text-light text-decoration-none">Favorites</a></li>
             </ul>
           </div>
 
-          {/* Redes sociales */}
+          {/* Social Media */}
           <div className="col-md-3 mb-4">
-            <h5 className="text-uppercase mb-3">Síguenos</h5>
+            <h5 className="text-uppercase mb-3">Follow Us</h5>
             <div className="d-flex gap-3">
               {/*<a href="#" className="text-light fs-5"><FaFacebookF /></a>*/}
               <a href="#" className="text-light fs-5"><FaTwitter /></a>
@@ -50,10 +51,10 @@ export const Footer = () => {
           </div>
         </div>
 
-        {/* Línea inferior */}
+        {/* Bottom Line */}
         <hr className="bg-secondary" />
         <div className="text-center">
-          <p className="mb-0">&copy; {new Date().getFullYear()} TuAppDePelículas. Todos los derechos reservados.</p>
+          <p className="mb-0">&copy; {new Date().getFullYear()} MovieApp. All rights reserved.</p>
         </div>
       </div>
     </footer>

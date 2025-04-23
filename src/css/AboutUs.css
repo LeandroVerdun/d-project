@@ -1,0 +1,79 @@
+.about-us-wrapper {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  .cinema-overlay {
+    position: absolute;
+    top: 14%;
+    left: 8%; /* antes estaba en 11%, lo movimos más a la izquierda */
+    width: 85%;
+    height: 42%;
+    background-color: #000;
+    color: yellow;
+    padding: 2rem;
+    border-radius: 4px;
+    z-index: 1;
+    box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    animation: fadeIn 1s ease-in-out;
+  }
+  
+  .background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../assets/img/about-us-transparente.png');
+    background-size: cover;
+    background-position: center;
+    z-index: 2;
+    pointer-events: none;
+  }
+  
+  .about-title {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .divider {
+    width: 100%;
+    margin: 0.5rem 0 1rem;
+  }
+  
+  .collab-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+  }
+  
+  .collab-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  
+  .collab-info {
+    text-align: left;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
