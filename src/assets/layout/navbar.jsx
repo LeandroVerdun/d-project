@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useFetchMovies } from "../../hook/useFetchMovies";
+import { BsCart } from "react-icons/bs"; // Ícono del carrito
 import "../../css/Navbar.css";
 
 export const Navbar = () => {
@@ -162,29 +163,38 @@ export const Navbar = () => {
                 </Link>
               </>
             ) : (
-              <div className="dropdown">
+              <>
+                <div className="dropdown me-2">
+                  <button
+                    className="btn btn-outline-secondary dropdown-toggle"
+                    type="button"
+                    id="dropdownAccount"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    {currentUser?.username || "My Account"}
+                  </button>
+                  <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                    <li><Link className="dropdown-item" to="/profile">Profile</Link></li>
+                    <li><Link className="dropdown-item" to="/mypurchases">My Movie</Link></li>
+                    {currentUser?.username === "Chisato" && (
+                      <>
+                        <li><hr className="dropdown-divider" /></li>
+                        <li><Link className="dropdown-item" to="/admin">Movie</Link></li>
+                        <li><Link className="dropdown-item" to="/useradmin">User Admin</Link></li>
+                      </>
+                    )}
+                    <li><button className="dropdown-item" onClick={handleLogout}>Logout</button></li>
+                  </ul>
+                </div>
                 <button
-                  className="btn btn-outline-secondary dropdown-toggle"
-                  type="button"
-                  id="dropdownAccount"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
+                  className="btn btn-outline-warning"
+                  onClick={handleCartClick}
+                  title="Cart"
                 >
-                  {currentUser?.username || "My Account"}
+                  <BsCart size={20} />
                 </button>
-                <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
-                  <li><Link className="dropdown-item" to="/profile">Profile</Link></li> {/* Enlace de perfil */}
-                  <li><Link className="dropdown-item" to="/mypurchases">My Movie</Link></li>
-                  {currentUser?.username === "Chisato" && (
-                    <>
-                      <li><hr className="dropdown-divider" /></li>
-                      <li><Link className="dropdown-item" to="/admin">Movie</Link></li>
-                      <li><Link className="dropdown-item" to="/useradmin">User Admin</Link></li>
-                    </>
-                  )}
-                  <li><button className="dropdown-item" onClick={handleLogout}>Logout</button></li>
-                </ul>
-              </div>
+              </>
             )}
           </div>
         </div>
