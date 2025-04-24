@@ -1,0 +1,28 @@
+.terms-content {
+  background-color: white;
+  opacity: 0.9;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.terms-container {
+  background-image: url('../assets/img/ChatGPT Image 23 abr 2025, 08_08_19 a.m..png');
+  background-size: cover;
+  width: 100%;
+  min-height: 90vh;
+  color: white;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 2rem;
+  overflow: hidden;
+  position: relative;
+}
+
+pre {
+  white-space: pre-wrap; /* Asegura que los saltos de línea en el archivo de texto se mantengan */
+  word-wrap: break-word; /* Asegura que las palabras largas no desborden el contenedor */
+  max-height: 100%;
+  margin: 0;
+}

@@ -42,7 +42,7 @@ const Descripcion = () => {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-5 text-white">
       <div className="row">
         {/* Left column with image */}
         <div className="col-md-4 mb-4">
@@ -74,15 +74,16 @@ const Descripcion = () => {
               <p className="mb-2"><strong>Buy:</strong> $1.50</p>
             </div>
 
-            <div className="d-flex gap-3">
+            {/* Botones con más padding inferior */}
+            <div className="d-flex gap-3 flex-column">
               <button
-                className="btn btn-outline-primary"
+                className="btn btn-outline-primary mb-3 px-3 py-3"
                 onClick={() => handleAddToCart(true)}
               >
                 Rent
               </button>
               <button
-                className="btn btn-success"
+                className="btn btn-success px-3 py-3"
                 onClick={() => handleAddToCart(false)}
               >
                 Buy

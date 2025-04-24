@@ -25,16 +25,46 @@ function Categories() {
   }, [fetchedMovies, category]); // Se vuelve a ejecutar cuando cambiamos el `category` o `fetchedMovies`
 
   if (loading) {
-    return <div>Cargando...</div>;
+    return <div>Loading...</div>;
   }
+
+  // Función para agregar película al carrito
+  const handleAddToCart = (movie, isRental) => {
+    const currentUser = JSON.parse(localStorage.getItem("user"));
+
+    if (!currentUser) {
+      alert("Please log in to make a purchase or rent.");
+      navigate("/login");
+      return;
+    }
+
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    const movieWithPrice = {
+      ...movie,
+      price: isRental ? 0.5 : 1.5,
+      quantity: 1,
+      isRental,
+    };
+
+    cart.push(movieWithPrice);
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    alert(`${movie.Title} has been ${isRental ? "rented" : "purchased"} successfully!`);
+  };
 
   return (
     <div className="container my-5">
-      {/* Título de la categoría */}
-      <h2 className="text-center mb-4">{category ? `Películas de ${category}` : "Películas por categoría"}</h2>
+      {/* Título de la categoría en inglés */}
+      <h2 className="text-center mb-4 text-white">
+        {category ? `Movies of ${category}` : "Movies by Category"}
+      </h2>
+
+      {/* Línea amarilla separadora */}
+      <hr style={{ width: "80%", height: "4px", backgroundColor: "yellow", border: "none", margin: "0 auto 20px" }} />
 
       {movies.length === 0 ? (
-        <p>No se encontraron películas en esta categoría.</p>
+        <p>No movies found in this category.</p>
       ) : (
         <div className="row">
           {movies.map((movie) => (
@@ -46,6 +76,7 @@ function Categories() {
                 cursor: "pointer",
                 backgroundColor: "#1c1c1c",
                 transition: "background-color 0.3s ease",
+                position: "relative", // Para posicionar los botones en la esquina inferior
               }}
               onClick={() => navigate(`/descripcion/${movie.imdbID}`)}
               onMouseEnter={(e) => {
@@ -78,24 +109,32 @@ function Categories() {
                       ))}
                     </div>
 
-                    <div className="d-flex justify-content-end">
+                    {/* Botones en la esquina inferior derecha */}
+                    <div
+                      className="d-flex justify-content-end"
+                      style={{
+                        position: "absolute",
+                        bottom: "10px",
+                        right: "10px",
+                      }}
+                    >
                       <button
-                        className="btn btn-primary btn-sm me-2"
+                        className="btn btn-outline-primary btn-sm me-2"
                         onClick={(e) => {
                           e.stopPropagation();
-                          navigate(`/buy/${movie.imdbID}`);
+                          handleAddToCart(movie, true); // Alquiler
                         }}
                       >
-                        Comprar
+                        Rent
                       </button>
                       <button
-                        className="btn btn-outline-light btn-sm"
+                        className="btn btn-success btn-sm"
                         onClick={(e) => {
                           e.stopPropagation();
-                          navigate(`/rent/${movie.imdbID}`);
+                          handleAddToCart(movie, false); // Compra
                         }}
                       >
-                        Alquilar
+                        Buy
                       </button>
                     </div>
                   </div>

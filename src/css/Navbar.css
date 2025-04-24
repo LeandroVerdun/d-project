@@ -1,4 +1,7 @@
 /* Estilo para el dropdown de búsqueda */
+ 
+
+
 .search-dropdown {
   position: absolute;
   top: 100%;
@@ -45,3 +48,26 @@
   max-height: 200px;
   overflow-y: auto;
 }
+
+.Logo-home {
+  height: 80px;
+  width: 260px;
+}
+
+
+nav.navbar-01 {
+  padding: 0;
+  background-image: linear-gradient(to top, #171a21, #2d3542);
+  position: relative; /* importante para que el z-index tenga efecto */
+  z-index: 1030; /* por encima de cover, page-wrapper, routes-wrapper */
+}
+
+/* Navbar.css */
+
+.navbar-nav .nav-link.text-white:hover,
+.navbar-nav .nav-link.dropdown-toggle.text-white:hover,
+#dropdownAccount.text-white:hover {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+

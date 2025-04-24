@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Chisato from "../assets/img/Loging.jpg"; // Asegúrate de poner la ruta correcta de tu imagen
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -30,8 +31,17 @@ const Login = () => {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-5 text-white">
       <h2>Login</h2>
+      {/* Image below the form */}
+      <div className="mt-4 d-flex justify-content-center pb-3">
+        <img
+          src={Chisato}
+          alt="Sample"
+          className="rounded-circle"
+          style={{ width: "150px", height: "150px", objectFit: "cover" }}
+        />
+      </div>
       {error && <div className="alert alert-danger">{error}</div>}
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
@@ -59,6 +69,15 @@ const Login = () => {
         </button>
       </form>
 
+      {/* Forgot password link */}
+      <div className="mt-3">
+        <p>
+          <a href="/forgot-password" className="text-primary">
+            Forgot your password?
+          </a>
+        </p>
+      </div>
+
       {/* Link to the registration page */}
       <div className="mt-3">
         <p>
@@ -68,6 +87,8 @@ const Login = () => {
           </a>
         </p>
       </div>
+
+      
     </div>
   );
 };
