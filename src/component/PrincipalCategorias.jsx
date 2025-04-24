@@ -2,6 +2,7 @@
 import React from "react";
 import MovieSlider from "./MovieSlider";
 import { useFetchMovies } from "../hook/useFetchMovies";
+import "../css/MainPage.css";
 
 const categoryGenres = {
   Action: "Action",

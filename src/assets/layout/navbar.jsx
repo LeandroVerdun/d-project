@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useFetchMovies } from "../../hook/useFetchMovies";
+import { BsCart } from "react-icons/bs";
 import "../../css/Navbar.css";
+import logoImg from "../../assets/img/home.png";
 
 export const Navbar = () => {
   const [query, setQuery] = useState("");
@@ -62,9 +64,11 @@ export const Navbar = () => {
   }, [location]);
 
   return (
-    <nav className="navbar navbar-expand-lg bg-body-tertiary w-100 position-relative">
+    <nav className="navbar navbar-expand-lg bg-dark w-100 position-relative navbar-01">
       <div className="container-fluid">
-        <Link className="navbar-brand" to="/">Logo</Link>
+        <Link className="navbar-brand" to="/">
+          <img src={logoImg} alt="Logo" className="Logo-home" />
+        </Link>
 
         <button
           className="navbar-toggler"
@@ -81,11 +85,11 @@ export const Navbar = () => {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <Link className="nav-link active" to="/">Home</Link>
+              <Link className="nav-link active text-white" to="/">Home</Link>
             </li>
             <li className="nav-item dropdown">
               <a
-                className="nav-link dropdown-toggle"
+                className="nav-link dropdown-toggle text-white"
                 href="#"
                 role="button"
                 data-bs-toggle="dropdown"
@@ -94,7 +98,11 @@ export const Navbar = () => {
                 Categories
               </a>
               <ul className="dropdown-menu genre-scroll">
-                {["action", "adventure", "animation", "biography", "comedy", "crime", "drama", "family", "fantasy", "film-noir", "history", "horror", "music", "musical", "mystery", "romance", "sci-fi", "short", "sport", "thriller", "war", "western"].map((genre) => (
+                {[
+                  "action", "biography", "comedy", "crime", "drama", "family", "fantasy",
+                  "history", "horror", "music", "musical", "mystery", "romance", "sci-fi",
+                  "short", "sport", "thriller", "western"
+                ].map((genre) => (
                   <li key={genre}>
                     <Link className="dropdown-item" to={`/categories?category=${genre}`}>
                       {genre.charAt(0).toUpperCase() + genre.slice(1)}
@@ -162,29 +170,38 @@ export const Navbar = () => {
                 </Link>
               </>
             ) : (
-              <div className="dropdown">
+              <>
+                <div className="dropdown me-2">
+                  <button
+                    className="btn btn-outline-secondary dropdown-toggle text-white"
+                    type="button"
+                    id="dropdownAccount"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    {currentUser?.username || "My Account"}
+                  </button>
+                  <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                    <li><Link className="dropdown-item" to="/profile">Profile</Link></li>
+                    <li><Link className="dropdown-item" to="/mypurchases">My Movie</Link></li>
+                    {currentUser?.username === "Chisato" && (
+                      <>
+                        <li><hr className="dropdown-divider" /></li>
+                        <li><Link className="dropdown-item" to="/admin">Movie</Link></li>
+                        <li><Link className="dropdown-item" to="/useradmin">User Admin</Link></li>
+                      </>
+                    )}
+                    <li><button className="dropdown-item" onClick={handleLogout}>Logout</button></li>
+                  </ul>
+                </div>
                 <button
-                  className="btn btn-outline-secondary dropdown-toggle"
-                  type="button"
-                  id="dropdownAccount"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
+                  className="btn btn-outline-warning"
+                  onClick={handleCartClick}
+                  title="Cart"
                 >
-                  {currentUser?.username || "My Account"}
+                  <BsCart size={20} />
                 </button>
-                <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
-                  <li><Link className="dropdown-item" to="/profile">Profile</Link></li> {/* Enlace de perfil */}
-                  <li><Link className="dropdown-item" to="/mypurchases">My Movie</Link></li>
-                  {currentUser?.username === "Chisato" && (
-                    <>
-                      <li><hr className="dropdown-divider" /></li>
-                      <li><Link className="dropdown-item" to="/admin">Movie</Link></li>
-                      <li><Link className="dropdown-item" to="/useradmin">User Admin</Link></li>
-                    </>
-                  )}
-                  <li><button className="dropdown-item" onClick={handleLogout}>Logout</button></li>
-                </ul>
-              </div>
+              </>
             )}
           </div>
         </div>

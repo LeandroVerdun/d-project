@@ -12,8 +12,7 @@ const VideoPlayer = () => {
   const [comments, setComments] = useState(initialComments);
   const [newComment, setNewComment] = useState("");
 
-  // Obtener el nombre del usuario desde el localStorage
-  const currentUser = JSON.parse(localStorage.getItem("user")) || { username: "Guest" };  // Asegurarse de que siempre haya un valor
+  const currentUser = JSON.parse(localStorage.getItem("user")) || { username: "Guest" };
 
   const movieTitles = [
     "John Wick",
@@ -28,19 +27,17 @@ const VideoPlayer = () => {
   useEffect(() => {
     const fetchRecommendations = async () => {
       setLoading(true);
-
       try {
         const moviePromises = movieTitles.map((title) =>
           fetch(`https://www.omdbapi.com/?apikey=d511530c&s=${title}&type=movie`)
             .then((res) => res.json())
             .then((data) => {
               if (data.Response === "True" && data.Search && data.Search.length > 0) {
-                return data.Search[0]; // Solo tomar el primer resultado
+                return data.Search[0];
               }
               return null;
             })
         );
-
         const movies = await Promise.all(moviePromises);
         setRecommendations(movies.filter((movie) => movie !== null));
       } catch (error) {
@@ -58,7 +55,7 @@ const VideoPlayer = () => {
     if (!newComment.trim()) return;
     const comment = {
       id: Date.now(),
-      name: currentUser.username || "Guest",  // Usar el nombre del usuario desde el objeto "currentUser"
+      name: currentUser.username || "Guest",
       text: newComment,
       date: new Date().toISOString().split("T")[0],
     };
@@ -67,11 +64,11 @@ const VideoPlayer = () => {
   };
 
   const handleMovieClick = () => {
-    navigate("/404");  // Esto redirige a una página 404
+    navigate("/404");
   };
 
   return (
-    <div className="container my-4">
+    <div className="container my-4 bg-dark text-light p-4 rounded">
       <div className="row">
         <div className="col-lg-8 mb-4">
           <div className="ratio ratio-16x9 mb-3">
@@ -88,7 +85,7 @@ const VideoPlayer = () => {
             <h5>Comments</h5>
             <div className="mb-3">
               <textarea
-                className="form-control"
+                className="form-control bg-secondary text-light"
                 rows="3"
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
@@ -99,7 +96,7 @@ const VideoPlayer = () => {
               </button>
             </div>
             {comments.map((comment) => (
-              <div key={comment.id} className="border-bottom pb-2 mb-2">
+              <div key={comment.id} className="border-bottom border-secondary pb-2 mb-2">
                 <strong>{comment.name}</strong>{" "}
                 <small className="text-muted">{comment.date}</small>
                 <p>{comment.text}</p>
@@ -118,7 +115,7 @@ const VideoPlayer = () => {
             recommendations.map((rec) => (
               <div
                 key={rec.imdbID}
-                className="d-flex mb-3 movie-card p-2 border rounded"
+                className="d-flex mb-3 movie-card p-2 border border-secondary rounded bg-secondary text-light"
                 onClick={handleMovieClick}
               >
                 <img

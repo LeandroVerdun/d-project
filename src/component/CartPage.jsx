@@ -1,73 +1,66 @@
 import React, { useState, useEffect } from 'react';
-import "../css/Cart.css";
+import "../css/Cart.css";  // Si necesitas personalizaciones adicionales de CSS, mantenlo
 
 const CartPage = () => {
-  // State to store cart items
   const [cartItems, setCartItems] = useState([]);
-  const [showThankYou, setShowThankYou] = useState(false); // State to show thank you overlay
+  const [showThankYou, setShowThankYou] = useState(false);
 
-  // Load cart items from localStorage
   useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
     setCartItems(storedCart);
   }, []);
 
-  // Function to delete a product from the cart
   const handleDelete = (id) => {
     const updatedCart = cartItems.filter(item => item.imdbID !== id);
     setCartItems(updatedCart);
-    // Update the cart in localStorage
     localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
 
-  // Function to handle checkout and save the purchased items
   const handleCheckout = () => {
-    // Create an array to store the purchased items
     const purchasedItems = cartItems.map(item => ({
       ...item,
-      purchased: !item.isRental, // If it's not rental, mark as purchased
-      isRental: item.isRental,  // Retain the rental status
+      purchased: !item.isRental,
+      isRental: item.isRental,
     }));
 
-    // Save the purchased items in localStorage
     const purchasedStorage = JSON.parse(localStorage.getItem("purchased")) || [];
     localStorage.setItem("purchased", JSON.stringify([...purchasedStorage, ...purchasedItems]));
 
-    // Clear the cart
     localStorage.removeItem("cart");
     setCartItems([]);
 
-    // Show thank you overlay
     setShowThankYou(true);
 
-    // Hide overlay after 3 seconds
     setTimeout(() => {
       setShowThankYou(false);
     }, 3000);
   };
 
-  // Calculate the total of the cart based on rental or purchase state
   const total = cartItems.reduce((sum, item) => {
-    const price = item.isRental ? 0.50 : 1.50; // Rental or purchase price
+    const price = item.isRental ? 0.50 : 1.50;
     return sum + price * item.quantity;
   }, 0);
 
   return (
-    <div>
-      <h1 className="text-center text-uppercase fw-bold fs-3 col-11">
+    <div className="text-white">
+      <h1 className="text-center text-uppercase fw-bold fs-3 mb-4">
         Your Shopping Cart
       </h1>
       <div className="container-lg row m-auto">
-        <section className="my-purchases col-sm-12 col-lg-8">
+        <section className="my-purchases col-12 col-lg-7 overflow-auto" style={{ maxHeight: '600px', paddingTop: '20px', paddingBottom: '20px' }}>
           {cartItems.length === 0 ? (
             <p className="text-center">Your cart is empty.</p>
           ) : (
             cartItems.map(item => (
-              <div className="row" key={item.imdbID}>
+              <div 
+                key={item.imdbID} 
+                className="row align-items-center mb-4 product-container py-4"  // Aumento del padding vertical y separación entre productos
+                style={{ height: '180px' }}  // Aumento de la altura del contenedor
+              >
                 <div className="col-3">
-                  <img className="img-fluid w-100" src={item.Poster} alt={item.Title} />
+                  <img className="img-fluid w-100 h-auto" src={item.Poster} alt={item.Title} />  {/* Garantiza que la imagen ocupe todo el ancho del contenedor */}
                 </div>
-                <div className="d-flex flex-wrap justify-content-between align-items-center col-8">
+                <div className="d-flex justify-content-between align-items-center col-8">
                   <div className="purchase-details">
                     <p className="fw-bold">
                       {item.Title} ({item.size}) × {item.quantity}
@@ -79,7 +72,7 @@ const CartPage = () => {
                     </p>
                     <button 
                       type="button" 
-                      className="btn cart-button w-100 my-2" 
+                      className="btn btn-dark w-100 my-2" 
                       onClick={() => handleDelete(item.imdbID)}
                     >
                       Remove
@@ -105,7 +98,8 @@ const CartPage = () => {
             ))
           )}
         </section>
-        <article className="total-price col-sm-12 col-lg-4 border rounded p-4">
+
+        <article className="total-price col-12 col-lg-4 border rounded p-4">
           <h2 className="text-center fs-4">Estimated Total</h2>
           <div className="d-flex justify-content-between border-top my-3">
             <p>Subtotal</p>
@@ -117,18 +111,17 @@ const CartPage = () => {
           </div>
           <div className="mb-3 d-flex border">
             <input type="text" className="form-control border-0 w-75" placeholder="Do you have a discount coupon?" />
-            <button type="button" className="btn coupon-button w-25">Submit</button>
+            <button type="button" className="btn btn-secondary w-25">Submit</button>
           </div>
-          <button type="button" className="btn cart-button w-100" onClick={handleCheckout}>
+          <button type="button" className="btn btn-dark w-100" onClick={handleCheckout}>
             Buy
           </button>
         </article>
       </div>
 
-      {/* Thank you overlay */}
       {showThankYou && (
-        <div className="thank-you-overlay">
-          <h2 className="thank-you-message">Thank you for your purchase!</h2>
+        <div className="thank-you-overlay d-flex justify-content-center align-items-center position-fixed top-0 left-0 w-100 h-100 bg-dark bg-opacity-75 text-white">
+          <h2 className="thank-you-message text-center">Thank you for your purchase!</h2>
         </div>
       )}
     </div>

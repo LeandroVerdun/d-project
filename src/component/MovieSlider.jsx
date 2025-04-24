@@ -34,10 +34,27 @@ const MovieSlider = ({ category, movies }) => {
     localStorage.setItem("cart", JSON.stringify(cart));
   };
 
+  const goToCategoryPage = () => {
+    navigate(`/categories?category=${encodeURIComponent(category)}`);
+  };
+
   return (
     <div className="mb-4 px-3">
-      <h2 className="mb-3">{category}</h2>
-      <div className="d-flex overflow-auto">
+      <div className="d-flex align-items-center justify-content-between mb-2">
+        <h2 className="mb-0 text-start">{category}</h2>
+        <button
+          className="btn btn-link text-decoration-none text-warning d-flex align-items-center"
+          onClick={goToCategoryPage}
+        >
+          <span className="me-1">See more</span>
+          <i className="bi bi-arrow-right-circle fs-5"></i>
+        </button>
+      </div>
+
+      <hr style={{ borderTop: "3px solid #FFD700", width: "100%" }} />
+      <br />
+
+      <div className="d-flex overflow-auto mt-1">
         {movies.map((movie) => (
           <div
             key={movie.imdbID}
@@ -56,7 +73,6 @@ const MovieSlider = ({ category, movies }) => {
             />
             <p className="card-text small mb-2 text-truncate">{movie.Title}</p>
 
-            {/* Overlay con título y sinopsis */}
             <div className="overlay-description p-2">
               <h6 className="overlay-title text-center fw-bold mb-2">
                 {movie.Title}

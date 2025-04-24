@@ -18,3 +18,12 @@
     text-align: center;
   }
   
+  .product-container {
+    border-radius: 10px;
+    transition: box-shadow 0.3s ease; /* Efecto de transición */
+  }
+  
+  .product-container:hover {
+    box-shadow: 0 0 0 2px white; /* Borde blanco simulado */
+  }
+  

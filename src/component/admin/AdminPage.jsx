@@ -1,21 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import MovieTable from "./MovieTable";
 import AddMovieModal from "./AddMovieModal";
 import styles from "./AdminPage.module.css";
 
 const AdminPage = () => {
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [movies, setMovies] = useState([]);
-  const [movieToEdit, setMovieToEdit] = useState(null); // Estado para la película que se va a editar
-  
+  const [movieToEdit, setMovieToEdit] = useState(null);
+
+  // ✅ Proteger acceso solo para el usuario con username "Chisato"
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user || user.username !== "Chisato") {
+      navigate("/404"); // Redirige a la página 404
+    }
+  }, [navigate]);
+
   const openModal = (movie) => {
-    setMovieToEdit(movie);  // Seteamos la película seleccionada para editar
-    setIsModalOpen(true);   // Abrimos el modal
+    setMovieToEdit(movie);
+    setIsModalOpen(true);
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setMovieToEdit(null);  // Limpiamos la película seleccionada después de cerrar el modal
+    setMovieToEdit(null);
   };
 
   const addMovie = (newMovie) => {
@@ -38,21 +48,24 @@ const AdminPage = () => {
     <div>
       <div className={styles.adminContainer}>
         <h1>Administrar web de peliculas</h1>
-        <button className={styles.newMovieButton} onClick={() => openModal(null)}>
+        <button
+          className={styles.newMovieButton}
+          onClick={() => openModal(null)}
+        >
           Nueva pelicula
         </button>
         <MovieTable
           movies={movies}
           onDelete={deleteMovie}
-          onEdit={openModal}  // Pasamos la función openModal a MovieTable
+          onEdit={openModal}
         />
       </div>
       <AddMovieModal
         isOpen={isModalOpen}
         onClose={closeModal}
         addMovie={addMovie}
-        updateMovie={updateMovie}  // Pasamos updateMovie
-        movieToEdit={movieToEdit}  // Le pasamos la película que se va a editar
+        updateMovie={updateMovie}
+        movieToEdit={movieToEdit}
       />
     </div>
   );
