@@ -73,9 +73,12 @@ button:focus-visible {
   position: relative;
   width: 100%;
   height: 35vh;
-  background-image: 
-    linear-gradient(to top, var(--navy-color) 0%, transparent 60%),
-    url('./assets/img/cover.JPG');
+  background-image: linear-gradient(
+      to top,
+      var(--navy-color) 0%,
+      transparent 60%
+    ),
+    url("./assets/img/cover.JPG");
   background-size: cover;
   background-position: center;
   z-index: 0;
@@ -83,18 +86,21 @@ button:focus-visible {
 
 /* Fondo negro debajo de la portada */
 .page-wrapper {
-  background: linear-gradient(to bottom, var(--navy-color) 0px, black 2000px, black 100%);
+  background: linear-gradient(
+    to bottom,
+    var(--navy-color) 0px,
+    black 2000px,
+    black 100%
+  );
   z-index: 0;
 }
-
-
 
 /* Contenido por encima de cover y page-wrapper */
 .routes-wrapper {
   position: relative;
   z-index: 1;
   margin-top: -45vh; /* sube para solapar la portada */
-  padding-top: 45vh;  /* evita que se superponga el texto */
+  padding-top: 45vh; /* evita que se superponga el texto */
 }
 
 @media (prefers-color-scheme: light) {
@@ -109,5 +115,50 @@ button:focus-visible {
 
   button {
     background-color: #f9f9f9;
+  }
+}
+
+/* Estilos para pantallas con un ancho máximo de 767px (móviles) */
+@media (max-width: 767px) {
+  body {
+    padding: 0; /* Eliminar padding del body en móviles */
+  }
+
+  #root {
+    padding: 0; /* Eliminar padding del root en móviles */
+    margin-top: 0; /* Ajustar margen superior si es necesario */
+  }
+
+  .container-cover {
+    /* Ajustar la altura del cover para móviles */
+    height: auto; /* O un valor fijo más pequeño */
+  }
+
+  .cover {
+    height: 20vh; /* Reducir la altura del cover en móviles */
+  }
+
+  .routes-wrapper {
+    margin-top: -20vh; /* Ajustar el margen superior para solapar el cover */
+    padding-top: 20vh; /* Ajustar el padding superior */
+  }
+
+  .container {
+    max-width: 100%; /* El contenedor ocupa todo el ancho en móviles */
+    padding-left: 15px; /* Añadir un poco de padding lateral */
+    padding-right: 15px;
+    margin-top: 10%; /* Ajustar el margen superior del contenido */
+  }
+
+  .d-flex.justify-content-center {
+    flex-direction: column; /* Alinear los elementos verticalmente por defecto en móviles */
+    align-items: center; /* Centrar los elementos horizontalmente */
+  }
+
+  /* Ajustes específicos para componentes si es necesario */
+  .registration-form,
+  .registration-image {
+    width: 100%; /* Ocupar todo el ancho en la página de registro */
+    margin-bottom: 20px; /* Añadir espacio entre ellos */
   }
 }
