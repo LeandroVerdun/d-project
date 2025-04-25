@@ -4,12 +4,21 @@
   border-radius: 10px;
   transition: transform 0.3s;
   overflow: hidden;
+  display: flex; /* Añadimos flex para controlar la disposición interna */
+  flex-direction: column; /* Los elementos internos se apilarán verticalmente */
 }
 
 .movie-card:hover {
   background-color: #001f3f; /* Azul marino */
   cursor: pointer;
-  /* El efecto de transformación ha sido eliminado */
+}
+
+.movie-card > img {
+  /* Estilos para la imagen dentro de la tarjeta */
+  width: 100%; /* La imagen ocupa todo el ancho del contenedor .movie-card */
+  height: 100%; /* La imagen intenta ocupar toda la altura del contenedor .movie-card */
+  margin-bottom: 2px;
+  object-fit: cover; /* Recorta la imagen para ajustarse al contenedor manteniendo la proporción */
 }
 
 .overlay-description {
@@ -17,7 +26,7 @@
   top: 0;
   left: 0;
   right: 0;
-  bottom: 40px;
+  bottom: 50px; /* Aumentamos el espacio reservado para los botones */
   background-color: rgba(0, 0, 139, 0.7); /* Azul marino translúcido */
   color: white;
   opacity: 0;
@@ -47,4 +56,23 @@
   font-weight: bold;
   color: white;
   margin-bottom: 8px;
+}
+
+.movie-card .d-flex.justify-content-between {
+  /* Estilos para el contenedor de los botones */
+  bottom: -10px; /* Pegado a la parte inferior */
+  left: -12px; /* Reducimos el margen izquierdo */
+  right: 5px; /* Reducimos el margen derecho */
+  z-index: 2; /* Asegura que los botones estén por encima del overlay */
+  padding-bottom: 0px; /* Añadimos un padding inferior para separarlos un poco del borde */
+  display: flex; /* Aseguramos que sea flex para controlar el espaciado interno */
+  gap: 5px; /* Añadimos un pequeño espacio entre los botones */
+}
+
+.movie-card .d-flex.justify-content-between button {
+  /* Estilos para los botones individuales */
+  padding: 2px 8px; /* Ajustamos el padding horizontal */
+  font-size: 0.8rem; /* Reducimos el tamaño de la fuente */
+  min-width: auto; /* Permite que el ancho se ajuste al contenido */
+  flex-grow: 1; /* Los botones crecen para llenar el espacio disponible */
 }

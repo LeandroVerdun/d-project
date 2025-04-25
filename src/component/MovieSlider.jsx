@@ -1,13 +1,20 @@
-import React, { useState } from "react"; // NUEVO: Importamos useState
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../css/MovieSlider.css";
 
-const VISIBLE_COUNT = 5; // NUEVO: Definimos la cantidad de películas visibles
+const VISIBLE_COUNT = 5;
 
 const MovieSlider = ({ category, movies }) => {
   const navigate = useNavigate();
-  const [startIndex, setStartIndex] = useState(0); // NUEVO: Estado para el índice de inicio
+  const [startIndex, setStartIndex] = useState(0);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // Comprueba si hay un usuario en localStorage al montar el componente
+    const storedUser = localStorage.getItem("user");
+    setIsUserLoggedIn(!!storedUser); // !! convierte un valor truthy/falsy a booleano
+  }, []);
 
   const handleCardClick = (id) => {
     navigate(`/descripcion/${id}`);
@@ -38,22 +45,16 @@ const MovieSlider = ({ category, movies }) => {
   const handleNext = () => {
     if (startIndex + VISIBLE_COUNT < movies.length) {
       setStartIndex(startIndex + 1);
-      console.log("Siguiente clickeado, startIndex:", startIndex + 1); // Agrega este log
-    } else {
-      console.log("Siguiente clickeado, pero no hay más películas."); // Agrega este log
     }
   };
 
   const handlePrev = () => {
     if (startIndex > 0) {
       setStartIndex(startIndex - 1);
-      console.log("Anterior clickeado, startIndex:", startIndex - 1); // Agrega este log
-    } else {
-      console.log("Anterior clickeado, pero ya estás al principio."); // Agrega este log
     }
   };
 
-  const visibleMovies = movies.slice(startIndex, startIndex + VISIBLE_COUNT); // NUEVO: Obtiene solo las películas visibles
+  const visibleMovies = movies.slice(startIndex, startIndex + VISIBLE_COUNT);
 
   const goToCategoryPage = () => {
     navigate(`/categories?category=${encodeURIComponent(category)}`);
@@ -76,9 +77,7 @@ const MovieSlider = ({ category, movies }) => {
       <br />
 
       <div className="d-flex align-items-center">
-        {" "}
-        {/* NUEVO: Contenedor para botones y slider */}
-        <button // NUEVO: Botón "Anterior"
+        <button
           className="btn btn-outline-secondary btn-sm me-2"
           onClick={handlePrev}
           disabled={startIndex === 0}
@@ -89,8 +88,6 @@ const MovieSlider = ({ category, movies }) => {
           className="d-flex overflow-hidden"
           style={{ maxWidth: `calc(160px * ${VISIBLE_COUNT})` }}
         >
-          {" "}
-          {/* NUEVO: Contenedor con ancho limitado y overflow oculto */}
           {visibleMovies.map((movie) => (
             <div
               key={movie.imdbID}
@@ -107,9 +104,7 @@ const MovieSlider = ({ category, movies }) => {
                 alt={movie.Title}
                 className="img-fluid mb-2 rounded"
               />
-              <p className="card-text small mb-2 text-truncate">
-                {movie.Title}
-              </p>
+              {/* Título eliminado */}
 
               <div className="overlay-description p-2">
                 <h6 className="overlay-title text-center fw-bold mb-2">
@@ -120,32 +115,34 @@ const MovieSlider = ({ category, movies }) => {
                 </p>
               </div>
 
-              <div className="d-flex justify-content-between z-2 position-relative mb-2 px-1">
-                <button
-                  className="btn btn-primary btn-sm flex-grow-1 me-1"
-                  style={{ minWidth: "70px" }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    addToCart(movie, false);
-                  }}
-                >
-                  Buy
-                </button>
-                <button
-                  className="btn btn-outline-light btn-sm flex-grow-1 ms-1"
-                  style={{ minWidth: "70px" }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    addToCart(movie, true);
-                  }}
-                >
-                  Rent
-                </button>
-              </div>
+              {isUserLoggedIn && ( // Renderiza los botones solo si isUserLoggedIn es true
+                <div className="d-flex justify-content-between z-2 position-relative mb-2 px-1">
+                  <button
+                    className="btn btn-primary btn-sm flex-grow-1 me-1"
+                    style={{ minWidth: "70px" }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      addToCart(movie, false);
+                    }}
+                  >
+                    Buy
+                  </button>
+                  <button
+                    className="btn btn-outline-light btn-sm flex-grow-1 ms-1"
+                    style={{ minWidth: "70px" }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      addToCart(movie, true);
+                    }}
+                  >
+                    Rent
+                  </button>
+                </div>
+              )}
             </div>
           ))}
         </div>
-        <button // NUEVO: Botón "Siguiente"
+        <button
           className="btn btn-outline-secondary btn-sm ms-2"
           onClick={handleNext}
           disabled={startIndex + VISIBLE_COUNT >= movies.length}
