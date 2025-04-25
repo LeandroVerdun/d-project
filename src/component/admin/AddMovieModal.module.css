@@ -1,31 +1,33 @@
+/* src/component/admin/AddMovieModal.module.css */
 .modal {
   position: fixed;
-  z-index: 1;
-  left: 0;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 }
 
 .modalContent {
-  background-color: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-  max-width: 600px;
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  width: 80%; /* Hacer el modal ocupar un porcentaje del ancho en pantallas pequeñas */
+  max-width: 500px; /* Limitar el ancho máximo en pantallas grandes */
+  position: relative;
 }
 
 .close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
+  position: absolute;
+  top: 0.5rem;
+  right: 0.8rem;
+  font-size: 1.5rem;
   font-weight: bold;
+  color: #aaa;
   cursor: pointer;
 }
 
@@ -33,37 +35,101 @@
 .close:focus {
   color: black;
   text-decoration: none;
-  cursor: pointer;
 }
 
-.modalContent form div {
+.modalContent h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-size: 1.3rem; /* Ajustar tamaño del título */
+}
+
+.modalContent div {
   margin-bottom: 1rem;
 }
 
-.modalContent form label {
+.modalContent label {
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.3rem;
+  font-size: 0.9rem; /* Ajustar tamaño de la etiqueta */
 }
 
-.modalContent form input[type="text"],
-.modalContent form textarea,
-.modalContent form select {
-  width: 100%;
+.modalContent input[type="text"],
+.modalContent textarea,
+.modalContent select,
+.modalContent input[type="checkbox"] {
+  width: calc(100% - 12px); /* Ajustar ancho para el padding */
   padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 4px;
+  font-size: 0.9rem; /* Ajustar tamaño del texto de entrada */
+  box-sizing: border-box; /* Asegurar que el padding no aumente el ancho total */
 }
 
-.modalContent form textarea {
-  resize: vertical;
+.modalContent textarea {
+  min-height: 80px;
 }
 
 .modalContent .buttons {
-  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
 }
 
 .modalContent .buttons button {
-  padding: 0.5rem 1rem;
-  margin-left: 0.5rem;
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
+  font-size: 0.9rem; /* Ajustar tamaño de la fuente de los botones */
+}
+
+.modalContent .buttons button[type="submit"] {
+  background-color: #28a745;
+  color: white;
+}
+
+.modalContent .buttons button[type="submit"]:hover {
+  background-color: #1e7e34;
+}
+
+.modalContent .buttons button[type="button"] {
+  background-color: #dc3545;
+  color: white;
+}
+
+.modalContent .buttons button[type="button"]:hover {
+  background-color: #c82333;
+}
+
+/* Estilos para pantallas más pequeñas */
+@media (max-width: 480px) {
+  .modalContent {
+    padding: 1rem;
+    width: 95%;
+  }
+
+  .modalContent h2 {
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .modalContent label {
+    font-size: 0.8rem;
+  }
+
+  .modalContent input[type="text"],
+  .modalContent textarea,
+  .modalContent select,
+  .modalContent input[type="checkbox"],
+  .modalContent .buttons button {
+    font-size: 0.8rem;
+    padding: 0.4rem;
+  }
+
+  .modalContent .buttons {
+    flex-direction: column; /* Apilar los botones en pantallas muy pequeñas */
+    align-items: stretch;
+    gap: 0.3rem;
+  }
 }

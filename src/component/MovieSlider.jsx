@@ -3,17 +3,35 @@ import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../css/MovieSlider.css";
 
-const VISIBLE_COUNT = 5;
-
 const MovieSlider = ({ category, movies }) => {
   const navigate = useNavigate();
   const [startIndex, setStartIndex] = useState(0);
+  const [visibleCount, setVisibleCount] = useState(5); // Valor inicial para pantallas grandes
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
   useEffect(() => {
-    // Comprueba si hay un usuario en localStorage al montar el componente
+    const handleResize = () => {
+      if (window.innerWidth <= 576) {
+        // Extra small devices (portrait phones, less than 576px)
+        setVisibleCount(1);
+      } else if (window.innerWidth <= 768) {
+        // Small devices (landscape phones, 576px and up)
+        setVisibleCount(3);
+      } else {
+        // Medium devices (tablets, 768px and up) and larger
+        setVisibleCount(5);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize(); // Llamar al inicio para establecer el valor inicial
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
     const storedUser = localStorage.getItem("user");
-    setIsUserLoggedIn(!!storedUser); // !! convierte un valor truthy/falsy a booleano
+    setIsUserLoggedIn(!!storedUser);
   }, []);
 
   const handleCardClick = (id) => {
@@ -43,7 +61,7 @@ const MovieSlider = ({ category, movies }) => {
   };
 
   const handleNext = () => {
-    if (startIndex + VISIBLE_COUNT < movies.length) {
+    if (startIndex + visibleCount < movies.length) {
       setStartIndex(startIndex + 1);
     }
   };
@@ -54,7 +72,7 @@ const MovieSlider = ({ category, movies }) => {
     }
   };
 
-  const visibleMovies = movies.slice(startIndex, startIndex + VISIBLE_COUNT);
+  const visibleMovies = movies.slice(startIndex, startIndex + visibleCount);
 
   const goToCategoryPage = () => {
     navigate(`/categories?category=${encodeURIComponent(category)}`);
@@ -81,12 +99,13 @@ const MovieSlider = ({ category, movies }) => {
           className="btn btn-outline-secondary btn-sm me-2"
           onClick={handlePrev}
           disabled={startIndex === 0}
+          style={{ display: visibleCount < movies.length ? "block" : "none" }}
         >
           Anterior
         </button>
         <div
           className="d-flex overflow-hidden"
-          style={{ maxWidth: `calc(160px * ${VISIBLE_COUNT})` }}
+          style={{ maxWidth: `calc(160px * ${visibleCount})` }}
         >
           {visibleMovies.map((movie) => (
             <div
@@ -104,8 +123,6 @@ const MovieSlider = ({ category, movies }) => {
                 alt={movie.Title}
                 className="img-fluid mb-2 rounded"
               />
-              {/* Título eliminado */}
-
               <div className="overlay-description p-2">
                 <h6 className="overlay-title text-center fw-bold mb-2">
                   {movie.Title}
@@ -114,8 +131,7 @@ const MovieSlider = ({ category, movies }) => {
                   {movie.Plot || "No description available."}
                 </p>
               </div>
-
-              {isUserLoggedIn && ( // Renderiza los botones solo si isUserLoggedIn es true
+              {isUserLoggedIn && (
                 <div className="d-flex justify-content-between z-2 position-relative mb-2 px-1">
                   <button
                     className="btn btn-primary btn-sm flex-grow-1 me-1"
@@ -145,7 +161,8 @@ const MovieSlider = ({ category, movies }) => {
         <button
           className="btn btn-outline-secondary btn-sm ms-2"
           onClick={handleNext}
-          disabled={startIndex + VISIBLE_COUNT >= movies.length}
+          disabled={startIndex + visibleCount >= movies.length}
+          style={{ display: visibleCount < movies.length ? "block" : "none" }}
         >
           Siguiente
         </button>

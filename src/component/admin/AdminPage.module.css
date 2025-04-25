@@ -1,20 +1,45 @@
+/* src/component/admin/AdminPage.module.css */
 .adminContainer {
-  padding: 2rem;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
+.adminContainer h1 {
+  color: white;
+  font-size: 1.5rem; /* Ajustar tamaño de la fuente para pantallas más pequeñas */
+  margin-bottom: 1rem;
+  text-align: center; /* Centrar el título */
+}
+
 .newMovieButton {
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.8rem;
   background-color: #007bff;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   margin-bottom: 1rem;
+  font-size: 0.9rem; /* Ajustar tamaño de la fuente del botón */
 }
 
 .newMovieButton:hover {
   background-color: #0056b3;
+}
+
+/* Estilos para pantallas más pequeñas */
+@media (max-width: 600px) {
+  .adminContainer {
+    padding: 0.5rem;
+  }
+
+  .adminContainer h1 {
+    font-size: 1.2rem;
+  }
+
+  .newMovieButton {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.6rem;
+  }
 }

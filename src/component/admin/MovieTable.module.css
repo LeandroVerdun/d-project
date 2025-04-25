@@ -1,22 +1,36 @@
+/* src/component/admin/MovieTable.module.css */
 .movieTable {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
+  overflow-x: auto; /* Permite el scroll horizontal en pantallas pequeñas */
 }
 
 .movieTable th,
 .movieTable td {
-  padding: 0.5rem;
+  padding: 0.4rem 0.6rem; /* Reducir el padding */
   border: 1px solid #ddd;
   text-align: left;
+  white-space: nowrap; /* Evita el salto de línea en celdas */
+  font-size: 0.8rem; /* Reducir el tamaño de la fuente */
 }
 
 .movieTable th {
   background-color: #f2f2f2;
+  font-size: 0.9rem; /* Un poco más grande para los encabezados */
 }
 
 .movieTable button {
-  margin-right: 0.5rem;
-  padding: 0.25rem 0.5rem;
+  margin-right: 0.3rem; /* Reducir el margen */
+  padding: 0.2rem 0.4rem; /* Reducir el padding del botón */
   cursor: pointer;
+  font-size: 0.7rem; /* Reducir el tamaño de la fuente del botón */
+}
+
+/* Para pantallas muy pequeñas, podemos ocultar la columna de descripción */
+@media (max-width: 480px) {
+  .movieTable th:nth-child(3), /* Oculta la tercera columna (Descripción) */
+  .movieTable td:nth-child(3) {
+    display: none;
+  }
 }
