@@ -1,60 +1,85 @@
-/* Ajuste del carrusel */
+
 .carousel {
-  width: 80vw;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-/* Card de película (aprox 20% del ancho) */
+@media (min-width: 1200px) {
+  .carousel {
+    width: 80%;
+  }
+}
+
+@media (max-width: 1199px) and (min-width: 768px) {
+  .carousel {
+    width: 90%;
+  }
+}
+
+@media (max-width: 767px) {
+  .carousel {
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
+
 .movie-card {
-  width: 20vw;
-  height: auto;
-  overflow: hidden;
+  width: 100%;
   position: relative;
+  overflow: hidden;
   border: none;
   transition: transform 0.3s ease-in-out;
 }
 
-/* Imagen de película */
+@media (min-width: 768px) {
+  .movie-card {
+    width: 48%;
+  }
+}
+
+@media (min-width: 1200px) {
+  .movie-card {
+    width: 23%;
+  }
+}
+
+
 .movie-img {
   object-fit: cover;
   width: 100%;
   height: 100%;
+  display: block;
   transition: transform 0.3s ease-in-out;
 }
 
-/* Overlay oculto por defecto */
+
 .movie-overlay {
-  background-color: rgba(0, 0, 0, 0.7);
-  opacity: 0;
+  position: absolute; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); 
+  opacity: 0; 
   transition: opacity 0.3s ease-in-out;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center; 
   padding: 1rem;
+  z-index: 2; 
 }
 
-/* Mostrar overlay al hacer hover */
+
 .movie-card:hover .movie-overlay {
   opacity: 1;
 }
 
-/* VerticalTableRow.css */
-.table-container {
-  height: 80vh; /* Mantiene la altura total de 80vh */
-  width: 65vw; /* Mantiene el ancho de 65vw */
-  display: flex;
-  flex-direction: column; /* Organiza las tarjetas en una columna */
-  justify-content: space-between; /* Distribuye las tarjetas con espacio entre ellas */
+
+.movie-card:hover .movie-img {
+  transform: scale(1.05);
 }
-
-.table-container > div {
-  flex: 1; /* Asegura que las tarjetas ocupen el espacio disponible de manera uniforme */
-}
-
-.table-container > div > .card {
-  height: 20vh; /* Establece la altura de cada tarjeta para que quepan las 4 */
-  width: 100%; /* Cada tarjeta ocupa el 100% del ancho disponible del contenedor */
-  margin-bottom: 1rem; /* Espacio entre las tarjetas */
-}
-
-
 

@@ -3,7 +3,7 @@ import { MovieCarousel } from "../../component/MovieCarousel";
 import { useFetchMovies } from "../../hook/useFetchMovies";
 import PrincipalCategorias from "../../component/PrincipalCategorias";
 import "../../css/MainPage.css";
-import LogoChisato from "../../assets/img/logo-chisato-zone.png";
+import LogoChisato from "../../assets/img/logo-main.png";
 import CategoriesGrid from "../../component/CategoriesGrid";
 import { createAdminIfNeeded } from "../../component/admin/createAdmin";
 

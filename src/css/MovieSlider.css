@@ -1,4 +1,4 @@
-/* src/css/MovieSlider.css */
+
 
 .movie-card {
   background-color: #111;
@@ -76,27 +76,27 @@
   flex-grow: 1;
 }
 
-/* Ajuste para el espaciado entre tarjetas */
+
 .movie-card {
-  margin-right: 15px; /* Espacio entre las tarjetas en general */
+  margin-right: 15px;
 }
 
-/* Eliminar margen derecho para la última tarjeta visible */
+
 .d-flex.overflow-hidden > .movie-card:last-child {
   margin-right: 0;
 }
 
-/* Ajustes para pantallas más pequeñas */
+
 @media (max-width: 768px) {
   .movie-card {
     margin-right: 10px;
-    width: 180px; /* Aumenta el tamaño de las cards en pantallas de menos de 768px */
+    width: 180px; 
   }
 }
 
 @media (max-width: 576px) {
   .movie-card {
     margin-right: 0;
-    width: 250px; /* Aumenta el tamaño de las cards en pantallas más pequeñas */
+    width: 250px;
   }
 }

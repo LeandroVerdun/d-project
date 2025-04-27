@@ -44,12 +44,11 @@ const Descripcion = () => {
   return (
     <div className="container mt-5 text-white">
       <div className="row">
-        {/* Left column with image */}
+        
         <div className="col-md-4 mb-4">
           <img src={movie.Poster} alt={movie.Title} className="img-fluid rounded border" />
         </div>
 
-        {/* Right column with info */}
         <div className="col-md-8 d-flex flex-column justify-content-between">
           <div>
             <h2 className="mb-3">{movie.Title}</h2>
@@ -74,7 +73,6 @@ const Descripcion = () => {
               <p className="mb-2"><strong>Buy:</strong> $1.50</p>
             </div>
 
-            {/* Botones con más padding inferior */}
             <div className="d-flex gap-3 flex-column">
               <button
                 className="btn btn-outline-primary mb-3 px-3 py-3"

@@ -12,7 +12,7 @@ const AddMovieModal = ({ isOpen, onClose, addMovie, updateMovie, movieToEdit }) 
 
   useEffect(() => {
     if (movieToEdit) {
-      setFormData(movieToEdit); // Si se está editando, rellenamos el formulario con los datos de la película
+      setFormData(movieToEdit); 
     } else {
       setFormData({
         id: Date.now(),
@@ -20,9 +20,9 @@ const AddMovieModal = ({ isOpen, onClose, addMovie, updateMovie, movieToEdit }) 
         descripcion: "",
         categoria: "Accion",
         publicado: false,
-      }); // Si es una nueva película, reseteamos el formulario
+      }); 
     }
-  }, [movieToEdit]); // Cuando movieToEdit cambie, se ejecutará este useEffect
+  }, [movieToEdit]); 
 
   if (!isOpen) return null;
 
@@ -37,9 +37,9 @@ const AddMovieModal = ({ isOpen, onClose, addMovie, updateMovie, movieToEdit }) 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (movieToEdit) {
-      updateMovie(formData); // Si estamos editando, usamos updateMovie
+      updateMovie(formData); 
     } else {
-      addMovie(formData); // Si es una nueva película, usamos addMovie
+      addMovie(formData); 
     }
     onClose();
   };

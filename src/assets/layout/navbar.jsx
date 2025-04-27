@@ -181,7 +181,7 @@ export const Navbar = () => {
                   >
                     {currentUser?.username || "My Account"}
                   </button>
-                  <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                  <ul className="dropdown-menu dropdown-menu-end dropdown-menu-user" aria-labelledby="dropdownAccount">
                     <li><Link className="dropdown-item" to="/profile">Profile</Link></li>
                     <li><Link className="dropdown-item" to="/mypurchases">My Movie</Link></li>
                     {currentUser?.username === "Chisato" && (

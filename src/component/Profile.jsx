@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import chisatoAvatar from "../assets/img/register.webp"; // Asegúrate de tener la imagen en el lugar correcto
+import chisatoAvatar from "../assets/img/register.webp"; 
 import ChisatoZone from "../assets/img/logo-chisato-zone.png";
 import "../css/Profile.css";
 
@@ -69,7 +69,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="container p-5 d-flex flex-wrap justify-content-between text-white ">
+    <div className="container p-0 d-flex flex-wrap justify-content-between text-white p-md-5 m-0">
       {/* Segunda versión de las imágenes */}
       <div className="profile-image col-lg-6 col-md-12 d-flex justify-content-between p-3 bg-dark border border-white d-none img-container-2">
         <div className="profile-image-container col-6 col-md-3 d-flex flex-column justify-content-center align-items-start">
@@ -226,8 +226,8 @@ const Profile = () => {
           alt="chisato_profile"
           className="img-fluid rounded"
           style={{
-            maxWidth: "100%",  // Mantener el tamaño de la imagen dentro del contenedor
-            height: "auto",  // Ajustar la altura para mantener la proporción
+            maxWidth: "100%",  
+            height: "auto",  
           }}
         />
       </div>

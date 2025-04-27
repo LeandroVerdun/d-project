@@ -1,5 +1,3 @@
-/* Estilo para el dropdown de búsqueda */
-
 .search-dropdown {
   position: absolute;
   top: 100%;
@@ -14,7 +12,7 @@
   padding: 0.5rem;
 }
 
-/* Estilo para cada item del resultado de búsqueda */
+
 .movie-result-item {
   display: flex;
   align-items: start;
@@ -27,21 +25,19 @@
   transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-/* Estilo para las imágenes de las películas */
+
 .movie-poster {
   width: 60px;
   height: 90px;
   object-fit: cover;
 }
 
-/* Efecto hover para los items del dropdown */
 .movie-result-item:hover {
   background-color: #003366;
   color: white;
   border-color: #003366;
 }
 
-/* 🎯 Nuevo: scroll vertical en lista de géneros */
 .genre-scroll {
   max-height: 200px;
   overflow-y: auto;
@@ -55,11 +51,11 @@
 nav.navbar-01 {
   padding: 0;
   background-image: linear-gradient(to top, #171a21, #2d3542);
-  position: relative; /* importante para que el z-index tenga efecto */
-  z-index: 1030; /* por encima de cover, page-wrapper, routes-wrapper */
+  position: relative; 
+  z-index: 1030; 
 }
 
-/* Navbar.css */
+
 
 .navbar-nav .nav-link.text-white:hover,
 .navbar-nav .nav-link.dropdown-toggle.text-white:hover,
@@ -67,7 +63,7 @@ nav.navbar-01 {
   color: rgba(255, 255, 255, 0.7) !important;
 }
 
-/* Estilo para el icono del toggler (hamburguesa) */
+
 .navbar-toggler-icon {
   background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(255, 255, 255, 0.75)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
@@ -75,4 +71,15 @@ nav.navbar-01 {
 .navbar-toggler:hover .navbar-toggler-icon,
 .navbar-toggler:focus .navbar-toggler-icon {
   background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(255, 255, 255, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+
+
+@media (max-width: 899px) {
+  .dropdown-menu-user {
+    position: absolute;
+    right: 0; 
+    left: auto; 
+    transform: translateX(40%);
+  }
 }

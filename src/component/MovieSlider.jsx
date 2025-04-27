@@ -6,25 +6,22 @@ import "../css/MovieSlider.css";
 const MovieSlider = ({ category, movies }) => {
   const navigate = useNavigate();
   const [startIndex, setStartIndex] = useState(0);
-  const [visibleCount, setVisibleCount] = useState(5); // Valor inicial para pantallas grandes
+  const [visibleCount, setVisibleCount] = useState(5); 
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth <= 576) {
-        // Extra small devices (portrait phones, less than 576px)
         setVisibleCount(1);
       } else if (window.innerWidth <= 768) {
-        // Small devices (landscape phones, 576px and up)
         setVisibleCount(3);
       } else {
-        // Medium devices (tablets, 768px and up) and larger
         setVisibleCount(5);
       }
     };
 
     window.addEventListener("resize", handleResize);
-    handleResize(); // Llamar al inicio para establecer el valor inicial
+    handleResize(); 
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);

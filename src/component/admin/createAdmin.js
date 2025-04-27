@@ -1,4 +1,4 @@
-// src/utils/createAdmin.js
+
 
 const defaultAvatars = [
   "/img/avatar1.png",

@@ -1,4 +1,4 @@
-/* Estilo general del carrusel */
+
 .carousel-inner {
   display: flex;
   flex-direction: row;
@@ -42,7 +42,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.7); /* Fondo oscuro */
+  background: rgba(0, 0, 0, 0.7);
   color: white;
   padding: 1rem;
   opacity: 0;
@@ -63,11 +63,11 @@
   text-align: center;
 }
 
-/* Responsividad para móviles */
+
 @media (max-width: 768px) {
   .movie-card {
-    height: 300px; /* Tamaño fijo para iPhone 12 Pro */
-    width: 100%; /* Ajuste el tamaño de la carta */
+    height: 300px; 
+    width: 100%; 
     margin: 0 auto;
     overflow: hidden;
   }
@@ -106,7 +106,7 @@
     opacity: 1;
   }
 
-  /* Desaparece título, descripción y categorías en mobile */
+
   .movie-card .movie-title,
   .movie-card .movie-description,
   .movie-card .badge {
@@ -120,7 +120,7 @@
   }
 }
 
-/* Ajustes para el título de la película */
+
 .movie-title {
   font-size: 1.2rem;
   color: white;

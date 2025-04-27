@@ -19,7 +19,7 @@ const PrincipalCategorias = () => {
     setSelectedCategory(event.target.value);
   };
 
-  // Seleccionar las películas basadas en la categoría seleccionada
+  // Seleccionar las categorias
   let movies = [];
   if (selectedCategory === "Action") movies = actionMovies;
   if (selectedCategory === "Comedy") movies = comedyMovies;
@@ -27,7 +27,7 @@ const PrincipalCategorias = () => {
 
   return (
     <div className="container my-4">
-      {/* Menú desplegable solo en móviles y tabletas */}
+      {/* Menú desplegable */}
       <div className="d-md-none mb-4">
         <select
           className="form-select custom-select"
@@ -48,7 +48,7 @@ const PrincipalCategorias = () => {
         <MovieSlider category={selectedCategory} movies={movies} />
       </div>
 
-      {/* Mostrar MovieSlider para todas las categorías en pantallas más grandes (tabletas y escritorio) */}
+      {/* Mostrar MovieSlider para todas las categorías en pantallas más grandes */}
       <div className="d-none d-md-block">
         <MovieSlider category="Action" movies={actionMovies} />
         <MovieSlider category="Comedy" movies={comedyMovies} />

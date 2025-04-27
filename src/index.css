@@ -68,7 +68,7 @@ button:focus-visible {
   z-index: 0;
 }
 
-/* Imagen de fondo */
+
 .cover {
   position: relative;
   width: 100%;
@@ -84,7 +84,7 @@ button:focus-visible {
   z-index: 0;
 }
 
-/* Fondo negro debajo de la portada */
+
 .page-wrapper {
   background: linear-gradient(
     to bottom,
@@ -95,12 +95,12 @@ button:focus-visible {
   z-index: 0;
 }
 
-/* Contenido por encima de cover y page-wrapper */
+
 .routes-wrapper {
   position: relative;
   z-index: 1;
-  margin-top: -45vh; /* sube para solapar la portada */
-  padding-top: 45vh; /* evita que se superponga el texto */
+  margin-top: -45vh; 
+  padding-top: 45vh; 
 }
 
 @media (prefers-color-scheme: light) {
@@ -118,47 +118,45 @@ button:focus-visible {
   }
 }
 
-/* Estilos para pantallas con un ancho máximo de 767px (móviles) */
+
 @media (max-width: 767px) {
   body {
-    padding: 0; /* Eliminar padding del body en móviles */
+    padding: 0; 
   }
 
   #root {
-    padding: 0; /* Eliminar padding del root en móviles */
-    margin-top: 0; /* Ajustar margen superior si es necesario */
+    padding: 0; 
+    margin-top: 0; 
   }
 
   .container-cover {
-    /* Ajustar la altura del cover para móviles */
-    height: auto; /* O un valor fijo más pequeño */
+    height: auto; 
   }
 
   .cover {
-    height: 20vh; /* Reducir la altura del cover en móviles */
+    height: 20vh; 
   }
 
   .routes-wrapper {
-    margin-top: -20vh; /* Ajustar el margen superior para solapar el cover */
-    padding-top: 20vh; /* Ajustar el padding superior */
+    margin-top: -20vh; 
+    padding-top: 20vh; 
   }
 
   .container {
-    max-width: 100%; /* El contenedor ocupa todo el ancho en móviles */
-    padding-left: 15px; /* Añadir un poco de padding lateral */
+    max-width: 100%; 
+    padding-left: 15px;
     padding-right: 15px;
-    margin-top: 10%; /* Ajustar el margen superior del contenido */
+    margin-top: 10%; 
   }
 
   .d-flex.justify-content-center {
-    flex-direction: column; /* Alinear los elementos verticalmente por defecto en móviles */
-    align-items: center; /* Centrar los elementos horizontalmente */
+    flex-direction: column;
+    align-items: center; 
   }
 
-  /* Ajustes específicos para componentes si es necesario */
   .registration-form,
   .registration-image {
-    width: 100%; /* Ocupar todo el ancho en la página de registro */
-    margin-bottom: 20px; /* Añadir espacio entre ellos */
+    width: 100%; 
+    margin-bottom: 20px; 
   }
 }

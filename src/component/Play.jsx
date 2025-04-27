@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom"; // Importa useLocation para acceder al estado de la navegación
+import { useLocation } from "react-router-dom"; 
 import "../css/VideoPlayer.css";
 
 const initialComments = [
   { id: 1, name: "Chisato", text: "Waaah, that movie was like an emotional rollercoaster! I wanna watch it again with extra-large popcorn!", date: "2025-04-20" },
   { id: 2, name: "Takina", text: "I don't understand why everyone cried... but the final scene was pretty satisfying.", date: "2025-04-21" },
-  // ... otros comentarios
+
 ];
 
 const VideoPlayer = () => {
-  const { state } = useLocation(); // Accede al estado que pasaste desde MyPurchases
+  const { state } = useLocation(); 
   const [comments, setComments] = useState(initialComments);
   const [newComment, setNewComment] = useState("");
 
@@ -21,7 +21,7 @@ const VideoPlayer = () => {
   useEffect(() => {
     const fetchRecommendations = async () => {
       setLoading(true);
-      // Lógica para obtener recomendaciones
+
     };
 
     fetchRecommendations();

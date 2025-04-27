@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import forgotPasswordImg from "../assets/img/forgot.jpg"; // Importa la imagen
+import forgotPasswordImg from "../assets/img/forgot.jpg"; 
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -11,20 +11,20 @@ const ForgotPassword = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Get all registered users
+ 
     const users = JSON.parse(localStorage.getItem("users")) || [];
 
-    // Check if the email exists in the registered users
+
     const foundUser = users.find((user) => user.email === email);
 
     if (foundUser) {
-      // Simulate sending reset instructions (e.g., email)
+
       setSuccessMessage("Password reset instructions have been sent to your email.");
-      setEmail(""); // Clear the email field
-      setError(""); // Clear any previous error
+      setEmail(""); 
+      setError("");
     } else {
       setError("Email not found. Please check your email and try again.");
-      setSuccessMessage(""); // Clear success message
+      setSuccessMessage("");
     }
   };
 
@@ -38,7 +38,7 @@ const ForgotPassword = () => {
           src={forgotPasswordImg}
           alt="Forgot Password"
           className="img-fluid rounded-circle"
-          style={{ width: "150px", height: "150px" }} // Ajusta el tamaño de la imagen si es necesario
+          style={{ width: "150px", height: "150px" }} 
         />
       </div>
 
@@ -61,7 +61,6 @@ const ForgotPassword = () => {
         </button>
       </form>
 
-      {/* Link back to login */}
       <div className="mt-3">
         <p>
           Remembered your password?{" "}

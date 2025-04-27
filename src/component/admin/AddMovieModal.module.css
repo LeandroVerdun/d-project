@@ -1,4 +1,4 @@
-/* src/component/admin/AddMovieModal.module.css */
+
 .modal {
   position: fixed;
   top: 0;
@@ -16,8 +16,8 @@
   background-color: white;
   padding: 1.5rem;
   border-radius: 8px;
-  width: 80%; /* Hacer el modal ocupar un porcentaje del ancho en pantallas pequeñas */
-  max-width: 500px; /* Limitar el ancho máximo en pantallas grandes */
+  width: 80%; 
+  max-width: 500px; 
   position: relative;
 }
 
@@ -41,7 +41,7 @@
   margin-top: 0;
   margin-bottom: 1rem;
   text-align: center;
-  font-size: 1.3rem; /* Ajustar tamaño del título */
+  font-size: 1.3rem; 
 }
 
 .modalContent div {
@@ -51,19 +51,19 @@
 .modalContent label {
   display: block;
   margin-bottom: 0.3rem;
-  font-size: 0.9rem; /* Ajustar tamaño de la etiqueta */
+  font-size: 0.9rem; 
 }
 
 .modalContent input[type="text"],
 .modalContent textarea,
 .modalContent select,
 .modalContent input[type="checkbox"] {
-  width: calc(100% - 12px); /* Ajustar ancho para el padding */
+  width: calc(100% - 12px);
   padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 4px;
-  font-size: 0.9rem; /* Ajustar tamaño del texto de entrada */
-  box-sizing: border-box; /* Asegurar que el padding no aumente el ancho total */
+  font-size: 0.9rem; 
+  box-sizing: border-box; 
 }
 
 .modalContent textarea {
@@ -81,7 +81,7 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 0.9rem; /* Ajustar tamaño de la fuente de los botones */
+  font-size: 0.9rem; 
 }
 
 .modalContent .buttons button[type="submit"] {
@@ -102,7 +102,7 @@
   background-color: #c82333;
 }
 
-/* Estilos para pantallas más pequeñas */
+/* Estilos para version mobile */
 @media (max-width: 480px) {
   .modalContent {
     padding: 1rem;
@@ -128,7 +128,7 @@
   }
 
   .modalContent .buttons {
-    flex-direction: column; /* Apilar los botones en pantallas muy pequeñas */
+    flex-direction: column; 
     align-items: stretch;
     gap: 0.3rem;
   }

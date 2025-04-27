@@ -1,4 +1,4 @@
-/* src/component/admin/AdminPage.module.css */
+
 .adminContainer {
   padding: 1rem;
   display: flex;
@@ -8,9 +8,9 @@
 
 .adminContainer h1 {
   color: white;
-  font-size: 1.5rem; /* Ajustar tamaño de la fuente para pantallas más pequeñas */
+  font-size: 1.5rem; 
   margin-bottom: 1rem;
-  text-align: center; /* Centrar el título */
+  text-align: center; 
 }
 
 .newMovieButton {
@@ -21,14 +21,14 @@
   border-radius: 5px;
   cursor: pointer;
   margin-bottom: 1rem;
-  font-size: 0.9rem; /* Ajustar tamaño de la fuente del botón */
+  font-size: 0.9rem; 
 }
 
 .newMovieButton:hover {
   background-color: #0056b3;
 }
 
-/* Estilos para pantallas más pequeñas */
+/* Estilo mobile */
 @media (max-width: 600px) {
   .adminContainer {
     padding: 0.5rem;

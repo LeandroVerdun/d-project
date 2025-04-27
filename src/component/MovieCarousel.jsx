@@ -71,7 +71,6 @@ export const MovieCarousel = () => {
         ))}
       </div>
 
-      {/* Botones de control */}
       <button
         className="carousel-control-prev"
         type="button"

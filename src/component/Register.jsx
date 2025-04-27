@@ -3,12 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import chisatoAvatar from "../assets/img/register.webp";
 import ChisatoZone from "../assets/img/logo-chisato-zone.png";
-
-const defaultAvatars = [
-  "/img/avatar1.png",
-  "/img/avatar2.png",
-  "/img/avatar3.png"
-];
+import "../css/Profile.css"; 
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -22,7 +17,7 @@ const Register = () => {
     cardNumber: "",
     expirationDate: "",
     securityCode: "",
-    avatar: defaultAvatars[0],
+    avatar: "",
   });
 
   const navigate = useNavigate();
@@ -37,6 +32,15 @@ const Register = () => {
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
+  };
+
+  const formatExpirationDate = (e) => {
+    let value = e.target.value.replace(/\D/g, "");
+    if (value.length > 2) {
+      value = value.substring(0, 2) + "/" + value.substring(2, 4);
+    }
+    e.target.value = value;
+    handleChange(e);
   };
 
   const handleSubmit = (e) => {
@@ -62,29 +66,49 @@ const Register = () => {
     navigate("/login");
   };
 
-  const formatExpirationDate = (e) => {
-    let value = e.target.value.replace(/\D/g, "");
-    if (value.length > 2) {
-      value = value.substring(0, 2) + "/" + value.substring(2, 4);
-    }
-    e.target.value = value;
-    handleChange(e);
-  };
-
   return (
-    <div className="container p-5 d-flex flex-wrap justify-content-between text-white">
-      <div className="registration-form col-md-6 border border-white p-4 rounded">
+    <div className="container p-0 d-flex flex-wrap justify-content-between text-white p-md-5 m-0">
+
+      {/* Imágenes para móvil/tablet */}
+      <div className="registration-image col-lg-6 col-md-12 d-flex justify-content-between p-3 bg-dark border border-white d-none img-container-2 m-0">
+        <div className="profile-image-container col-6 col-md-3 d-flex flex-column justify-content-center align-items-start">
+          <img
+            src={ChisatoZone}
+            alt="logo_chisato_zone"
+            className="img-fluid mb-3"
+            style={{
+              width: "100%",
+              height: "auto",
+            }}
+          />
+        </div>
+        <div className="profile-image-container col-6 col-md-3 d-flex flex-column justify-content-center align-items-end">
+          <img
+            src={chisatoAvatar}
+            alt="chisato_register"
+            className="img-fluid rounded"
+            style={{
+              width: "100%",
+              height: "auto",
+            }}
+          />
+        </div>
+      </div>
+
+
+      {/* Parte izquierda (formulario) */}
+      <div className="registration-form col-lg-6 col-md-12 border border-white p-4 rounded">
         <h1 className="fw-bold fs-1 text-start">Register</h1>
 
         <form onSubmit={handleSubmit}>
-          {[
+          {[ 
             { id: "firstName", label: "First and Last Name", type: "text", placeholder: "Chisato Nishikigi", max: 30 },
             { id: "username", label: "Username", type: "text", placeholder: "Chisato_123", max: 20 },
             { id: "email", label: "Email", type: "email", placeholder: "email@gmail.com", max: 30 },
             { id: "password", label: "Password", type: "password", max: 10 },
             { id: "confirmPassword", label: "Confirm Password", type: "password", max: 10 },
             { id: "cardNumber", label: "Card Number", type: "text", placeholder: "1234 5678 9876 5432", max: 19 },
-          ].map(({ id, label, type, placeholder = "", max }) => (
+          ].map(({ id, label, type, placeholder, max }) => (
             <div className="mb-3" key={id}>
               <label htmlFor={id} className="form-label text-start d-block">{label}</label>
               <input
@@ -102,7 +126,7 @@ const Register = () => {
           ))}
 
           <div className="mb-3 d-flex justify-content-between">
-            <div className="form-group">
+            <div className="form-group w-50 me-2">
               <label htmlFor="expirationDate" className="form-label text-start">Expiration Date (MM/YY)</label>
               <input
                 type="text"
@@ -116,7 +140,7 @@ const Register = () => {
                 required
               />
             </div>
-            <div className="form-group">
+            <div className="form-group w-50 ms-2">
               <label htmlFor="securityCode" className="form-label text-start">Security Code</label>
               <input
                 type="text"
@@ -146,20 +170,28 @@ const Register = () => {
         </form>
       </div>
 
-      <div className="registration-image col-md-6 d-flex flex-column justify-content-center align-items-center border border-white p-3 bg-dark">
-      <img
-        src={ChisatoZone}
-        alt="logo_chisato_zone"
-        className="mb-3"
-        style={{ width: "200px", height: "auto" }}
-      />
 
+
+      {/* Imágenes para vesion de escritorio */}
+      <div className="registration-image col-lg-6 col-md-12 d-flex flex-column justify-content-center align-items-center border border-white p-3 bg-dark img-container-1">
+        <img
+          src={ChisatoZone}
+          alt="logo_chisato_zone"
+          className="mb-3"
+          style={{ width: "200px", height: "auto" }}
+        />
         <img
           src={chisatoAvatar}
-          alt="chisato_registro"
+          alt="chisato_register"
           className="img-fluid rounded"
+          style={{
+            maxWidth: "100%",
+            height: "auto",
+          }}
         />
       </div>
+
+      
     </div>
   );
 };

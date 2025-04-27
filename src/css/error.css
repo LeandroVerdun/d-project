@@ -1,24 +1,23 @@
-/* src/css/error.css */
+
 .body {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 80vh; /* Asegura que ocupe al menos la altura de la pantalla */
+  min-height: 80vh; 
   padding: 20px;
-  background-color: #f8f9fa; /* Un fondo claro y profesional */
+  background-color: transparent;
 }
 
 .responsive-container {
   display: flex;
-  flex-direction: column; /* Apila los elementos verticalmente */
-  align-items: center; /* Centra los elementos horizontalmente */
-  width: 90%; /* Ocupa un porcentaje del ancho en pantallas pequeñas */
-  max-width: 500px; /* Limita el ancho en pantallas grandes */
-  background-color: #fff; /* Fondo blanco para el contenedor */
+  flex-direction: column; 
+  align-items: center; 
+  width: 90%; 
+  max-width: 500px; 
+  background-color: transparent; 
   padding: 30px;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
 }
 
 .responsive-container button {
@@ -28,7 +27,7 @@
   font-size: 1rem;
   border: none;
   border-radius: 5px;
-  background-color: #007bff; /* Color azul para el botón */
+  background-color: #007bff;
   color: white;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -38,25 +37,29 @@
   background-color: #0056b3;
 }
 
+
+@media (min-width: 768px) {
+  .responsive-container img {
+    width: 70%; 
+  }
+}
+
 .responsive-container img {
   margin-top: 15px;
   margin-bottom: 10px;
-  border: 5px solid silver;
-  border-radius: 5%;
-  opacity: 100%; /* Aseguramos que la opacidad sea al 100% */
-  max-width: 100%; /* Hace que la imagen sea responsive */
+  opacity: 100%; 
+  max-width: 100%; 
   height: auto;
-  transition: border-color 0.3s ease; /* Transición para el borde */
-  transform: none !important; /* Anula cualquier transformación previa */
+  transition: border-color 0.3s ease; 
+  transform: none !important; 
 }
 
 .responsive-container img:hover {
-  border-color: #ccc; /* Cambio de color del borde al hacer hover */
-  transform: none !important; /* Asegura que no haya rotación ni traslación */
+  transform: none !important; 
 }
 
 .pulsating {
-  color: #6c757d; /* Un color más sutil para el texto */
+  color: #6c757d; 
   font-size: 2rem;
 }
 
@@ -70,7 +73,7 @@
   }
 }
 
-/* Estilos para pantallas más pequeñas */
+
 @media (max-width: 600px) {
   .responsive-container {
     padding: 20px;

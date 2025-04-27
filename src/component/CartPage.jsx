@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import "../css/Cart.css";  // Si necesitas personalizaciones adicionales de CSS, mantenlo
+import "../css/Cart.css";  
 
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -54,11 +54,11 @@ const CartPage = () => {
             cartItems.map(item => (
               <div 
                 key={item.imdbID} 
-                className="row align-items-center mb-4 product-container py-4"  // Aumento del padding vertical y separación entre productos
-                style={{ height: '180px' }}  // Aumento de la altura del contenedor
+                className="row align-items-center mb-4 product-container py-4"  
+                style={{ height: '180px' }}  
               >
                 <div className="col-3">
-                  <img className="img-fluid w-100 h-auto" src={item.Poster} alt={item.Title} />  {/* Garantiza que la imagen ocupe todo el ancho del contenedor */}
+                  <img className="img-fluid w-100 h-auto" src={item.Poster} alt={item.Title} /> 
                 </div>
                 <div className="d-flex justify-content-between align-items-center col-8">
                   <div className="purchase-details">

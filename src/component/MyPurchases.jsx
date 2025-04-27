@@ -29,7 +29,7 @@ export const MyPurchases = () => {
           margin: "0 auto 20px",
         }}
       />
-      <br /> {/* Aquí agregamos el <br /> */}
+      <br /> 
       <div className="container-lg row m-auto">
         {purchasedItems.length === 0 ? (
           <p className="text-center text-white">You have no purchases yet.</p>
