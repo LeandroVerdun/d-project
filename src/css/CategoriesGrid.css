@@ -4,8 +4,6 @@
   padding: 2rem;
   position: relative;
   background-color: #1a1a1a;
-
-  /* Simula una cinta de película con bordes perforados */
   background-image:
     repeating-linear-gradient(
       to right,
@@ -75,4 +73,54 @@
 /* Cuando se hace hover, se puede agregar un efecto sobre el overlay */
 .categories-grid-container .card:hover .card-img-overlay {
   background: rgba(0, 0, 0, 0.6); /* oscurece más al hacer hover */
+}
+
+/* Estilo responsive */
+@media (max-width: 768px) {
+  /* Estilo para móviles: reduce el tamaño de las tarjetas en pantallas pequeñas */
+
+  .card-carousel-mobile {
+    width: 100vw;
+
+  }
+  .categories-grid-container .card {
+    height: 150px; /* Tarjetas más pequeñas */
+  }
+
+  .categories-grid-container .card-img-overlay h5 {
+    font-size: 1rem; /* Fuente más pequeña */
+  }
+
+  /* Reduce el tamaño de las imágenes */
+  .categories-grid-container .img-publicidad {
+    object-fit: cover;
+    height: 100%;
+    opacity: 0.7;
+  }
+
+  #categoriesCarousel {
+    display: flex;
+  }
+}
+
+@media (min-width: 768px) {
+  /* Estilo para pantallas medianas (tabletas): tarjetas un poco más grandes */
+  .categories-grid-container .card {
+    height: 250px;
+  }
+
+  .categories-grid-container .card-img-overlay h5 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (min-width: 992px) {
+  /* Estilo para pantallas grandes (escritorios) */
+  .categories-grid-container .card {
+    height: 300px;
+  }
+
+  .categories-grid-container .card-img-overlay h5 {
+    font-size: 2rem;
+  }
 }

@@ -66,13 +66,13 @@ function Categories() {
       {movies.length === 0 ? (
         <p>No movies found in this category.</p>
       ) : (
-        <div className="row">
+        <div className="row d-flex justify-content-center">
           {movies.map((movie) => (
             <div
               key={movie.imdbID}
               className="card mb-3 text-white"
               style={{
-                maxWidth: "100%",
+                maxWidth: "85%",
                 cursor: "pointer",
                 backgroundColor: "#1c1c1c",
                 transition: "background-color 0.3s ease",
@@ -98,8 +98,11 @@ function Categories() {
 
                 <div className="col-md-8">
                   <div className="card-body">
+                    {/* Mostrar solo el título en pantallas más pequeñas */}
                     <h5 className="card-title">{movie.Title}</h5>
-                    <p className="card-text">{movie.Plot}</p>
+
+                    {/* Descripción oculta en pantallas más pequeñas */}
+                    <p className="card-text d-none d-md-block">{movie.Plot}</p>
 
                     <div className="d-flex flex-wrap mb-3">
                       {movie.Genre.split(", ").map((genre, index) => (
@@ -119,7 +122,7 @@ function Categories() {
                       }}
                     >
                       <button
-                        className="btn btn-outline-primary btn-sm me-2"
+                        className="btn btn-outline-primary btn-sm btn-mobile me-2"
                         onClick={(e) => {
                           e.stopPropagation();
                           handleAddToCart(movie, true); // Alquiler
@@ -128,7 +131,7 @@ function Categories() {
                         Rent
                       </button>
                       <button
-                        className="btn btn-success btn-sm"
+                        className="btn btn-success btn-sm btn-mobile"
                         onClick={(e) => {
                           e.stopPropagation();
                           handleAddToCart(movie, false); // Compra

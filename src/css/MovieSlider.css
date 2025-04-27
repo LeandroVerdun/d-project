@@ -86,15 +86,17 @@
   margin-right: 0;
 }
 
-/* Ajustes para pantallas más pequeñas (opcional, puedes ajustar según necesites) */
+/* Ajustes para pantallas más pequeñas */
 @media (max-width: 768px) {
   .movie-card {
     margin-right: 10px;
+    width: 180px; /* Aumenta el tamaño de las cards en pantallas de menos de 768px */
   }
 }
 
 @media (max-width: 576px) {
   .movie-card {
-    margin-right: 0; /* No hay margen derecho cuando solo se muestra una película */
+    margin-right: 0;
+    width: 250px; /* Aumenta el tamaño de las cards en pantallas más pequeñas */
   }
 }

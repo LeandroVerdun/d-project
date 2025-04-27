@@ -94,77 +94,82 @@ const MovieSlider = ({ category, movies }) => {
       <hr style={{ borderTop: "3px solid #FFD700", width: "100%" }} />
       <br />
 
-      <div className="d-flex align-items-center">
+      <div id="movieCarousel" className="carousel slide" data-bs-ride="carousel">
+        <div className="carousel-inner">
+          <div className="carousel-item active">
+            <div className="d-flex justify-content-center overflow-hidden">
+              {visibleMovies.map((movie) => (
+                <div
+                  key={movie.imdbID}
+                  className="card movie-card me-3 text-white position-relative"
+                  style={{ minWidth: "160px", cursor: "pointer" }}
+                  onClick={() => handleCardClick(movie.imdbID)}
+                >
+                  <img
+                    src={movie.Poster === "N/A" ? "https://via.placeholder.com/150" : movie.Poster}
+                    alt={movie.Title}
+                    className="img-fluid mb-2 rounded"
+                  />
+                  <div className="overlay-description p-2">
+                    <h6 className="overlay-title text-center fw-bold mb-2">
+                      {movie.Title}
+                    </h6>
+                    <p className="synopsis-text mb-0">
+                      {movie.Plot || "No description available."}
+                    </p>
+                  </div>
+                  {isUserLoggedIn && (
+                    <div className="d-flex justify-content-between z-2 position-relative mb-2 px-1">
+                      <button
+                        className="btn btn-primary btn-sm flex-grow-1 me-1"
+                        style={{ minWidth: "70px" }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          addToCart(movie, false);
+                        }}
+                      >
+                        Buy
+                      </button>
+                      <button
+                        className="btn btn-outline-light btn-sm flex-grow-1 ms-1"
+                        style={{ minWidth: "70px" }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          addToCart(movie, true);
+                        }}
+                      >
+                        Rent
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Controles de carrusel */}
         <button
-          className="btn btn-outline-secondary btn-sm me-2"
+          className="carousel-control-prev"
+          type="button"
+          data-bs-target="#movieCarousel"
+          data-bs-slide="prev"
           onClick={handlePrev}
           disabled={startIndex === 0}
-          style={{ display: visibleCount < movies.length ? "block" : "none" }}
         >
-          Anterior
+          <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span className="visually-hidden">Previous</span>
         </button>
-        <div
-          className="d-flex overflow-hidden"
-          style={{ maxWidth: `calc(160px * ${visibleCount})` }}
-        >
-          {visibleMovies.map((movie) => (
-            <div
-              key={movie.imdbID}
-              className="card movie-card me-3 text-white position-relative"
-              style={{ minWidth: "160px", cursor: "pointer" }}
-              onClick={() => handleCardClick(movie.imdbID)}
-            >
-              <img
-                src={
-                  movie.Poster === "N/A"
-                    ? "https://via.placeholder.com/150"
-                    : movie.Poster
-                }
-                alt={movie.Title}
-                className="img-fluid mb-2 rounded"
-              />
-              <div className="overlay-description p-2">
-                <h6 className="overlay-title text-center fw-bold mb-2">
-                  {movie.Title}
-                </h6>
-                <p className="synopsis-text mb-0">
-                  {movie.Plot || "No description available."}
-                </p>
-              </div>
-              {isUserLoggedIn && (
-                <div className="d-flex justify-content-between z-2 position-relative mb-2 px-1">
-                  <button
-                    className="btn btn-primary btn-sm flex-grow-1 me-1"
-                    style={{ minWidth: "70px" }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      addToCart(movie, false);
-                    }}
-                  >
-                    Buy
-                  </button>
-                  <button
-                    className="btn btn-outline-light btn-sm flex-grow-1 ms-1"
-                    style={{ minWidth: "70px" }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      addToCart(movie, true);
-                    }}
-                  >
-                    Rent
-                  </button>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
         <button
-          className="btn btn-outline-secondary btn-sm ms-2"
+          className="carousel-control-next"
+          type="button"
+          data-bs-target="#movieCarousel"
+          data-bs-slide="next"
           onClick={handleNext}
           disabled={startIndex + visibleCount >= movies.length}
-          style={{ display: visibleCount < movies.length ? "block" : "none" }}
         >
-          Siguiente
+          <span className="carousel-control-next-icon" aria-hidden="true"></span>
+          <span className="visually-hidden">Next</span>
         </button>
       </div>
     </div>

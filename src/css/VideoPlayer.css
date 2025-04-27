@@ -1,0 +1,23 @@
+.comment-name {
+  color: #00bcd4; /* Celeste */
+}
+
+.comments-dropdown .collapse {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.recommended-dropdown .collapse {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+@media (max-width: 767px) {
+  .comments-dropdown,
+  .recommended-dropdown, .recomended-pc{
+    display: none;
+  }
+  .d-md-none {
+    display: block !important;
+  }
+}

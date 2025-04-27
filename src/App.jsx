@@ -11,7 +11,7 @@ import Descripcion from "./component/Description";
 import CartPage from "./component/CartPage";
 import Register from "./component/Register";
 import Login from "./component/Login";
-import ForgotPassword from "./component/ForgotPassword";  // Importa ForgotPassword
+import ForgotPassword from "./component/ForgotPassword"; // Importa ForgotPassword
 import { UserAdmin } from "./component/UserAdmin";
 import MyPurchases from "./component/MyPurchases";
 import { ProtectedUserAdmin } from "./component/ProtectedUserAdmin";
@@ -28,44 +28,47 @@ function App() {
     <Router>
       <Navbar />
 
-      <div className="container-cover">
-        <div className="cover"></div>
-        <div className="page-wrapper">
-          <div className="routes-wrapper pt-5">
-            <div className="container d-flex justify-content-center py-4" style={{ maxWidth: "75%", marginTop: "13%" }}>
-              <div
-                className="w-100 d-flex justify-content-center border border-white rounded-3 mb-5"
-                style={{
-                  backgroundImage: "linear-gradient(to right,rgba(23, 26, 33, 0.75),rgba(45, 53, 66, 0.75))",
-                }}
-              >
-                <div className="w-100" style={{ maxWidth: "70rem" }}>
-                  <Routes>
-                    <Route path="/" element={<MainPage />} />
-                    <Route path="/categories" element={<Categories />} />
-                    <Route path="/admin" element={<AdminPage />} />
-                    <Route path="/search/:query" element={<SearchResult />} />
-                    <Route path="/descripcion/:id" element={<Descripcion />} />
-                    <Route path="/cart" element={<CartPage />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/forgot-password" element={<ForgotPassword />} /> {/* Nueva ruta para ForgotPassword */}
-                    <Route path="/mypurchases" element={<MyPurchases />} />
-                    <Route path="/404" element={<NoFound />} />
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/about-us" element={<AboutUs />} />
-                    <Route path="/terms-of-service" element={<TermsofService />} />
-                    <Route
-                      path="/useradmin"
-                      element={
-                        <ProtectedUserAdmin>
-                          <UserAdmin />
-                        </ProtectedUserAdmin>
-                      }
-                    />
-                    <Route path="/play" element={<Play />} />
-                    <Route path="*" element={<NoFound />} />
-                  </Routes>
+      <div className="container-fluid p-0">
+        {/* Cover Image Section */}
+        <div className="container-cover">
+          <div className="cover"></div>
+          <div className="page-wrapper">
+            <div className="routes-wrapper pt-5">
+              <div className="container d-flex justify-content-center py-4" style={{ marginTop: "13%" }}>
+                <div
+                  className="w-100 d-flex justify-content-center border border-white rounded-3 mb-5"
+                  style={{
+                    backgroundImage: "linear-gradient(to right,rgba(23, 26, 33, 0.75),rgba(45, 53, 66, 0.75))",
+                  }}
+                >
+                  <div className="w-100" style={{ maxWidth: "70rem" }}>
+                    <Routes>
+                      <Route path="/" element={<MainPage />} />
+                      <Route path="/categories" element={<Categories />} />
+                      <Route path="/admin" element={<AdminPage />} />
+                      <Route path="/search/:query" element={<SearchResult />} />
+                      <Route path="/descripcion/:id" element={<Descripcion />} />
+                      <Route path="/cart" element={<CartPage />} />
+                      <Route path="/register" element={<Register />} />
+                      <Route path="/login" element={<Login />} />
+                      <Route path="/forgot-password" element={<ForgotPassword />} />
+                      <Route path="/mypurchases" element={<MyPurchases />} />
+                      <Route path="/404" element={<NoFound />} />
+                      <Route path="/profile" element={<Profile />} />
+                      <Route path="/about-us" element={<AboutUs />} />
+                      <Route path="/terms-of-service" element={<TermsofService />} />
+                      <Route
+                        path="/useradmin"
+                        element={
+                          <ProtectedUserAdmin>
+                            <UserAdmin />
+                          </ProtectedUserAdmin>
+                        }
+                      />
+                      <Route path="/play" element={<Play />} />
+                      <Route path="*" element={<NoFound />} />
+                    </Routes>
+                  </div>
                 </div>
               </div>
             </div>
