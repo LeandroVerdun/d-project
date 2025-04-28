@@ -10,11 +10,11 @@ const AdminPage = () => {
   const [movies, setMovies] = useState([]);
   const [movieToEdit, setMovieToEdit] = useState(null);
 
-  // ✅ Proteger acceso solo para el usuario con username "Chisato"
+  // Para que la ruta solo lo tenga chisato
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (!user || user.username !== "Chisato") {
-      navigate("/404"); // Redirige a la página 404
+      navigate("/404"); 
     }
   }, [navigate]);
 

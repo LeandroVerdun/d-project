@@ -1,0 +1,149 @@
+
+.carousel-inner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.movie-card {
+  border-radius: 15px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.movie-card:hover .movie-overlay {
+  opacity: 1;
+}
+
+.movie-image {
+  object-fit: contain;
+  width: 100%;
+  max-height: 400px;
+}
+
+.movie-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+}
+
+.movie-description {
+  font-size: 1rem;
+  max-height: 150px;
+  overflow-y: auto;
+  color: white;
+}
+
+.movie-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 1rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.movie-overlay .movie-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.movie-overlay .movie-description {
+  font-size: 1rem;
+  text-align: center;
+}
+
+
+@media (max-width: 768px) {
+  .movie-card {
+    height: 300px; 
+    width: 100%; 
+    margin: 0 auto;
+    overflow: hidden;
+  }
+
+  .carousel-inner {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+    gap: 1rem;
+  }
+
+  .movie-image {
+    height: 100%;
+    width: auto;
+  }
+
+  .movie-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 1rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .movie-card:hover .movie-overlay {
+    opacity: 1;
+  }
+
+
+  .movie-card .movie-title,
+  .movie-card .movie-description,
+  .movie-card .badge {
+    display: none !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .movie-card {
+    height: 400px;
+  }
+}
+
+
+.movie-title {
+  font-size: 1.2rem;
+  color: white;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.movie-description {
+  font-size: 1rem;
+  color: white;
+  overflow-y: auto;
+}
+
+.carousel-item {
+  transition: transform 0.5s ease-in-out;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: white;
+}

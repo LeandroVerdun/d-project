@@ -1,22 +1,36 @@
+
 .movieTable {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
+  overflow-x: auto; 
 }
 
 .movieTable th,
 .movieTable td {
-  padding: 0.5rem;
+  padding: 0.4rem 0.6rem; 
   border: 1px solid #ddd;
   text-align: left;
+  white-space: nowrap; 
+  font-size: 0.8rem;
 }
 
 .movieTable th {
   background-color: #f2f2f2;
+  font-size: 0.9rem; 
 }
 
 .movieTable button {
-  margin-right: 0.5rem;
-  padding: 0.25rem 0.5rem;
+  margin-right: 0.3rem; 
+  padding: 0.2rem 0.4rem; 
   cursor: pointer;
+  font-size: 0.7rem; 
+}
+
+
+@media (max-width: 480px) {
+  .movieTable th:nth-child(3), 
+  .movieTable td:nth-child(3) {
+    display: none;
+  }
 }

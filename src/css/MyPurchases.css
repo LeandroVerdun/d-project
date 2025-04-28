@@ -1,53 +1,53 @@
-/* Hover effect for the card */
+
 .my-card:hover {
-    border-color: #00bfff; /* Celeste border color */
-    box-shadow: 0 4px 8px rgba(0, 191, 255, 0.2); /* Optional shadow effect */
+    border-color: #00bfff; 
+    box-shadow: 0 4px 8px rgba(0, 191, 255, 0.2); 
   }
   
-  /* Contenedor de la sinopsis con overflow */
+
   .card-text-container {
-    max-height: 120px;  /* Ajusta según el espacio que deseas para la sinopsis */
-    overflow-y: auto;   /* Permite desplazamiento si la sinopsis es larga */
+    max-height: 120px;  
+    overflow-y: auto;   
     margin-bottom: 15px;
   }
   
-  /* Estilo de la sinopsis */
+
   .card-text {
     margin: 0;
     font-size: 14px;
     line-height: 1.6;
   }
   
-  /* Asegurarse de que la tarjeta sea flexible y no se recorte */
+
   .card-body {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;  /* No poner el espacio entre los elementos */
+    justify-content: flex-start; 
     height: 100%;
   }
   
-  /* Asegurarse de que las imágenes no se recorten */
+
   .card-img-top {
     height: 200px;
-    object-fit: contain;  /* Cambié a 'contain' para que la imagen no se recorte */
+    object-fit: contain; 
     width: 100%;
-    border-bottom: 1px solid #ddd; /* Línea separadora entre la imagen y el contenido */
+    border-bottom: 1px solid #ddd;
   }
   
-  /* Ajuste para los géneros */
+
   .badge {
     margin: 2px 0;
   }
   
-  /* Estilo adicional para la tarjeta */
+
   .my-card {
-    transition: all 0.3s ease; /* Suavizar el hover */
+    transition: all 0.3s ease; 
   }
   
   .my-card:hover {
-    border-color: #00bfff; /* Celeste border color */
-    box-shadow: 0 4px 8px rgba(0, 191, 255, 0.2); /* Optional shadow effect */
-    transform: scale(1.05); /* Efecto de agrandar ligeramente la tarjeta */
+    border-color: #00bfff; 
+    box-shadow: 0 4px 8px rgba(0, 191, 255, 0.2); 
+    transform: scale(1.05); 
   }
   
   .card-body {

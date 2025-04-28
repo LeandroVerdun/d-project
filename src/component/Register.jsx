@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-
-const defaultAvatars = [
-  "/img/avatar1.png",
-  "/img/avatar2.png",
-  "/img/avatar3.png"
-];
+import chisatoAvatar from "../assets/img/register.webp";
+import ChisatoZone from "../assets/img/logo-chisato-zone.png";
+import "../css/Profile.css"; 
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -20,7 +17,7 @@ const Register = () => {
     cardNumber: "",
     expirationDate: "",
     securityCode: "",
-    avatar: defaultAvatars[0],
+    avatar: "",
   });
 
   const navigate = useNavigate();
@@ -29,39 +26,12 @@ const Register = () => {
     const { name, value } = e.target;
 
     if (name === "cardNumber") {
-      // Formatear el número de tarjeta con espacios cada 4 dígitos
-      let formattedValue = value.replace(/\D/g, "").substring(0, 16); // Eliminar caracteres no numéricos y limitar a 16 dígitos
-      formattedValue = formattedValue.replace(/(\d{4})(?=\d)/g, "$1 "); // Separar cada 4 dígitos con un espacio
+      let formattedValue = value.replace(/\D/g, "").substring(0, 16);
+      formattedValue = formattedValue.replace(/(\d{4})(?=\d)/g, "$1 ");
       setFormData((prev) => ({ ...prev, [name]: formattedValue }));
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match");
-      return;
-    }
-
-    // Verificar si el nombre de usuario ya existe en el localStorage
-    const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
-    const isUsernameTaken = existingUsers.some(user => user.username === formData.username);
-
-    if (isUsernameTaken) {
-      alert("Username is already taken. Please choose another one.");
-      return;
-    }
-
-    // Guardar el nuevo usuario en el localStorage
-    const newUser = { ...formData };
-    existingUsers.push(newUser);
-    localStorage.setItem("users", JSON.stringify(existingUsers));
-
-    console.log("Registration data:", formData);
-    navigate("/login");
   };
 
   const formatExpirationDate = (e) => {
@@ -73,121 +43,94 @@ const Register = () => {
     handleChange(e);
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
+    const isUsernameTaken = existingUsers.some(user => user.username === formData.username);
+
+    if (isUsernameTaken) {
+      alert("Username is already taken. Please choose another one.");
+      return;
+    }
+
+    const newUser = { ...formData };
+    existingUsers.push(newUser);
+    localStorage.setItem("users", JSON.stringify(existingUsers));
+
+    navigate("/login");
+  };
+
   return (
-    <div className="container p-5 d-flex flex-wrap">
-      <div className="registration-form col-md-6">
+    <div className="container p-0 d-flex flex-wrap justify-content-between text-white p-md-5 m-0">
+
+      {/* Imágenes para móvil/tablet */}
+      <div className="registration-image col-lg-6 col-md-12 d-flex justify-content-between p-3 bg-dark border border-white d-none img-container-2 m-0">
+        <div className="profile-image-container col-6 col-md-3 d-flex flex-column justify-content-center align-items-start">
+          <img
+            src={ChisatoZone}
+            alt="logo_chisato_zone"
+            className="img-fluid mb-3"
+            style={{
+              width: "100%",
+              height: "auto",
+            }}
+          />
+        </div>
+        <div className="profile-image-container col-6 col-md-3 d-flex flex-column justify-content-center align-items-end">
+          <img
+            src={chisatoAvatar}
+            alt="chisato_register"
+            className="img-fluid rounded"
+            style={{
+              width: "100%",
+              height: "auto",
+            }}
+          />
+        </div>
+      </div>
+
+
+      {/* Parte izquierda (formulario) */}
+      <div className="registration-form col-lg-6 col-md-12 border border-white p-4 rounded">
         <h1 className="fw-bold fs-1 text-start">Register</h1>
-        
+
         <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="firstName" className="form-label text-start d-block">
-              First and Last Name
-            </label>
-            <input
-              type="text"
-              id="firstName"
-              className="form-control"
-              name="firstName"
-              placeholder="Chisato Nishikigi"
-              maxLength="30"
-              value={formData.firstName}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="username" className="form-label text-start d-block">
-              Username
-            </label>
-            <input
-              type="text"
-              id="username"
-              className="form-control"
-              name="username"
-              placeholder="Chisato_123"
-              maxLength="20"
-              value={formData.username}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="email" className="form-label text-start d-block">
-              Email
-            </label>
-            <input
-              type="email"
-              className="form-control"
-              id="email"
-              name="email"
-              placeholder="email@gmail.com"
-              maxLength="30"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="password" className="form-label text-start d-block">
-              Password
-            </label>
-            <input
-              type="password"
-              className="form-control"
-              id="password"
-              name="password"
-              maxLength="10"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="confirmPassword" className="form-label text-start d-block">
-              Confirm Password
-            </label>
-            <input
-              type="password"
-              className="form-control"
-              id="confirmPassword"
-              name="confirmPassword"
-              maxLength="10"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="cardNumber" className="form-label text-start d-block">
-              Card Number
-            </label>
-            <input
-              type="text"
-              id="cardNumber"
-              className="form-control"
-              name="cardNumber"
-              placeholder="1234 5678 9876 5432"
-              value={formData.cardNumber}
-              onChange={handleChange}
-              maxLength="19"
-              pattern="\d{4} \d{4} \d{4} \d{4}"
-              required
-            />
-          </div>
+          {[ 
+            { id: "firstName", label: "First and Last Name", type: "text", placeholder: "Chisato Nishikigi", max: 30 },
+            { id: "username", label: "Username", type: "text", placeholder: "Chisato_123", max: 20 },
+            { id: "email", label: "Email", type: "email", placeholder: "email@gmail.com", max: 30 },
+            { id: "password", label: "Password", type: "password", max: 10 },
+            { id: "confirmPassword", label: "Confirm Password", type: "password", max: 10 },
+            { id: "cardNumber", label: "Card Number", type: "text", placeholder: "1234 5678 9876 5432", max: 19 },
+          ].map(({ id, label, type, placeholder, max }) => (
+            <div className="mb-3" key={id}>
+              <label htmlFor={id} className="form-label text-start d-block">{label}</label>
+              <input
+                type={type}
+                className="form-control bg-dark text-white border-secondary"
+                id={id}
+                name={id}
+                placeholder={placeholder}
+                maxLength={max}
+                value={formData[id]}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          ))}
 
           <div className="mb-3 d-flex justify-content-between">
-            <div className="form-group">
-              <label htmlFor="expirationDate" className="form-label text-start">
-                Expiration Date (MM/YY)
-              </label>
+            <div className="form-group w-50 me-2">
+              <label htmlFor="expirationDate" className="form-label text-start">Expiration Date (MM/YY)</label>
               <input
                 type="text"
-                className="form-control"
+                className="form-control bg-dark text-white border-secondary"
                 id="expirationDate"
                 name="expirationDate"
                 value={formData.expirationDate}
@@ -197,13 +140,11 @@ const Register = () => {
                 required
               />
             </div>
-            <div className="form-group">
-              <label htmlFor="securityCode" className="form-label text-start">
-                Security Code
-              </label>
+            <div className="form-group w-50 ms-2">
+              <label htmlFor="securityCode" className="form-label text-start">Security Code</label>
               <input
                 type="text"
-                className="form-control"
+                className="form-control bg-dark text-white border-secondary"
                 id="securityCode"
                 name="securityCode"
                 value={formData.securityCode}
@@ -216,37 +157,41 @@ const Register = () => {
           </div>
 
           <div className="mb-3 form-check">
-            <input
-              type="checkbox"
-              className="form-check-input"
-              id="checkRobot"
-              required
-            />
-            <label className="form-check-label" htmlFor="checkRobot">
-              I am not a robot
-            </label>
+            <input type="checkbox" className="form-check-input" id="checkRobot" required />
+            <label className="form-check-label" htmlFor="checkRobot">I am not a robot</label>
           </div>
 
-          <button type="submit" className="btn btn-primary w-100 p-2">
-            Register
-          </button>
+          <button type="submit" className="btn btn-primary w-100 p-2">Register</button>
 
           <div className="create-account d-flex gap-2 p-2">
             <p>Already have an account?</p>
-            <a href="/login" className="text-lowercase fw-bolder">
-              Login
-            </a>
+            <a href="/login" className="text-lowercase fw-bolder">Login</a>
           </div>
         </form>
       </div>
 
-      <div className="registration-image col-md-6 text-center">
+
+
+      {/* Imágenes para vesion de escritorio */}
+      <div className="registration-image col-lg-6 col-md-12 d-flex flex-column justify-content-center align-items-center border border-white p-3 bg-dark img-container-1">
         <img
-          src="../multimedia/imagenes/chisato_registro.jpg"
-          alt="chisato_registro"
+          src={ChisatoZone}
+          alt="logo_chisato_zone"
+          className="mb-3"
+          style={{ width: "200px", height: "auto" }}
+        />
+        <img
+          src={chisatoAvatar}
+          alt="chisato_register"
           className="img-fluid rounded"
+          style={{
+            maxWidth: "100%",
+            height: "auto",
+          }}
         />
       </div>
+
+      
     </div>
   );
 };

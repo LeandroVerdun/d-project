@@ -17,12 +17,22 @@ export const MyPurchases = () => {
 
   return (
     <div>
-      <h1 className="text-center text-uppercase fw-bold fs-3 col-11">
-        My Purchases
+      <h1 className="text-center text-uppercase fw-bold fs-3 col-11 text-white py-4">
+        My Movies
       </h1>
+      <hr
+        style={{
+          width: "80%",
+          height: "4px",
+          backgroundColor: "yellow",
+          border: "none",
+          margin: "0 auto 20px",
+        }}
+      />
+      <br /> 
       <div className="container-lg row m-auto">
         {purchasedItems.length === 0 ? (
-          <p className="text-center">You have no purchases yet.</p>
+          <p className="text-center text-white">You have no purchases yet.</p>
         ) : (
           purchasedItems.map(item => (
             <div
@@ -31,7 +41,7 @@ export const MyPurchases = () => {
               onClick={() => handleCardClick(item)}
               style={{ cursor: 'pointer' }}
             >
-              <div className="card h-100 border border-light my-card">
+              <div className="card h-100 bg-dark text-white border border-dark my-card">
                 <img src={item.Poster} className="card-img-top" alt={item.Title} />
                 <div className="card-body d-flex flex-column">
                   <h5 className="card-title">{item.Title} ({item.size})</h5>

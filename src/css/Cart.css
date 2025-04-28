@@ -4,7 +4,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.7); /* Fondo negro transparente */
+    background-color: rgba(0, 0, 0, 0.7); 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,5 +16,19 @@
     font-size: 3rem;
     font-weight: bold;
     text-align: center;
+  }
+  
+  .product-container {
+    border-radius: 10px;
+    transition: box-shadow 0.3s ease; 
+  }
+  
+  .product-container:hover {
+    box-shadow: 0 0 0 2px white; 
+  }
+  
+  .thanks {
+    height: 100vh !important;
+    width:  100vw !important;
   }
   
