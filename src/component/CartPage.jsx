@@ -120,7 +120,7 @@ const CartPage = () => {
       </div>
 
       {showThankYou && (
-        <div className="thank-you-overlay d-flex justify-content-center align-items-center position-fixed top-0 left-0 w-100 h-100 bg-dark bg-opacity-75 text-white">
+        <div className="thank-you-overlay d-flex justify-content-center align-items-center position-fixed top-0 left-0 w-100 h-100 bg-dark bg-opacity-75 text-white thanks">
           <h2 className="thank-you-message text-center">Thank you for your purchase!</h2>
         </div>
       )}

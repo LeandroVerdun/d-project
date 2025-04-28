@@ -1,5 +1,5 @@
 .comment-name {
-  color: #00bcd4; 
+  color: #00bcd4;
 }
 
 .comments-dropdown .collapse {
@@ -12,9 +12,17 @@
   overflow-y: auto;
 }
 
+
+.recomended-pc .movie-card {
+  width: 100%; 
+  margin-bottom: 20px; 
+}
+
+
 @media (max-width: 767px) {
   .comments-dropdown,
-  .recommended-dropdown, .recomended-pc{
+  .recommended-dropdown,
+  .recomended-pc {
     display: none;
   }
   .d-md-none {
