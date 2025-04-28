@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import "../css/AboutUs.css";
 import leanImg from "../assets/img/unnamed.jpg";
 import santiImg from "../assets/img/snti.png";
-import juanImg from "../assets/img/juan.png";
+import emmaImg from "../assets/img/emma.png";
 
 const collaborators = [
   {
     name: "Lean",
-    img: leanImg, 
+    img: leanImg,
     text: (
       <ul>
         <li>Scrum Master</li>
@@ -28,13 +28,13 @@ const collaborators = [
     ),
   },
   {
-    name: "Juan",
-    img: juanImg,
+    name: "Emma",
+    img: emmaImg,
     text: (
       <ul>
         <li>Tester</li>
         <li>Mockup Design</li>
-        <li>Trello Design</li>
+        <li>404 Design</li>
       </ul>
     ),
   },
