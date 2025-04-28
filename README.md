@@ -42,6 +42,10 @@ Chizato Zone es una aplicación web desarrollada con React y Vite que permite a 
 
 - **OMDB API:** Se utiliza para obtener información sobre películas. Puedes encontrar más detalles sobre la API aquí: [http://www.omdbapi.com/](http://www.omdbapi.com/) apiKey = "d511530c"
 
+**Datos Admin**
+-**E-MAIL**: Chisato@gmail.com
+-**CONTRASEÑA**: 1234
+
 **Requisitos del Sistema**
 
 - Node.js (versión recomendada: >=18.x)
