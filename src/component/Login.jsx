@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Chisato from "../assets/img/Loging.jpg"; 
+import { jwtDecode } from "jwt-decode"; // Importamos el decodificador
+import Chisato from "../assets/img/Loging.jpg";
+import { loginUser } from "../services/api";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -8,41 +10,51 @@ const Login = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
 
-    const users = JSON.parse(localStorage.getItem("users")) || [];
+    try {
+      const userData = await loginUser({ email, password });
 
-    const foundUser = users.find(
-      (user) => user.email === email && user.password === password
-    );
-
-    if (foundUser) {
-      // Guarda en el localstorage
-      localStorage.setItem("user", JSON.stringify(foundUser));
-
-      // Redirige al home
-      navigate("/");
-    } else {
-      setError("Incorrect email or password.");
+      if (userData && userData.token) {
+        // Guarda el token en localStorage
+        localStorage.setItem("token", userData.token); // Decodifica el token para obtener los datos del usuario (id, isAdmin)
+        const decodedToken = jwtDecode(userData.token); // Creamos un objeto de usuario con la data disponible
+        const user = {
+          id: decodedToken.id,
+          isAdmin: decodedToken.isAdmin,
+          username: email, // Usamos el email como nombre de usuario por ahora
+        }; // Guarda el objeto 'user' en localStorage
+        localStorage.setItem("user", JSON.stringify(user));
+        navigate("/");
+      } else {
+        throw new Error("Invalid response from server. Missing token.");
+      }
+    } catch (err) {
+      setError(err.message || "An unexpected error occurred during login.");
     }
   };
 
   return (
     <div className="container mt-5 text-white">
-      <h2>Login</h2>
+            <h2>Login</h2>     {" "}
       <div className="mt-4 d-flex justify-content-center pb-3">
+               {" "}
         <img
           src={Chisato}
           alt="Sample"
           className="rounded-circle"
           style={{ width: "150px", height: "150px", objectFit: "cover" }}
         />
+             {" "}
       </div>
-      {error && <div className="alert alert-danger">{error}</div>}
+            {error && <div className="alert alert-danger">{error}</div>}     {" "}
       <form onSubmit={handleSubmit}>
+               {" "}
         <div className="mb-3">
-          <label>Email</label>
+                    <label>Email</label>
+                   {" "}
           <input
             type="email"
             className="form-control"
@@ -50,9 +62,12 @@ const Login = () => {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
+                 {" "}
         </div>
+               {" "}
         <div className="mb-3">
-          <label>Password</label>
+                    <label>Password</label>
+                   {" "}
           <input
             type="password"
             className="form-control"
@@ -60,34 +75,40 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+                 {" "}
         </div>
+               {" "}
         <button type="submit" className="btn btn-success">
-          Login
+                    Login        {" "}
         </button>
+             {" "}
       </form>
-
-      {/* link de olvidaste la contrase;a */}
+           {" "}
       <div className="mt-3">
+               {" "}
         <p>
+                   {" "}
           <a href="/forgot-password" className="text-primary">
-            Forgot your password?
+                        Forgot your password?          {" "}
           </a>
+                 {" "}
         </p>
+             {" "}
       </div>
-
-      {/* Link de logearse */}
+           {" "}
       <div className="mt-3">
+               {" "}
         <p>
-          Don't have an account?{" "}
+                    Don't have an account?          {" "}
           <a href="/register" className="text-primary">
-            Register
+                        Register          {" "}
           </a>
+                 {" "}
         </p>
+             {" "}
       </div>
-
-      
+         {" "}
     </div>
   );
 };
-
 export default Login;

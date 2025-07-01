@@ -85,7 +85,9 @@ export const Navbar = () => {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <Link className="nav-link active text-white" to="/">Home</Link>
+              <Link className="nav-link active text-white" to="/">
+                Home
+              </Link>
             </li>
             <li className="nav-item dropdown">
               <a
@@ -99,12 +101,30 @@ export const Navbar = () => {
               </a>
               <ul className="dropdown-menu genre-scroll">
                 {[
-                  "action", "biography", "comedy", "crime", "drama", "family", "fantasy",
-                  "history", "horror", "music", "musical", "mystery", "romance", "sci-fi",
-                  "short", "sport", "thriller", "western"
+                  "action",
+                  "biography",
+                  "comedy",
+                  "crime",
+                  "drama",
+                  "family",
+                  "fantasy",
+                  "history",
+                  "horror",
+                  "music",
+                  "musical",
+                  "mystery",
+                  "romance",
+                  "sci-fi",
+                  "short",
+                  "sport",
+                  "thriller",
+                  "western",
                 ].map((genre) => (
                   <li key={genre}>
-                    <Link className="dropdown-item" to={`/categories?category=${genre}`}>
+                    <Link
+                      className="dropdown-item"
+                      to={`/categories?category=${genre}`}
+                    >
                       {genre.charAt(0).toUpperCase() + genre.slice(1)}
                     </Link>
                   </li>
@@ -113,7 +133,11 @@ export const Navbar = () => {
             </li>
           </ul>
 
-          <form className="d-flex align-items-center position-relative me-3" role="search" onSubmit={handleSubmit}>
+          <form
+            className="d-flex align-items-center position-relative me-3"
+            role="search"
+            onSubmit={handleSubmit}
+          >
             <input
               className="form-control me-2"
               type="search"
@@ -126,37 +150,50 @@ export const Navbar = () => {
               <i className="bi bi-search"></i>
             </button>
 
-            {query && !triggerSearch && !loading && movies.length > 0 && dropdownVisible && (
-              <div ref={dropdownRef} className="search-dropdown">
-                {movies.slice(0, 10).map((movie) => (
-                  <div
-                    key={movie.imdbID}
-                    className="movie-result-item"
-                    onClick={() => navigate(`/descripcion/${movie.imdbID}`)}
-                  >
-                    <img
-                      src={movie.Poster}
-                      alt={movie.Title}
-                      className="movie-poster me-3"
-                    />
-                    <div className="flex-grow-1">
-                      <h6 className="mb-1">{movie.Title}</h6>
-                      <div className="mb-2">
-                        {movie.Genre?.split(",").slice(0, 2).map((genre, index) => (
-                          <span key={index} className="badge bg-secondary me-1">
-                            {genre.trim()}
-                          </span>
-                        ))}
-                      </div>
-                      <div>
-                        <button className="btn btn-sm btn-primary me-2">Rent</button>
-                        <button className="btn btn-sm btn-success">Buy</button>
+            {query &&
+              !triggerSearch &&
+              !loading &&
+              movies.length > 0 &&
+              dropdownVisible && (
+                <div ref={dropdownRef} className="search-dropdown">
+                  {movies.slice(0, 10).map((movie) => (
+                    <div
+                      key={movie.imdbID}
+                      className="movie-result-item"
+                      onClick={() => navigate(`/descripcion/${movie.imdbID}`)}
+                    >
+                      <img
+                        src={movie.Poster}
+                        alt={movie.Title}
+                        className="movie-poster me-3"
+                      />
+                      <div className="flex-grow-1">
+                        <h6 className="mb-1">{movie.Title}</h6>
+                        <div className="mb-2">
+                          {movie.Genre?.split(",")
+                            .slice(0, 2)
+                            .map((genre, index) => (
+                              <span
+                                key={index}
+                                className="badge bg-secondary me-1"
+                              >
+                                {genre.trim()}
+                              </span>
+                            ))}
+                        </div>
+                        <div>
+                          <button className="btn btn-sm btn-primary me-2">
+                            Rent
+                          </button>
+                          <button className="btn btn-sm btn-success">
+                            Buy
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            )}
+                  ))}
+                </div>
+              )}
           </form>
 
           <div className="d-flex align-items-center me-3">
@@ -181,17 +218,47 @@ export const Navbar = () => {
                   >
                     {currentUser?.username || "My Account"}
                   </button>
-                  <ul className="dropdown-menu dropdown-menu-end dropdown-menu-user" aria-labelledby="dropdownAccount">
-                    <li><Link className="dropdown-item" to="/profile">Profile</Link></li>
-                    <li><Link className="dropdown-item" to="/mypurchases">My Movie</Link></li>
+                  <ul
+                    className="dropdown-menu dropdown-menu-end dropdown-menu-user"
+                    aria-labelledby="dropdownAccount"
+                  >
+                    <li>
+                      <Link className="dropdown-item" to="/profile">
+                        Profile
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/mypurchases">
+                        My Movie
+                      </Link>
+                    </li>
                     {currentUser?.username === "Chisato" && (
                       <>
-                        <li><hr className="dropdown-divider" /></li>
-                        <li><Link className="dropdown-item" to="/admin">Movie</Link></li>
-                        <li><Link className="dropdown-item" to="/useradmin">User Admin</Link></li>
+                        <li>
+                          <hr className="dropdown-divider" />
+                        </li>
+                        <li>
+                          <Link className="dropdown-item" to="/admin">
+                            Movie
+                          </Link>
+                        </li>
+                        <li>
+                          <Link className="dropdown-item" to="/useradmin">
+                            User Admin
+                          </Link>
+                        </li>
+                        <li>
+                          <Link className="dropdown-item" to="/admin">
+                            Admin Panel
+                          </Link>
+                        </li>
                       </>
                     )}
-                    <li><button className="dropdown-item" onClick={handleLogout}>Logout</button></li>
+                    <li>
+                      <button className="dropdown-item" onClick={handleLogout}>
+                        Logout
+                      </button>
+                    </li>
                   </ul>
                 </div>
                 <button
