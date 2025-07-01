@@ -38,23 +38,19 @@ const Login = () => {
 
   return (
     <div className="container mt-5 text-white">
-            <h2>Login</h2>     {" "}
+      <h2>Login</h2>
       <div className="mt-4 d-flex justify-content-center pb-3">
-               {" "}
         <img
           src={Chisato}
           alt="Sample"
           className="rounded-circle"
           style={{ width: "150px", height: "150px", objectFit: "cover" }}
         />
-             {" "}
       </div>
-            {error && <div className="alert alert-danger">{error}</div>}     {" "}
+      {error && <div className="alert alert-danger">{error}</div>}
       <form onSubmit={handleSubmit}>
-               {" "}
         <div className="mb-3">
-                    <label>Email</label>
-                   {" "}
+          <label>Email</label>
           <input
             type="email"
             className="form-control"
@@ -62,12 +58,10 @@ const Login = () => {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-                 {" "}
         </div>
-               {" "}
+
         <div className="mb-3">
-                    <label>Password</label>
-                   {" "}
+          <label>Password</label>
           <input
             type="password"
             className="form-control"
@@ -75,39 +69,29 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-                 {" "}
         </div>
-               {" "}
+
         <button type="submit" className="btn btn-success">
-                    Login        {" "}
+          Login
         </button>
-             {" "}
       </form>
-           {" "}
+
       <div className="mt-3">
-               {" "}
         <p>
-                   {" "}
           <a href="/forgot-password" className="text-primary">
-                        Forgot your password?          {" "}
+            Forgot your password?
           </a>
-                 {" "}
         </p>
-             {" "}
       </div>
-           {" "}
+
       <div className="mt-3">
-               {" "}
         <p>
-                    Don't have an account?          {" "}
+          Don't have an account?
           <a href="/register" className="text-primary">
-                        Register          {" "}
+            Register
           </a>
-                 {" "}
         </p>
-             {" "}
       </div>
-         {" "}
     </div>
   );
 };
