@@ -1,12 +1,13 @@
 import React from "react";
 import { FaFacebookF, FaTwitter, FaInstagram, FaYoutube } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import "../../css/Footer.css"; 
-import backgroundFooter from "../img/Footerimg.png"; 
+import "../../css/Footer.css";
+import backgroundFooter from "../img/Footerimg.png";
 
 export const Footer = () => {
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("user"));
+  const userString = localStorage.getItem("user");
+  const user = userString ? JSON.parse(userString) : null;
   const isLoggedIn = !!user;
 
   const handleProfileLink = (e) => {
@@ -50,12 +51,18 @@ export const Footer = () => {
             <h5 className="text-uppercase mb-3">Help</h5>
             <ul className="list-unstyled">
               <li>
-                <Link to="/about-us" className="text-light text-decoration-none">
+                <Link
+                  to="/about-us"
+                  className="text-light text-decoration-none"
+                >
                   About Us
                 </Link>
               </li>
               <li>
-                <Link to="/terms-of-service" className="text-light text-decoration-none">
+                <Link
+                  to="/terms-of-service"
+                  className="text-light text-decoration-none"
+                >
                   Terms of Service
                 </Link>
               </li>
@@ -76,7 +83,10 @@ export const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/register" className="text-light text-decoration-none">
+                <Link
+                  to="/register"
+                  className="text-light text-decoration-none"
+                >
                   Sign Up
                 </Link>
               </li>
@@ -87,13 +97,25 @@ export const Footer = () => {
           <div className="col-6 col-md-3 mb-4">
             <h5 className="text-uppercase mb-3">Follow Us</h5>
             <div className="social-icons-container">
-              <a href="#" className="text-light fs-5" onClick={handleFollowUsLink}>
+              <a
+                href="#"
+                className="text-light fs-5"
+                onClick={handleFollowUsLink}
+              >
                 <FaTwitter />
               </a>
-              <a href="#" className="text-light fs-5" onClick={handleFollowUsLink}>
+              <a
+                href="#"
+                className="text-light fs-5"
+                onClick={handleFollowUsLink}
+              >
                 <FaInstagram />
               </a>
-              <a href="#" className="text-light fs-5" onClick={handleFollowUsLink}>
+              <a
+                href="#"
+                className="text-light fs-5"
+                onClick={handleFollowUsLink}
+              >
                 <FaYoutube />
               </a>
             </div>
@@ -111,3 +133,4 @@ export const Footer = () => {
     </footer>
   );
 };
+export default Footer;

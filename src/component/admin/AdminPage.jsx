@@ -1,71 +1,135 @@
+// src/component/admin/AdminPage.jsx (Actualizado para usar la API)
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import MovieTable from "./MovieTable";
-import AddMovieModal from "./AddMovieModal";
+// Importamos las funciones de nuestro nuevo servicio de API
+import * as productService from "../../services/productService";
+import ProductTable from "./ProductTable";
+import AddProductModal from "./AddProductModal";
 import styles from "./AdminPage.module.css";
 
 const AdminPage = () => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [movies, setMovies] = useState([]);
-  const [movieToEdit, setMovieToEdit] = useState(null);
+  const [products, setProducts] = useState([]);
+  const [productToEdit, setProductToEdit] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Para que la ruta solo lo tenga chisato
+  // **Paso 1: Verificación de acceso por rol 'isAdmin'**
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
-    if (!user || user.username !== "Chisato") {
-      navigate("/404"); 
+    if (!user || !user.isAdmin) {
+      navigate("/404");
     }
+    // Llamamos a la función para obtener los productos del backend
+    fetchProducts();
   }, [navigate]);
 
-  const openModal = (movie) => {
-    setMovieToEdit(movie);
+  // **Función para obtener los productos del backend (ahora con la API)**
+  const fetchProducts = async () => {
+    setLoading(true);
+    setError(null); // Resetea el error antes de la llamada
+    try {
+      const data = await productService.getAllProducts();
+      setProducts(data);
+    } catch (err) {
+      console.error("Error al obtener los productos:", err);
+      setError(
+        "No se pudieron cargar los productos. Asegúrate de que tu backend esté funcionando."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const openModal = (product) => {
+    setProductToEdit(product);
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setMovieToEdit(null);
+    setProductToEdit(null);
+    // Volver a cargar la lista de productos al cerrar el modal para ver los cambios
+    fetchProducts();
   };
 
-  const addMovie = (newMovie) => {
-    setMovies([...movies, newMovie]);
+  // **Funciones para manejar el CRUD de productos con llamadas a la API**
+  const handleAddProduct = async (newProduct) => {
+    try {
+      await productService.addProduct(newProduct);
+      alert("Producto agregado con éxito!");
+    } catch (err) {
+      console.error("Error al agregar el producto:", err);
+      alert("Error al agregar el producto. Revisa la consola.");
+    } finally {
+      // Volver a cargar los datos para reflejar el cambio
+      fetchProducts();
+    }
   };
 
-  const updateMovie = (updatedMovie) => {
-    setMovies(
-      movies.map((movie) =>
-        movie.id === updatedMovie.id ? updatedMovie : movie
-      )
+  const handleUpdateProduct = async (updatedProduct) => {
+    try {
+      await productService.updateProduct(updatedProduct._id, updatedProduct);
+      alert("Producto actualizado con éxito!");
+    } catch (err) {
+      console.error("Error al actualizar el producto:", err);
+      alert("Error al actualizar el producto. Revisa la consola.");
+    } finally {
+      // Volver a cargar los datos para reflejar el cambio
+      fetchProducts();
+    }
+  };
+
+  const handleDeleteProduct = async (productId) => {
+    if (
+      window.confirm("¿Estás seguro de que quieres eliminar este producto?")
+    ) {
+      try {
+        await productService.deleteProduct(productId);
+        alert("Producto eliminado con éxito!");
+      } catch (err) {
+        console.error("Error al eliminar el producto:", err);
+        alert("Error al eliminar el producto. Revisa la consola.");
+      } finally {
+        // Volver a cargar los datos para reflejar el cambio
+        fetchProducts();
+      }
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="text-white text-center mt-5">Cargando productos...</div>
     );
-  };
+  }
 
-  const deleteMovie = (movieId) => {
-    setMovies(movies.filter((movie) => movie.id !== movieId));
-  };
+  if (error) {
+    return <div className="text-danger text-center mt-5">Error: {error}</div>;
+  }
 
   return (
     <div>
       <div className={styles.adminContainer}>
-        <h1>Administrar web de peliculas</h1>
+        <h1>Administrar Stock de la Librería</h1>
         <button
           className={styles.newMovieButton}
           onClick={() => openModal(null)}
         >
-          Nueva pelicula
+          Nuevo Producto
         </button>
-        <MovieTable
-          movies={movies}
-          onDelete={deleteMovie}
+        <ProductTable
+          products={products}
+          onDelete={handleDeleteProduct}
           onEdit={openModal}
         />
       </div>
-      <AddMovieModal
+      <AddProductModal
         isOpen={isModalOpen}
         onClose={closeModal}
-        addMovie={addMovie}
-        updateMovie={updateMovie}
-        movieToEdit={movieToEdit}
+        addProduct={handleAddProduct}
+        updateProduct={handleUpdateProduct}
+        productToEdit={productToEdit}
       />
     </div>
   );

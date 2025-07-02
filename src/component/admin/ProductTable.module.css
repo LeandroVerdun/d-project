@@ -1,0 +1,94 @@
+.tableContainer {
+  margin-top: 20px;
+  background-color: #343a40; /* Fondo oscuro de Bootstrap 'dark' */
+  border-radius: 8px;
+  overflow-x: auto; /* Permite desplazamiento horizontal en pantallas pequeñas */
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.tableContainer table {
+  width: 100%;
+  margin-bottom: 0;
+  color: #f8f9fa; /* Texto claro para la tabla */
+}
+
+/* Estilos para encabezados de tabla */
+.tableContainer th {
+  background-color: #495057; /* Un gris un poco más claro para los encabezados */
+  color: #ffc107; /* Amarillo para los títulos de las columnas */
+  vertical-align: middle;
+  padding: 12px 10px; /* Más padding para los encabezados */
+  font-weight: 600;
+}
+
+/* Estilos para celdas de tabla */
+.tableContainer td {
+  vertical-align: middle;
+  padding: 10px;
+}
+
+/* Estilos para filas impares (striped) */
+.tableContainer .table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(0, 0, 0, 0.08); /* Ligeramente más oscuro */
+}
+
+/* Estilos para hover en filas */
+.tableContainer .table-hover tbody tr:hover {
+  background-color: #5a6268; /* Un gris más claro al hacer hover */
+}
+
+/* Estilo para las imágenes dentro de la tabla */
+.tableContainer img {
+  border-radius: 4px;
+  display: block; /* Elimina espacio extra debajo de la imagen */
+  margin: auto; /* Centra la imagen */
+}
+
+/* Estilos para los botones de acción en la tabla */
+.tableContainer .btn-warning,
+.tableContainer .btn-danger {
+  padding: 5px 10px;
+  font-size: 0.85em;
+  display: inline-flex; /* Para alinear el icono y el texto */
+  align-items: center;
+  gap: 5px; /* Espacio entre icono y texto */
+}
+
+.tableContainer .btn-warning:hover {
+  filter: brightness(1.1); /* Ligeramente más brillante al hover */
+}
+
+.tableContainer .btn-danger:hover {
+  filter: brightness(1.1); /* Ligeramente más brillante al hover */
+}
+
+/* Media queries para responsividad */
+@media (max-width: 992px) {
+  .tableContainer {
+    padding: 10px;
+  }
+  .tableContainer table {
+    font-size: 0.95em;
+  }
+  .tableContainer th,
+  .tableContainer td {
+    padding: 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  .tableContainer {
+    padding: 5px;
+  }
+  .tableContainer table {
+    font-size: 0.85em;
+  }
+  .tableContainer th,
+  .tableContainer td {
+    padding: 6px;
+  }
+  .tableContainer img {
+    width: 40px; /* Un poco más pequeña en móviles */
+  }
+}

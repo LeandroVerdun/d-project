@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import chisatoAvatar from "../assets/img/register.webp";
 import ChisatoZone from "../assets/img/logo-chisato-zone.png";
-import "../css/Profile.css"; 
+import "../css/Profile.css";
+import { registerUser } from "../services/api"; // Importa la nueva función
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -43,33 +44,37 @@ const Register = () => {
     handleChange(e);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
       alert("Passwords do not match");
       return;
+    } // Prepara los datos para el backend
+
+    const newUser = {
+      name: `${formData.firstName} ${formData.lastName}`,
+      username: formData.username,
+      email: formData.email,
+      password: formData.password,
+      isAdmin: false, // Por defecto, el usuario no es admin
+    };
+
+    try {
+      // Llama a la función de la API en lugar de usar localStorage
+      const registeredUser = await registerUser(newUser);
+      console.log("User registered successfully:", registeredUser);
+      alert("Registration successful! You can now log in.");
+      navigate("/login");
+    } catch (error) {
+      // Maneja errores, por ejemplo, si el nombre de usuario ya existe
+      alert(error.message || "Registration failed. Please try again.");
     }
-
-    const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
-    const isUsernameTaken = existingUsers.some(user => user.username === formData.username);
-
-    if (isUsernameTaken) {
-      alert("Username is already taken. Please choose another one.");
-      return;
-    }
-
-    const newUser = { ...formData };
-    existingUsers.push(newUser);
-    localStorage.setItem("users", JSON.stringify(existingUsers));
-
-    navigate("/login");
   };
 
   return (
     <div className="container p-0 d-flex flex-wrap justify-content-between text-white p-md-5 m-0">
-
-      {/* Imágenes para móvil/tablet */}
+      {/* Imágenes para móvil/tablet */}     {" "}
       <div className="registration-image col-lg-6 col-md-12 d-flex justify-content-between p-3 bg-dark border border-white d-none img-container-2 m-0">
         <div className="profile-image-container col-6 col-md-3 d-flex flex-column justify-content-center align-items-start">
           <img
@@ -82,6 +87,7 @@ const Register = () => {
             }}
           />
         </div>
+
         <div className="profile-image-container col-6 col-md-3 d-flex flex-column justify-content-center align-items-end">
           <img
             src={chisatoAvatar}
@@ -94,23 +100,52 @@ const Register = () => {
           />
         </div>
       </div>
-
-
-      {/* Parte izquierda (formulario) */}
+      {/* Parte izquierda (formulario) */}     {" "}
       <div className="registration-form col-lg-6 col-md-12 border border-white p-4 rounded">
-        <h1 className="fw-bold fs-1 text-start">Register</h1>
-
+        <h1 className="fw-bold fs-1 text-start">Register</h1>       {" "}
         <form onSubmit={handleSubmit}>
-          {[ 
-            { id: "firstName", label: "First and Last Name", type: "text", placeholder: "Chisato Nishikigi", max: 30 },
-            { id: "username", label: "Username", type: "text", placeholder: "Chisato_123", max: 20 },
-            { id: "email", label: "Email", type: "email", placeholder: "email@gmail.com", max: 30 },
+          {[
+            {
+              id: "firstName",
+              label: "First and Last Name",
+              type: "text",
+              placeholder: "Chisato Nishikigi",
+              max: 30,
+            },
+            {
+              id: "username",
+              label: "Username",
+              type: "text",
+              placeholder: "Chisato_123",
+              max: 20,
+            },
+            {
+              id: "email",
+              label: "Email",
+              type: "email",
+              placeholder: "email@gmail.com",
+              max: 30,
+            },
             { id: "password", label: "Password", type: "password", max: 10 },
-            { id: "confirmPassword", label: "Confirm Password", type: "password", max: 10 },
-            { id: "cardNumber", label: "Card Number", type: "text", placeholder: "1234 5678 9876 5432", max: 19 },
+            {
+              id: "confirmPassword",
+              label: "Confirm Password",
+              type: "password",
+              max: 10,
+            },
+            {
+              id: "cardNumber",
+              label: "Card Number",
+              type: "text",
+              placeholder: "1234 5678 9876 5432",
+              max: 19,
+            },
           ].map(({ id, label, type, placeholder, max }) => (
             <div className="mb-3" key={id}>
-              <label htmlFor={id} className="form-label text-start d-block">{label}</label>
+              <label htmlFor={id} className="form-label text-start d-block">
+                {label}
+              </label>
+
               <input
                 type={type}
                 className="form-control bg-dark text-white border-secondary"
@@ -127,7 +162,10 @@ const Register = () => {
 
           <div className="mb-3 d-flex justify-content-between">
             <div className="form-group w-50 me-2">
-              <label htmlFor="expirationDate" className="form-label text-start">Expiration Date (MM/YY)</label>
+              <label htmlFor="expirationDate" className="form-label text-start">
+                Expiration Date (MM/YY)
+              </label>
+
               <input
                 type="text"
                 className="form-control bg-dark text-white border-secondary"
@@ -140,8 +178,12 @@ const Register = () => {
                 required
               />
             </div>
+
             <div className="form-group w-50 ms-2">
-              <label htmlFor="securityCode" className="form-label text-start">Security Code</label>
+              <label htmlFor="securityCode" className="form-label text-start">
+                Security Code
+              </label>
+
               <input
                 type="text"
                 className="form-control bg-dark text-white border-secondary"
@@ -155,24 +197,30 @@ const Register = () => {
               />
             </div>
           </div>
-
           <div className="mb-3 form-check">
-            <input type="checkbox" className="form-check-input" id="checkRobot" required />
-            <label className="form-check-label" htmlFor="checkRobot">I am not a robot</label>
+            <input
+              type="checkbox"
+              className="form-check-input"
+              id="checkRobot"
+              required
+            />
+
+            <label className="form-check-label" htmlFor="checkRobot">
+              I am not a robot
+            </label>
           </div>
-
-          <button type="submit" className="btn btn-primary w-100 p-2">Register</button>
-
+          <button type="submit" className="btn btn-primary w-100 p-2">
+            Register
+          </button>
           <div className="create-account d-flex gap-2 p-2">
-            <p>Already have an account?</p>
-            <a href="/login" className="text-lowercase fw-bolder">Login</a>
+            <p>Already have an account?</p>           {" "}
+            <a href="/login" className="text-lowercase fw-bolder">
+              Login
+            </a>
           </div>
         </form>
       </div>
-
-
-
-      {/* Imágenes para vesion de escritorio */}
+      {/* Imágenes para vesion de escritorio */}     {" "}
       <div className="registration-image col-lg-6 col-md-12 d-flex flex-column justify-content-center align-items-center border border-white p-3 bg-dark img-container-1">
         <img
           src={ChisatoZone}
@@ -190,8 +238,6 @@ const Register = () => {
           }}
         />
       </div>
-
-      
     </div>
   );
 };

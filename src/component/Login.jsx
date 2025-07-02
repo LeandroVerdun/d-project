@@ -1,6 +1,9 @@
+// src/component/Login.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Chisato from "../assets/img/Loging.jpg"; 
+import { jwtDecode } from "jwt-decode";
+import Chisato from "../assets/img/Loging.jpg";
+import { loginUser } from "../services/api";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -8,27 +11,53 @@ const Login = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
 
-    const users = JSON.parse(localStorage.getItem("users")) || [];
+    try {
+      const userData = await loginUser({ email, password });
 
-    const foundUser = users.find(
-      (user) => user.email === email && user.password === password
-    );
+      if (userData && userData.token) {
+        localStorage.setItem("token", userData.token);
+        const decodedToken = jwtDecode(userData.token);
 
-    if (foundUser) {
-      // Guarda en el localstorage
-      localStorage.setItem("user", JSON.stringify(foundUser));
+        // Asegúrate de que el token decodificado contiene isAdmin
+        const user = {
+          id: decodedToken.id,
+          isAdmin: decodedToken.isAdmin, // <-- Esto es lo que ProtectedUserAdmin lee
+          username: decodedToken.username || email, // Preferiblemente usa el username del token si existe, sino el email
+        };
+        localStorage.setItem("user", JSON.stringify(user));
 
-      // Redirige al home
-      navigate("/");
-    } else {
-      setError("Incorrect email or password.");
+        // ****** INICIO DE LA MODIFICACIÓN ******
+        // Redirige según el rol del usuario
+        if (user.isAdmin) {
+          navigate("/admin"); // Si es administrador, ir a la página de administración
+        } else {
+          navigate("/"); // Si no es administrador, ir a la página principal o a donde desees
+        }
+        // ****** FIN DE LA MODIFICACIÓN ******
+      } else {
+        throw new Error(
+          "Invalid response from server. Missing token or user data."
+        );
+      }
+    } catch (err) {
+      console.error("Error en el inicio de sesión:", err);
+      // err.message ahora directamente contendrá lo que lanzó tu api.js
+      setError(
+        err.message ||
+          "Credenciales inválidas. Por favor, verifica tu email y contraseña."
+      );
     }
-  };
+  }; // <--- La llave de CIERRE de handleSubmit está aquí.
+
+  // <--- ¡NO DEBE HABER NINGUNA LLAVE DE CIERRE ADICIONAL AQUÍ!
+  // <--- El `return` debe estar al mismo nivel que `const [email, ...]`, `const handleSubmit = ...`
 
   return (
+    // <-- Este return es el de la función principal `Login`
     <div className="container mt-5 text-white">
       <h2>Login</h2>
       <div className="mt-4 d-flex justify-content-center pb-3">
@@ -51,6 +80,7 @@ const Login = () => {
             required
           />
         </div>
+
         <div className="mb-3">
           <label>Password</label>
           <input
@@ -61,12 +91,12 @@ const Login = () => {
             required
           />
         </div>
+
         <button type="submit" className="btn btn-success">
           Login
         </button>
       </form>
 
-      {/* link de olvidaste la contrase;a */}
       <div className="mt-3">
         <p>
           <a href="/forgot-password" className="text-primary">
@@ -75,19 +105,16 @@ const Login = () => {
         </p>
       </div>
 
-      {/* Link de logearse */}
       <div className="mt-3">
         <p>
-          Don't have an account?{" "}
+          Don't have an account?
           <a href="/register" className="text-primary">
             Register
           </a>
         </p>
       </div>
-
-      
     </div>
   );
-};
+}; // <--- La llave de CIERRE de la función `Login` está aquí.
 
 export default Login;
