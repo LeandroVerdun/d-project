@@ -1,0 +1,112 @@
+.featured-books-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.featured-book-item {
+  position: relative;
+  width: 300px;
+  height: 450px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.featured-book-item:hover {
+  transform: translateY(-5px);
+}
+
+.featured-book-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.featured-book-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  /* Cambiamos el gradiente y el punto de inicio para que se vea más al hacer hover */
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.9),
+    rgba(0, 0, 0, 0.6) 50%,
+    rgba(0, 0, 0, 0)
+  );
+  color: white;
+  padding: 15px;
+  box-sizing: border-box;
+  /* Hacemos que se deslice más arriba al hacer hover */
+  transform: translateY(
+    calc(100% - 100px)
+  ); /* Por ejemplo, muestra los últimos 100px por defecto */
+  transition: transform 0.3s ease-in-out;
+  display: flex; /* Añadido para mejor flujo de los elementos internos */
+  flex-direction: column; /* Añadido para mejor flujo de los elementos internos */
+  justify-content: flex-end; /* Alinea el contenido al final de la superposición */
+}
+
+.featured-book-item:hover .featured-book-overlay {
+  transform: translateY(0); /* Al hacer hover, se muestra completamente */
+}
+
+/* Quitamos los posicionamientos absolutos de los elementos internos */
+.featured-book-item .card-title,
+.featured-book-item .card-text {
+  position: static; /* Cambiado a static para que fluyan normalmente */
+  margin-bottom: 5px; /* Espaciado entre elementos */
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
+  width: auto; /* Quitamos width definido, que no es necesario con static */
+  left: auto; /* Quitamos left */
+  right: auto; /* Quitamos right */
+  bottom: auto; /* Quitamos bottom */
+}
+
+.featured-book-item .card-title {
+  margin-bottom: 0px; /* Elimina margen inferior del titulo */
+}
+
+/* Aseguramos que la descripción se muestre con opacidad 1 al hacer hover */
+.featured-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0; /* Por defecto oculta la descripción */
+  transition: opacity 0.3s ease-in-out;
+  margin-bottom: 0;
+}
+
+.featured-book-item:hover .featured-description {
+  opacity: 1; /* Al hacer hover, la descripción es visible */
+}
+
+/* Aseguramos que el badge de stock siempre esté visible en la parte inferior */
+.featured-book-overlay .badge {
+  margin-top: auto; /* Empuja el badge hacia abajo */
+  align-self: flex-start; /* Alinea el badge a la izquierda si el flex-direction es column */
+}
+
+@media (max-width: 768px) {
+  .featured-book-item {
+    width: 250px;
+    height: 375px;
+  }
+}
+
+@media (max-width: 576px) {
+  .featured-book-item {
+    width: 100%;
+    height: 400px;
+  }
+  .featured-books-container {
+    flex-direction: column;
+    align-items: center;
+  }
+}

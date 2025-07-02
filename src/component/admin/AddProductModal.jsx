@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from "react";
-// NOTA: Asegúrate de tener instalado react-bootstrap y bootstrap
-// Si no lo tienes, puedes instalarlo con 'npm install react-bootstrap bootstrap'
-// y agregar 'import "bootstrap/dist/css/bootstrap.min.css";' en tu App.js
 import { Modal, Button, Form } from "react-bootstrap";
 
 const AddProductModal = ({

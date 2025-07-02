@@ -12,7 +12,7 @@ const getAuthHeaders = () => {
   };
 };
 
-// Obtener todos los productos
+// Obtener todos los productos (Esta es la función que usa FeaturedBooksSection)
 export const getAllProducts = async () => {
   try {
     const response = await fetch(API_URL, {
@@ -89,6 +89,7 @@ export const deleteProduct = async (id) => {
     throw error;
   }
 };
+
 // Obtener un producto por ID
 export const getProductById = async (id) => {
   try {

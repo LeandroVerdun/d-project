@@ -1,6 +1,7 @@
+// src/component/admin/ProductTable.jsx
 import React from "react";
-// Reutilizamos el mismo archivo de estilos si existe
-import styles from "./MovieTable.module.css";
+// ¡CORREGIDO! Ahora importa del nombre correcto del archivo CSS.
+import styles from "./ProductTable.module.css";
 
 const ProductTable = ({ products, onEdit, onDelete }) => {
   return (
@@ -25,7 +26,7 @@ const ProductTable = ({ products, onEdit, onDelete }) => {
                 <img
                   src={product.image}
                   alt={product.name}
-                  style={{ width: "50px", height: "auto" }}
+                  style={{ width: "50px", height: "auto", objectFit: "cover" }} // Agregado objectFit para mejor visualización
                 />
               </td>
               <td>{product.name}</td>
@@ -34,20 +35,25 @@ const ProductTable = ({ products, onEdit, onDelete }) => {
               <td>{product.category}</td>
               <td>{product.author}</td>
               <td>
-                {new Date(product.lastStockControlDate).toLocaleDateString()}
+                {/* Asegúrate que la fecha exista y sea válida antes de formatear */}
+                {product.lastStockControlDate
+                  ? new Date(product.lastStockControlDate).toLocaleDateString()
+                  : "N/A"}
               </td>
               <td>
                 <button
                   className="btn btn-warning btn-sm me-2"
                   onClick={() => onEdit(product)}
                 >
-                  Editar
+                  <i className="bi bi-pencil-square"></i> Editar{" "}
+                  {/* Icono de Bootstrap */}
                 </button>
                 <button
                   className="btn btn-danger btn-sm"
                   onClick={() => onDelete(product._id)}
                 >
-                  Eliminar
+                  <i className="bi bi-trash"></i> Eliminar{" "}
+                  {/* Icono de Bootstrap */}
                 </button>
               </td>
             </tr>

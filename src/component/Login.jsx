@@ -1,6 +1,7 @@
+// src/component/Login.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode"; // Importamos el decodificador
+import { jwtDecode } from "jwt-decode";
 import Chisato from "../assets/img/Loging.jpg";
 import { loginUser } from "../services/api";
 
@@ -18,25 +19,45 @@ const Login = () => {
       const userData = await loginUser({ email, password });
 
       if (userData && userData.token) {
-        // Guarda el token en localStorage
-        localStorage.setItem("token", userData.token); // Decodifica el token para obtener los datos del usuario (id, isAdmin)
-        const decodedToken = jwtDecode(userData.token); // Creamos un objeto de usuario con la data disponible
+        localStorage.setItem("token", userData.token);
+        const decodedToken = jwtDecode(userData.token);
+
+        // Asegúrate de que el token decodificado contiene isAdmin
         const user = {
           id: decodedToken.id,
-          isAdmin: decodedToken.isAdmin,
-          username: email, // Usamos el email como nombre de usuario por ahora
-        }; // Guarda el objeto 'user' en localStorage
+          isAdmin: decodedToken.isAdmin, // <-- Esto es lo que ProtectedUserAdmin lee
+          username: decodedToken.username || email, // Preferiblemente usa el username del token si existe, sino el email
+        };
         localStorage.setItem("user", JSON.stringify(user));
-        navigate("/");
+
+        // ****** INICIO DE LA MODIFICACIÓN ******
+        // Redirige según el rol del usuario
+        if (user.isAdmin) {
+          navigate("/admin"); // Si es administrador, ir a la página de administración
+        } else {
+          navigate("/"); // Si no es administrador, ir a la página principal o a donde desees
+        }
+        // ****** FIN DE LA MODIFICACIÓN ******
       } else {
-        throw new Error("Invalid response from server. Missing token.");
+        throw new Error(
+          "Invalid response from server. Missing token or user data."
+        );
       }
     } catch (err) {
-      setError(err.message || "An unexpected error occurred during login.");
+      console.error("Error en el inicio de sesión:", err);
+      // err.message ahora directamente contendrá lo que lanzó tu api.js
+      setError(
+        err.message ||
+          "Credenciales inválidas. Por favor, verifica tu email y contraseña."
+      );
     }
-  };
+  }; // <--- La llave de CIERRE de handleSubmit está aquí.
+
+  // <--- ¡NO DEBE HABER NINGUNA LLAVE DE CIERRE ADICIONAL AQUÍ!
+  // <--- El `return` debe estar al mismo nivel que `const [email, ...]`, `const handleSubmit = ...`
 
   return (
+    // <-- Este return es el de la función principal `Login`
     <div className="container mt-5 text-white">
       <h2>Login</h2>
       <div className="mt-4 d-flex justify-content-center pb-3">
@@ -94,5 +115,6 @@ const Login = () => {
       </div>
     </div>
   );
-};
+}; // <--- La llave de CIERRE de la función `Login` está aquí.
+
 export default Login;
