@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 // Asegúrate que la ruta a productService sea correcta
-import * as productService from "../../services/productService";
+import * as productService from "../../services/productService.js";
 
 const ProductDetail = () => {
   const { id } = useParams(); // Obtiene el ID del producto de la URL (ej. /products/123)
@@ -16,14 +16,21 @@ const ProductDetail = () => {
       setError(null);
       try {
         const data = await productService.getProductById(id);
+        console.log(
+          "1. Datos recibidos del backend (dentro de fetchProduct):",
+          data
+        );
         setProduct(data);
+        console.log(
+          "2. Estado del producto después de setProduct (dentro de fetchProduct):",
+          data
+        );
       } catch (err) {
-        // MODIFICACIÓN AQUÍ: Loguea el error completo
         console.error(`Error al cargar el producto ${id}:`, err);
         console.error(
           "Detalles del error:",
           err.response ? err.response.data : err.message
-        ); // Intenta acceder a más detalles del error de Axios
+        );
         setError(
           err.response?.data?.message ||
             "No se pudo cargar el detalle del libro. Asegúrate de que el ID es correcto y el backend funciona."
@@ -36,11 +43,13 @@ const ProductDetail = () => {
     if (id) {
       fetchProduct();
     }
-  }, [id]); // El efecto se vuelve a ejecutar si el ID de la URL cambia
+  }, [id]);
 
   if (loading) {
     return (
-      <div className="text-white text-center mt-5">
+      <div className="text-center mt-5" style={{ color: "black" }}>
+        {" "}
+        {/* Color temporal para que se vea */}
         Cargando detalles del libro...
       </div>
     );
@@ -50,14 +59,23 @@ const ProductDetail = () => {
     return <div className="text-danger text-center mt-5">Error: {error}</div>;
   }
 
+  // **IMPORTANTE**: Este bloque if (!product) lo quitamos temporalmente para confirmar que se ve.
+  // Es una buena práctica tenerlo, pero si los datos siempre llegan, podemos dejar que el componente se renderice.
+  // Si en algún caso un ID no devuelve nada, entonces podríamos volver a añadirlo o manejarlo de otra forma.
+  // Por ahora, lo más crucial es que veas el texto.
   if (!product) {
+    // Se mantiene esta comprobación para evitar errores si product es null, aunque los logs sugieren que no debería serlo.
     return (
-      <div className="text-white text-center mt-5">Libro no encontrado.</div>
+      <div className="text-center mt-5" style={{ color: "black" }}>
+        Libro no encontrado o datos no disponibles.
+      </div>
     );
   }
 
   return (
-    <div className="container mt-5 text-white">
+    <div className="container mt-5 text-dark">
+      {" "}
+      {/* CAMBIO CLAVE AQUÍ: text-white a text-dark */}
       <div className="row">
         <div className="col-md-6 text-center mb-4 mb-md-0">
           <img
