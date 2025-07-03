@@ -4,21 +4,20 @@ const API_URL = "http://localhost:5000/api/products"; // Asegúrate que esta URL
 
 const getAuthHeaders = () => {
   const user = JSON.parse(localStorage.getItem("user"));
-  const token = user?.token; // Asume que el token está en el objeto de usuario
+  const token = localStorage.getItem("token");
+  console.log(user);
 
   return {
     "Content-Type": "application/json",
-    ...(token && { "x-auth-token": token }), // Agrega el token si existe
+    Authorization: `Bearer ${token}`,
   };
 };
 
 // Obtener todos los productos (Esta es la función que usa FeaturedBooksSection)
 export const getAllProducts = async () => {
   try {
-    const response = await fetch(API_URL, {
-      method: "GET",
-      headers: getAuthHeaders(),
-    });
+    const response = await fetch("http://localhost:5000/api/products");
+    console.log(response);
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.message || "Error al obtener los productos.");
@@ -33,10 +32,15 @@ export const getAllProducts = async () => {
 
 // Agregar un nuevo producto
 export const addProduct = async (product) => {
+  const token = localStorage.getItem("token");
+  console.log("token", token);
   try {
     const response = await fetch(API_URL, {
       method: "POST",
-      headers: getAuthHeaders(),
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify(product),
     });
     if (!response.ok) {

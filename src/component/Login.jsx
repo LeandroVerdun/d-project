@@ -30,14 +30,12 @@ const Login = () => {
         };
         localStorage.setItem("user", JSON.stringify(user));
 
-        // ****** INICIO DE LA MODIFICACIÓN ******
         // Redirige según el rol del usuario
         if (user.isAdmin) {
           navigate("/admin"); // Si es administrador, ir a la página de administración
         } else {
           navigate("/"); // Si no es administrador, ir a la página principal o a donde desees
         }
-        // ****** FIN DE LA MODIFICACIÓN ******
       } else {
         throw new Error(
           "Invalid response from server. Missing token or user data."
@@ -51,11 +49,7 @@ const Login = () => {
           "Credenciales inválidas. Por favor, verifica tu email y contraseña."
       );
     }
-  }; // <--- La llave de CIERRE de handleSubmit está aquí.
-
-  // <--- ¡NO DEBE HABER NINGUNA LLAVE DE CIERRE ADICIONAL AQUÍ!
-  // <--- El `return` debe estar al mismo nivel que `const [email, ...]`, `const handleSubmit = ...`
-
+  };
   return (
     // <-- Este return es el de la función principal `Login`
     <div className="container mt-5 text-white">
@@ -115,6 +109,6 @@ const Login = () => {
       </div>
     </div>
   );
-}; // <--- La llave de CIERRE de la función `Login` está aquí.
+};
 
 export default Login;

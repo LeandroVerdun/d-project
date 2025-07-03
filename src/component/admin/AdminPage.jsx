@@ -31,9 +31,11 @@ const AdminPage = () => {
     setError(null); // Resetea el error antes de la llamada
     try {
       const data = await productService.getAllProducts();
+      console.log(data);
       setProducts(data);
     } catch (err) {
       console.error("Error al obtener los productos:", err);
+
       setError(
         "No se pudieron cargar los productos. Asegúrate de que tu backend esté funcionando."
       );
