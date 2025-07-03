@@ -2,19 +2,10 @@ import React, { useState, useEffect } from "react";
 // Asegúrate de que las rutas a los CSS y assets sean correctas
 import "../../css/MainPage.css";
 import FeaturedBooksSection from "../../component/FeaturedBooksSection";
+import CategoryCarousel from "../../component/CategoryCarousel"; // <-- ¡IMPORTAMOS EL NUEVO COMPONENTE AQUÍ!
 import LogoChisato from "../../assets/img/logo-main.png";
 
 export const HomePage = () => {
-  // Eliminamos la importación y la llamada a createAdminIfNeeded
-  // const [searchTerm, setSearchTerm] = useState("a");
-  // const { movies, loading } = useFetchMovies(searchTerm, 10);
-
-  // Comentamos o eliminamos este useEffect si solo contenía la llamada a createAdminIfNeeded
-  // Si en el futuro necesitas un useEffect para otra cosa, puedes agregarlo de nuevo.
-  // useEffect(() => {
-  //   createAdminIfNeeded(); // <--- ¡ELIMINAR ESTA LÍNEA!
-  // }, []);
-
   return (
     <div className="container text-white">
       {/* Logo centrado */}
@@ -68,8 +59,8 @@ export const HomePage = () => {
       */}
       <div className="row my-5">
         <div className="col-12">
-          {/* Aquí irá tu nuevo componente de sliders de categorías */}
-          <p>TODO: Sección de Sliders de Categorías de Libros</p>
+          {/* Aquí insertamos el nuevo componente del carrusel de categorías */}
+          <CategoryCarousel /> {/* <-- ¡NUEVO COMPONENTE AGREGADO AQUÍ! */}
         </div>
       </div>
 

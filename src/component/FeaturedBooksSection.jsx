@@ -1,6 +1,6 @@
 // src/components/FeaturedBooksSection.jsx
 import React, { useState, useEffect } from "react";
-// ¡CAMBIO CLAVE AQUÍ! Importamos getAllProducts con llaves y su nombre correcto
+// Asegúrate de que las rutas a los CSS y assets sean correctas
 import { getAllProducts } from "../services/productService"; // <-- Importamos getAllProducts directamente
 import "../css/FeaturedBooksSection.css";
 
@@ -15,7 +15,6 @@ const FeaturedBooksSection = () => {
       setError(null);
       try {
         console.log("Iniciando la carga de libros destacados...");
-        // ¡CAMBIO CLAVE AQUÍ! Llamamos a getAllProducts con su nombre correcto
         const allBooks = await getAllProducts(); // <-- Llamamos a la función directamente
         console.log("Libros recibidos de getAllProducts():", allBooks);
 
@@ -89,6 +88,15 @@ const FeaturedBooksSection = () => {
             </p>
             <p className="card-text featured-description">{book.description}</p>
             <span className="badge bg-primary">Stock: {book.stock}</span>
+            {/* ¡NUEVA LÍNEA AÑADIDA AQUÍ PARA MOSTRAR EL PRECIO! */}
+            <h5 className="text-success mt-2">
+              {new Intl.NumberFormat("es-AR", {
+                style: "currency",
+                currency: "ARS",
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              }).format(book.price)}
+            </h5>
           </div>
         </div>
       ))}

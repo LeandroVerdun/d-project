@@ -1,10 +1,36 @@
 // src/component/products/ProductCard.jsx
 import React from "react";
-import { Link } from "react-router-dom"; // Necesitamos Link para navegar al detalle
-// Si tienes un archivo CSS para las tarjetas de películas (ej. MovieCard.module.css), puedes adaptarlo.
-// import styles from './ProductCard.module.css';
+import { Link } from "react-router-dom";
+import * as cartService from "../../services/cartService"; // Importa tu nuevo servicio de carrito (ajusta la ruta si es necesario)
 
 const ProductCard = ({ product }) => {
+  // Formatear el precio aquí para la vista de tarjeta
+  const formattedPrice = new Intl.NumberFormat("es-AR", {
+    style: "currency",
+    currency: "ARS",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(product.price); // Usa product.price directamente
+
+  // Función para manejar el clic en "Añadir al Carrito"
+  const handleAddToCart = async () => {
+    try {
+      // Por defecto, añadimos 1 unidad. Puedes añadir un input para que el usuario elija la cantidad.
+      await cartService.addOrUpdateItemInCart(product._id, 1);
+      alert(`${product.name} ha sido añadido al carrito.`);
+      // Opcional: Aquí podrías disparar una actualización de un contexto global
+      // o un contador en la navbar si lo implementas más adelante.
+    } catch (error) {
+      console.error("Error al añadir al carrito:", error);
+      // Muestra un mensaje de error más amigable al usuario
+      alert(
+        `No se pudo añadir ${product.name} al carrito. Motivo: ${
+          error.message || "Error desconocido"
+        }`
+      );
+    }
+  };
+
   return (
     <div className="col-md-4 col-lg-3 mb-4">
       <div className="card h-100 bg-dark text-white border-secondary shadow-sm">
@@ -21,15 +47,31 @@ const ProductCard = ({ product }) => {
           <p className="card-text text-center text-muted">
             por {product.author}
           </p>
-          <div className="mt-auto text-center">
+          <h6 className="text-center text-warning mb-2">
+            <strong>{formattedPrice}</strong>
+          </h6>
+          <div className="mt-auto text-center d-flex justify-content-center gap-2">
             {" "}
-            {/* Empuja el botón hacia abajo */}
+            {/* Usar d-flex y gap-2 para los botones */}
             <Link
               to={`/products/${product._id}`}
               className="btn btn-primary btn-sm"
             >
               Ver Detalles
             </Link>
+            {/* Botón de añadir al carrito */}
+            {product.stock > 0 ? ( // Solo muestra el botón si hay stock disponible
+              <button
+                className="btn btn-success btn-sm" // Color diferente para añadir al carrito
+                onClick={handleAddToCart}
+              >
+                Añadir al Carrito
+              </button>
+            ) : (
+              <button className="btn btn-secondary btn-sm" disabled>
+                Sin Stock
+              </button>
+            )}
           </div>
         </div>
       </div>

@@ -1,6 +1,5 @@
-// src/component/admin/ProductTable.jsx
+// C:\Users\Usuario\Desktop\Rolling Code School\Proyecto final\d-project\src\component\admin\ProductTable.jsx
 import React from "react";
-// ¡CORREGIDO! Ahora importa del nombre correcto del archivo CSS.
 import styles from "./ProductTable.module.css";
 
 const ProductTable = ({ products, onEdit, onDelete }) => {
@@ -16,6 +15,9 @@ const ProductTable = ({ products, onEdit, onDelete }) => {
             <th>Categoría</th>
             <th>Autor</th>
             <th>Último Control</th>
+            <th>Rating</th>
+            <th>Precio</th>{" "}
+            {/* <-- ¡NUEVA COLUMNA DE ENCABEZADO AÑADIDA AQUÍ! */}
             <th>Acciones</th>
           </tr>
         </thead>
@@ -26,7 +28,7 @@ const ProductTable = ({ products, onEdit, onDelete }) => {
                 <img
                   src={product.image}
                   alt={product.name}
-                  style={{ width: "50px", height: "auto", objectFit: "cover" }} // Agregado objectFit para mejor visualización
+                  style={{ width: "50px", height: "auto", objectFit: "cover" }}
                 />
               </td>
               <td>{product.name}</td>
@@ -35,10 +37,19 @@ const ProductTable = ({ products, onEdit, onDelete }) => {
               <td>{product.category}</td>
               <td>{product.author}</td>
               <td>
-                {/* Asegúrate que la fecha exista y sea válida antes de formatear */}
                 {product.lastStockControlDate
                   ? new Date(product.lastStockControlDate).toLocaleDateString()
                   : "N/A"}
+              </td>
+              <td>{product.rating ? `${product.rating}/5` : "N/A"}</td>
+              {/* <-- ¡NUEVA CELDA PARA MOSTRAR EL PRECIO FORMATEADO! --> */}
+              <td>
+                {new Intl.NumberFormat("es-AR", {
+                  style: "currency",
+                  currency: "ARS",
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }).format(product.price)}
               </td>
               <td>
                 <button
@@ -46,14 +57,12 @@ const ProductTable = ({ products, onEdit, onDelete }) => {
                   onClick={() => onEdit(product)}
                 >
                   <i className="bi bi-pencil-square"></i> Editar{" "}
-                  {/* Icono de Bootstrap */}
                 </button>
                 <button
                   className="btn btn-danger btn-sm"
                   onClick={() => onDelete(product._id)}
                 >
                   <i className="bi bi-trash"></i> Eliminar{" "}
-                  {/* Icono de Bootstrap */}
                 </button>
               </td>
             </tr>
