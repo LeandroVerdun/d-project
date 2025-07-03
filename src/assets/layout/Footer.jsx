@@ -126,7 +126,8 @@ export const Footer = () => {
         <hr className="bg-secondary" />
         <div className="text-center">
           <p className="mb-0">
-            &copy; {new Date().getFullYear()} MovieApp. All rights reserved.
+            &copy; {new Date().getFullYear()} BookApp. All rights reserved.{" "}
+            {/* Cambiado de MovieApp a BookApp */}
           </p>
         </div>
       </div>

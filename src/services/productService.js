@@ -37,10 +37,7 @@ export const addProduct = async (product) => {
   try {
     const response = await fetch(API_URL, {
       method: "POST",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${token}`,
-      },
+      headers: getAuthHeaders(),
       body: JSON.stringify(product),
     });
     if (!response.ok) {

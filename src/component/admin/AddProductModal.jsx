@@ -10,55 +10,51 @@ const AddProductModal = ({
 }) => {
   const [productData, setProductData] = useState({
     name: "",
-    stock: "",
+    stock: 0,
     description: "",
     category: "",
     author: "",
     image: "",
-    lastStockControlDate: "",
+    rating: 1,
+    price: 0, // <-- ¡NUEVO CAMPO EN EL ESTADO INICIAL!
   });
 
-  const [isEditMode, setIsEditMode] = useState(false);
-
-  // Sincronizar el estado del formulario con el producto a editar
   useEffect(() => {
     if (productToEdit) {
       setProductData({
         ...productToEdit,
-        // Formatear la fecha para el input de tipo 'date'
-        lastStockControlDate: productToEdit.lastStockControlDate
-          ? new Date(productToEdit.lastStockControlDate)
-              .toISOString()
-              .split("T")[0]
-          : "",
+        rating: productToEdit.rating || 1,
+        price: productToEdit.price || 0, // <-- ¡Asegurarse de cargar el precio si se edita!
       });
-      setIsEditMode(true);
     } else {
-      // Resetear el formulario si no hay producto para editar
       setProductData({
         name: "",
-        stock: "",
+        stock: 0,
         description: "",
         category: "",
         author: "",
         image: "",
-        // Establecer la fecha actual por defecto en modo "Agregar"
-        lastStockControlDate: new Date().toISOString().split("T")[0],
+        rating: 1,
+        price: 0, // <-- ¡Resetear el precio a 0 cuando no se edita!
       });
-      setIsEditMode(false);
     }
   }, [productToEdit]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setProductData({ ...productData, [name]: value });
+    setProductData({
+      ...productData,
+      [name]: value,
+    });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const productToSubmit = {
       ...productData,
-      stock: parseInt(productData.stock, 10), // Aseguramos que el stock sea un número
+      stock: parseInt(productData.stock, 10),
+      rating: parseInt(productData.rating, 10),
+      price: parseFloat(productData.price), // <-- ¡Parsear el precio como flotante!
     };
 
     if (isEditMode) {
@@ -66,8 +62,10 @@ const AddProductModal = ({
     } else {
       addProduct(productToSubmit);
     }
-    onClose(); // Cierra el modal después de la acción
+    onClose();
   };
+
+  const isEditMode = !!productToEdit;
 
   return (
     <Modal show={isOpen} onHide={onClose}>
@@ -76,10 +74,10 @@ const AddProductModal = ({
           {isEditMode ? "Editar Producto" : "Agregar Nuevo Producto"}
         </Modal.Title>
       </Modal.Header>
-      <Form onSubmit={handleSubmit}>
-        <Modal.Body>
+      <Modal.Body>
+        <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3">
-            <Form.Label>Nombre del Libro</Form.Label>
+            <Form.Label>Nombre</Form.Label>
             <Form.Control
               type="text"
               name="name"
@@ -88,6 +86,7 @@ const AddProductModal = ({
               required
             />
           </Form.Group>
+
           <Form.Group className="mb-3">
             <Form.Label>Stock</Form.Label>
             <Form.Control
@@ -95,20 +94,23 @@ const AddProductModal = ({
               name="stock"
               value={productData.stock}
               onChange={handleChange}
+              min="0"
               required
             />
           </Form.Group>
+
           <Form.Group className="mb-3">
             <Form.Label>Descripción</Form.Label>
             <Form.Control
               as="textarea"
-              rows={3}
               name="description"
               value={productData.description}
               onChange={handleChange}
+              rows={3}
               required
             />
           </Form.Group>
+
           <Form.Group className="mb-3">
             <Form.Label>Categoría</Form.Label>
             <Form.Control
@@ -119,6 +121,7 @@ const AddProductModal = ({
               required
             />
           </Form.Group>
+
           <Form.Group className="mb-3">
             <Form.Label>Autor</Form.Label>
             <Form.Control
@@ -129,6 +132,7 @@ const AddProductModal = ({
               required
             />
           </Form.Group>
+
           <Form.Group className="mb-3">
             <Form.Label>URL de la Imagen</Form.Label>
             <Form.Control
@@ -139,26 +143,40 @@ const AddProductModal = ({
               required
             />
           </Form.Group>
+
           <Form.Group className="mb-3">
-            <Form.Label>Fecha de Último Control de Stock</Form.Label>
+            <Form.Label>Rating (1-5)</Form.Label>
             <Form.Control
-              type="date"
-              name="lastStockControlDate"
-              value={productData.lastStockControlDate}
+              type="number"
+              name="rating"
+              value={productData.rating}
               onChange={handleChange}
+              min="1"
+              max="5"
+              step="1"
               required
             />
           </Form.Group>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={onClose}>
-            Cancelar
-          </Button>
+
+          {/* ¡NUEVO CAMPO AÑADIDO AQUÍ PARA EL PRECIO! */}
+          <Form.Group className="mb-3">
+            <Form.Label>Precio (ARS)</Form.Label>
+            <Form.Control
+              type="number"
+              name="price"
+              value={productData.price}
+              onChange={handleChange}
+              min="0"
+              step="0.01" // Permite decimales para centavos
+              required
+            />
+          </Form.Group>
+
           <Button variant="primary" type="submit">
             {isEditMode ? "Guardar Cambios" : "Agregar Producto"}
           </Button>
-        </Modal.Footer>
-      </Form>
+        </Form>
+      </Modal.Body>
     </Modal>
   );
 };

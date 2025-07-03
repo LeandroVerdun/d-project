@@ -1,6 +1,6 @@
-// src/component/admin/AdminPage.jsx (Actualizado para usar la API)
+// src/component/admin/AdminPage.jsx
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 // Importamos las funciones de nuestro nuevo servicio de API
 import * as productService from "../../services/productService";
 import ProductTable from "./ProductTable";
@@ -114,12 +114,18 @@ const AdminPage = () => {
     <div>
       <div className={styles.adminContainer}>
         <h1>Administrar Stock de la Librería</h1>
-        <button
-          className={styles.newMovieButton}
-          onClick={() => openModal(null)}
-        >
-          Nuevo Producto
-        </button>
+        {/* ENLACE PARA ADMINISTRAR USUARIOS */}
+        <div className="d-flex justify-content-end mb-3">
+          <Link to="/admin/users" className="btn btn-info me-3">
+            Administrar Usuarios
+          </Link>
+          <button
+            className={styles.newProductButton}
+            onClick={() => openModal(null)}
+          >
+            Nuevo Producto
+          </button>
+        </div>
         <ProductTable
           products={products}
           onDelete={handleDeleteProduct}

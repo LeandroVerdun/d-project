@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import chisatoAvatar from "../assets/img/register.webp";
 import ChisatoZone from "../assets/img/logo-chisato-zone.png";
-import "../css/Profile.css";
-import { registerUser } from "../services/api"; // Importa la nueva función
+
+import { registerUser } from "../services/api";
 
 const Register = () => {
   const [formData, setFormData] = useState({

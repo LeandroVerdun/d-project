@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useFetchMovies } from "../../hook/useFetchMovies"; // Considera si sigues usando 'movies' para libros
+
 import { BsCart } from "react-icons/bs";
 import "../../css/Navbar.css";
 import logoImg from "../../assets/img/home.png";
@@ -15,8 +15,6 @@ export const Navbar = () => {
   const location = useLocation();
   const dropdownRef = useRef(null);
 
-  const { movies, loading } = useFetchMovies(query, 10);
-
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     setIsLoggedIn(!!user);
@@ -26,14 +24,17 @@ export const Navbar = () => {
   const handleInputChange = (e) => {
     setQuery(e.target.value);
     setTriggerSearch(false);
-    setDropdownVisible(true);
+    // Ya que no tendremos un dropdown de sugerencias en tiempo real,
+    // puedes decidir si aún quieres controlar la visibilidad del dropdown aquí,
+    // pero si el bloque JSX del dropdown se elimina, esta línea no tendrá efecto.
+    setDropdownVisible(false); // O simplemente puedes eliminar esta línea si no hay dropdown
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (query.trim()) {
       // Ajusta la ruta si la búsqueda es para libros, por ejemplo: '/search/books/${encodeURIComponent(query)}'
-      navigate(`/search/${encodeURIComponent(query)}`);
+      navigate(`/search/books/${encodeURIComponent(query)}`); // Ruta ajustada para libros
     } else {
       navigate("/404"); // O a una página de resultados vacía
     }
@@ -53,6 +54,8 @@ export const Navbar = () => {
 
   useEffect(() => {
     // Detecta clics fuera del dropdown de búsqueda para cerrarlo
+    // Si no hay dropdown de búsqueda, esta parte del useEffect ya no es estrictamente necesaria.
+    // Sin embargo, si 'dropdownVisible' se usa para otra cosa, podrías mantenerla.
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setDropdownVisible(false);
@@ -64,6 +67,7 @@ export const Navbar = () => {
 
   useEffect(() => {
     // Cierra el dropdown de búsqueda al cambiar de ruta
+    // Similar al useEffect anterior, si el dropdown se elimina, esta línea puede no ser necesaria.
     setDropdownVisible(false);
   }, [location]);
 
@@ -105,34 +109,35 @@ export const Navbar = () => {
               </a>
               <ul className="dropdown-menu genre-scroll">
                 {[
-                  "action",
-                  "biography",
-                  "comedy",
-                  "crime",
-                  "drama",
-                  "family",
+                  "fiction", // Ejemplos de categorías de libros
+                  "non-fiction",
                   "fantasy",
-                  "history",
-                  "horror",
-                  "music",
-                  "musical",
-                  "mystery",
-                  "romance",
-                  "sci-fi",
-                  "short",
-                  "sport",
+                  "science fiction",
                   "thriller",
-                  "western",
-                ].map((genre) => (
-                  <li key={genre}>
-                    <Link
-                      className="dropdown-item"
-                      to={`/categories?category=${genre}`}
-                    >
-                      {genre.charAt(0).toUpperCase() + genre.slice(1)}
-                    </Link>
-                  </li>
-                ))}
+                  "romance",
+                  "biography",
+                  "history",
+                  "poetry",
+                  "mystery",
+                  "horror",
+                  "young adult",
+                  "children",
+                  "cookbooks",
+                  "self-help",
+                ].map(
+                  (
+                    category // Cambiado de genre a category
+                  ) => (
+                    <li key={category}>
+                      <Link
+                        className="dropdown-item"
+                        to={`/categories?category=${category}`}
+                      >
+                        {category.charAt(0).toUpperCase() + category.slice(1)}
+                      </Link>
+                    </li>
+                  )
+                )}
               </ul>
             </li>
           </ul>
@@ -145,7 +150,7 @@ export const Navbar = () => {
             <input
               className="form-control me-2"
               type="search"
-              placeholder="Search movie" // Considera cambiar a "Search book"
+              placeholder="Search book" // Cambiado de "Search movie"
               value={query}
               onChange={handleInputChange}
               aria-label="Search"
@@ -153,56 +158,7 @@ export const Navbar = () => {
             <button className="btn btn-outline-success" type="submit">
               <i className="bi bi-search"></i>
             </button>
-
-            {query &&
-              !triggerSearch &&
-              !loading &&
-              movies.length > 0 && // Si usas libros, cambiar a 'books.length > 0'
-              dropdownVisible && (
-                <div ref={dropdownRef} className="search-dropdown">
-                  {movies.slice(0, 10).map(
-                    (
-                      movie // Si usas libros, cambiar a 'books.map'
-                    ) => (
-                      <div
-                        key={movie.imdbID} // Si usas libros, cambiar a 'book.id' o un ID de libro
-                        className="movie-result-item"
-                        onClick={() => navigate(`/descripcion/${movie.imdbID}`)} // Si usas libros, cambiar a '/book/${book.id}'
-                      >
-                        <img
-                          src={movie.Poster} // Si usas libros, cambiar a 'book.coverUrl' o similar
-                          alt={movie.Title} // Si usas libros, cambiar a 'book.title'
-                          className="movie-poster me-3"
-                        />
-                        <div className="flex-grow-1">
-                          <h6 className="mb-1">{movie.Title}</h6>{" "}
-                          {/* Si usas libros, cambiar a 'book.title' */}
-                          <div className="mb-2">
-                            {movie.Genre?.split(",") // Si usas libros, cambiar a 'book.genre' o 'book.category'
-                              .slice(0, 2)
-                              .map((genre, index) => (
-                                <span
-                                  key={index}
-                                  className="badge bg-secondary me-1"
-                                >
-                                  {genre.trim()}
-                                </span>
-                              ))}
-                          </div>
-                          <div>
-                            <button className="btn btn-sm btn-primary me-2">
-                              Rent
-                            </button>
-                            <button className="btn btn-sm btn-success">
-                              Buy
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    )
-                  )}
-                </div>
-              )}
+            {/* EL BLOQUE DE SUGERENCIAS DE BÚSQUEDA HA SIDO ELIMINADO AQUÍ */}
           </form>
 
           <div className="d-flex align-items-center me-3">

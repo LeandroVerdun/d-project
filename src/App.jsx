@@ -20,6 +20,7 @@ import ProductDetail from "./component/products/ProductDetail";
 
 // Componente de Administración
 import AdminPage from "./component/admin/AdminPage";
+import UserManagementPage from "./component/admin/UserManagementPage";
 
 function App() {
   return (
@@ -38,6 +39,15 @@ function App() {
             element={
               <ProtectedUserAdmin>
                 <AdminPage />
+              </ProtectedUserAdmin>
+            }
+          />
+          <Route
+            path="/admin/users" // Nueva ruta para la gestión de usuarios
+            element={
+              <ProtectedUserAdmin>
+                <UserManagementPage />{" "}
+                {/* Aquí se renderiza tu componente de gestión de usuarios */}
               </ProtectedUserAdmin>
             }
           />

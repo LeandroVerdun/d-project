@@ -1,11 +1,10 @@
 // src/component/products/ProductDetail.jsx
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-// Asegúrate que la ruta a productService sea correcta
 import * as productService from "../../services/productService.js";
 
 const ProductDetail = () => {
-  const { id } = useParams(); // Obtiene el ID del producto de la URL (ej. /products/123)
+  const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -48,8 +47,6 @@ const ProductDetail = () => {
   if (loading) {
     return (
       <div className="text-center mt-5" style={{ color: "black" }}>
-        {" "}
-        {/* Color temporal para que se vea */}
         Cargando detalles del libro...
       </div>
     );
@@ -59,12 +56,7 @@ const ProductDetail = () => {
     return <div className="text-danger text-center mt-5">Error: {error}</div>;
   }
 
-  // **IMPORTANTE**: Este bloque if (!product) lo quitamos temporalmente para confirmar que se ve.
-  // Es una buena práctica tenerlo, pero si los datos siempre llegan, podemos dejar que el componente se renderice.
-  // Si en algún caso un ID no devuelve nada, entonces podríamos volver a añadirlo o manejarlo de otra forma.
-  // Por ahora, lo más crucial es que veas el texto.
   if (!product) {
-    // Se mantiene esta comprobación para evitar errores si product es null, aunque los logs sugieren que no debería serlo.
     return (
       <div className="text-center mt-5" style={{ color: "black" }}>
         Libro no encontrado o datos no disponibles.
@@ -72,10 +64,16 @@ const ProductDetail = () => {
     );
   }
 
+  // Formatear el precio aquí para la vista de detalle
+  const formattedPrice = new Intl.NumberFormat("es-AR", {
+    style: "currency",
+    currency: "ARS",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(product.price); // Usa product.price directamente
+
   return (
     <div className="container mt-5 text-dark">
-      {" "}
-      {/* CAMBIO CLAVE AQUÍ: text-white a text-dark */}
       <div className="row">
         <div className="col-md-6 text-center mb-4 mb-md-0">
           <img
@@ -99,13 +97,15 @@ const ProductDetail = () => {
           <p>
             <strong>Stock Disponible:</strong> {product.stock}
           </p>
+          {/* Muestra el Rating */}
           <p>
-            <strong>Último Control de Stock:</strong>{" "}
-            {new Date(product.lastStockControlDate).toLocaleDateString()}
+            <strong>Rating:</strong> {product.rating} / 5
           </p>
+          {/* MUESTRA EL PRECIO AQUI EN LA VISTA DE DETALLE */}
+          <h3 className="text-primary mt-3">
+            <strong>Precio: {formattedPrice}</strong>
+          </h3>
           {/* Aquí podrías añadir botones para "Agregar al Carrito", "Comprar", etc. */}
-          {/* <button className="btn btn-primary me-2">Añadir al Carrito</button> */}
-          {/* <button className="btn btn-success">Comprar Ahora</button> */}
         </div>
       </div>
     </div>
