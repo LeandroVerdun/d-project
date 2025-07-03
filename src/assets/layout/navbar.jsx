@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useFetchMovies } from "../../hook/useFetchMovies";
+import { useFetchMovies } from "../../hook/useFetchMovies"; // Considera si sigues usando 'movies' para libros
 import { BsCart } from "react-icons/bs";
 import "../../css/Navbar.css";
 import logoImg from "../../assets/img/home.png";
@@ -32,9 +32,10 @@ export const Navbar = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (query.trim()) {
+      // Ajusta la ruta si la búsqueda es para libros, por ejemplo: '/search/books/${encodeURIComponent(query)}'
       navigate(`/search/${encodeURIComponent(query)}`);
     } else {
-      navigate("/404");
+      navigate("/404"); // O a una página de resultados vacía
     }
   };
 
@@ -43,13 +44,15 @@ export const Navbar = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    setIsLoggedIn(false);
-    setCurrentUser(null);
-    navigate("/login");
+    localStorage.removeItem("token"); // Eliminar el token JWT
+    localStorage.removeItem("user"); // Eliminar el objeto de usuario
+    setIsLoggedIn(false); // Actualizar estado de login
+    setCurrentUser(null); // Limpiar usuario actual
+    navigate("/login"); // Redirigir a la página de login
   };
 
   useEffect(() => {
+    // Detecta clics fuera del dropdown de búsqueda para cerrarlo
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setDropdownVisible(false);
@@ -60,6 +63,7 @@ export const Navbar = () => {
   }, []);
 
   useEffect(() => {
+    // Cierra el dropdown de búsqueda al cambiar de ruta
     setDropdownVisible(false);
   }, [location]);
 
@@ -141,7 +145,7 @@ export const Navbar = () => {
             <input
               className="form-control me-2"
               type="search"
-              placeholder="Search movie"
+              placeholder="Search movie" // Considera cambiar a "Search book"
               value={query}
               onChange={handleInputChange}
               aria-label="Search"
@@ -153,51 +157,57 @@ export const Navbar = () => {
             {query &&
               !triggerSearch &&
               !loading &&
-              movies.length > 0 &&
+              movies.length > 0 && // Si usas libros, cambiar a 'books.length > 0'
               dropdownVisible && (
                 <div ref={dropdownRef} className="search-dropdown">
-                  {movies.slice(0, 10).map((movie) => (
-                    <div
-                      key={movie.imdbID}
-                      className="movie-result-item"
-                      onClick={() => navigate(`/descripcion/${movie.imdbID}`)}
-                    >
-                      <img
-                        src={movie.Poster}
-                        alt={movie.Title}
-                        className="movie-poster me-3"
-                      />
-                      <div className="flex-grow-1">
-                        <h6 className="mb-1">{movie.Title}</h6>
-                        <div className="mb-2">
-                          {movie.Genre?.split(",")
-                            .slice(0, 2)
-                            .map((genre, index) => (
-                              <span
-                                key={index}
-                                className="badge bg-secondary me-1"
-                              >
-                                {genre.trim()}
-                              </span>
-                            ))}
-                        </div>
-                        <div>
-                          <button className="btn btn-sm btn-primary me-2">
-                            Rent
-                          </button>
-                          <button className="btn btn-sm btn-success">
-                            Buy
-                          </button>
+                  {movies.slice(0, 10).map(
+                    (
+                      movie // Si usas libros, cambiar a 'books.map'
+                    ) => (
+                      <div
+                        key={movie.imdbID} // Si usas libros, cambiar a 'book.id' o un ID de libro
+                        className="movie-result-item"
+                        onClick={() => navigate(`/descripcion/${movie.imdbID}`)} // Si usas libros, cambiar a '/book/${book.id}'
+                      >
+                        <img
+                          src={movie.Poster} // Si usas libros, cambiar a 'book.coverUrl' o similar
+                          alt={movie.Title} // Si usas libros, cambiar a 'book.title'
+                          className="movie-poster me-3"
+                        />
+                        <div className="flex-grow-1">
+                          <h6 className="mb-1">{movie.Title}</h6>{" "}
+                          {/* Si usas libros, cambiar a 'book.title' */}
+                          <div className="mb-2">
+                            {movie.Genre?.split(",") // Si usas libros, cambiar a 'book.genre' o 'book.category'
+                              .slice(0, 2)
+                              .map((genre, index) => (
+                                <span
+                                  key={index}
+                                  className="badge bg-secondary me-1"
+                                >
+                                  {genre.trim()}
+                                </span>
+                              ))}
+                          </div>
+                          <div>
+                            <button className="btn btn-sm btn-primary me-2">
+                              Rent
+                            </button>
+                            <button className="btn btn-sm btn-success">
+                              Buy
+                            </button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    )
+                  )}
                 </div>
               )}
           </form>
 
           <div className="d-flex align-items-center me-3">
             {!isLoggedIn ? (
+              // Mostrar botones de Registro y Login si el usuario NO está logueado
               <>
                 <Link to="/register" className="btn btn-outline-primary me-2">
                   Register
@@ -207,6 +217,7 @@ export const Navbar = () => {
                 </Link>
               </>
             ) : (
+              // Mostrar menú de usuario y botón de carrito si el usuario SÍ está logueado
               <>
                 <div className="dropdown me-2">
                   <button
@@ -216,7 +227,10 @@ export const Navbar = () => {
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
-                    {currentUser?.username || "My Account"}
+                    {currentUser?.username ||
+                      currentUser?.email ||
+                      "My Account"}{" "}
+                    {/* Muestra username, sino email, sino "My Account" */}
                   </button>
                   <ul
                     className="dropdown-menu dropdown-menu-end dropdown-menu-user"
@@ -227,31 +241,32 @@ export const Navbar = () => {
                         Profile
                       </Link>
                     </li>
-                    <li>
-                      <Link className="dropdown-item" to="/mypurchases">
-                        My Movie
-                      </Link>
-                    </li>
-                    {currentUser?.username === "Chisato" && (
+                    {/* MODIFICADO: "Mis Compras" es para usuarios LOGUEADOS y NO administradores */}
+                    {!currentUser?.isAdmin && (
+                      <li>
+                        <Link className="dropdown-item" to="/mypurchases">
+                          Mis Compras
+                        </Link>
+                      </li>
+                    )}
+                    {/* Condicional para mostrar enlaces de administrador, basado en `isAdmin` del token */}
+                    {currentUser?.isAdmin && (
                       <>
                         <li>
-                          <hr className="dropdown-divider" />
+                          <hr className="dropdown-divider" />{" "}
+                          {/* Separador visual */}
                         </li>
                         <li>
                           <Link className="dropdown-item" to="/admin">
-                            Movie
+                            Panel Administrador
                           </Link>
                         </li>
-                        <li>
+                        {/* Si tienes una página separada para administrar usuarios: */}
+                        {/* <li>
                           <Link className="dropdown-item" to="/useradmin">
-                            User Admin
+                            Administrar Usuarios
                           </Link>
-                        </li>
-                        <li>
-                          <Link className="dropdown-item" to="/admin">
-                            Admin Panel
-                          </Link>
-                        </li>
+                        </li> */}
                       </>
                     )}
                     <li>
@@ -276,4 +291,5 @@ export const Navbar = () => {
     </nav>
   );
 };
+
 export default Navbar;
