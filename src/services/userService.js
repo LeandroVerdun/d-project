@@ -55,4 +55,24 @@ export const deleteUser = async (id) => {
   }
 };
 
-// Puedes añadir más funciones aquí si necesitas, por ejemplo, para actualizar un usuario.
+// Actualizar un usuario por ID (solo para administradores)
+export const updateUser = async (id, userData) => {
+  try {
+    const response = await fetch(`${API_URL}/${id}`, {
+      method: "PUT",
+      headers: getAuthHeaders(), // Reutiliza la función para obtener los headers
+      body: JSON.stringify(userData), // Envía los datos en formato JSON
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Error al actualizar el usuario.");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(`Error en updateUser para ID ${id}:`, error);
+    throw error;
+  }
+};
