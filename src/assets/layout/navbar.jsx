@@ -1,9 +1,10 @@
+// navbar.jsx
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
 import { BsCart } from "react-icons/bs";
-import "../../css/Navbar.css";
-import logoImg from "../../assets/img/home.png";
+import "../../css/Navbar.css"; // Asegúrate que esta ruta es correcta
+import logoImg from "../../assets/img/home.png"; // Asegúrate que esta ruta es correcta
 
 export const Navbar = () => {
   const [query, setQuery] = useState("");
@@ -24,38 +25,31 @@ export const Navbar = () => {
   const handleInputChange = (e) => {
     setQuery(e.target.value);
     setTriggerSearch(false);
-    // Ya que no tendremos un dropdown de sugerencias en tiempo real,
-    // puedes decidir si aún quieres controlar la visibilidad del dropdown aquí,
-    // pero si el bloque JSX del dropdown se elimina, esta línea no tendrá efecto.
-    setDropdownVisible(false); // O simplemente puedes eliminar esta línea si no hay dropdown
+    setDropdownVisible(false);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (query.trim()) {
-      // Ajusta la ruta si la búsqueda es para libros, por ejemplo: '/search/books/${encodeURIComponent(query)}'
-      navigate(`/search/books/${encodeURIComponent(query)}`); // Ruta ajustada para libros
+      navigate(`/search/books/${encodeURIComponent(query)}`);
     } else {
-      navigate("/404"); // O a una página de resultados vacía
+      navigate("/404");
     }
   };
 
   const handleCartClick = () => {
-    navigate("/cart");
+    navigate("/cart"); // Navega a la ruta del carrito
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("token"); // Eliminar el token JWT
-    localStorage.removeItem("user"); // Eliminar el objeto de usuario
-    setIsLoggedIn(false); // Actualizar estado de login
-    setCurrentUser(null); // Limpiar usuario actual
-    navigate("/login"); // Redirigir a la página de login
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setIsLoggedIn(false);
+    setCurrentUser(null);
+    navigate("/login");
   };
 
   useEffect(() => {
-    // Detecta clics fuera del dropdown de búsqueda para cerrarlo
-    // Si no hay dropdown de búsqueda, esta parte del useEffect ya no es estrictamente necesaria.
-    // Sin embargo, si 'dropdownVisible' se usa para otra cosa, podrías mantenerla.
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setDropdownVisible(false);
@@ -66,8 +60,6 @@ export const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    // Cierra el dropdown de búsqueda al cambiar de ruta
-    // Similar al useEffect anterior, si el dropdown se elimina, esta línea puede no ser necesaria.
     setDropdownVisible(false);
   }, [location]);
 
@@ -109,7 +101,7 @@ export const Navbar = () => {
               </a>
               <ul className="dropdown-menu genre-scroll">
                 {[
-                  "fiction", // Ejemplos de categorías de libros
+                  "fiction",
                   "non-fiction",
                   "fantasy",
                   "science fiction",
@@ -124,20 +116,16 @@ export const Navbar = () => {
                   "children",
                   "cookbooks",
                   "self-help",
-                ].map(
-                  (
-                    category // Cambiado de genre a category
-                  ) => (
-                    <li key={category}>
-                      <Link
-                        className="dropdown-item"
-                        to={`/categories?category=${category}`}
-                      >
-                        {category.charAt(0).toUpperCase() + category.slice(1)}
-                      </Link>
-                    </li>
-                  )
-                )}
+                ].map((category) => (
+                  <li key={category}>
+                    <Link
+                      className="dropdown-item"
+                      to={`/categories?category=${category}`}
+                    >
+                      {category.charAt(0).toUpperCase() + category.slice(1)}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </li>
           </ul>
@@ -150,7 +138,7 @@ export const Navbar = () => {
             <input
               className="form-control me-2"
               type="search"
-              placeholder="Search book" // Cambiado de "Search movie"
+              placeholder="Search book"
               value={query}
               onChange={handleInputChange}
               aria-label="Search"
@@ -158,12 +146,10 @@ export const Navbar = () => {
             <button className="btn btn-outline-success" type="submit">
               <i className="bi bi-search"></i>
             </button>
-            {/* EL BLOQUE DE SUGERENCIAS DE BÚSQUEDA HA SIDO ELIMINADO AQUÍ */}
           </form>
 
           <div className="d-flex align-items-center me-3">
             {!isLoggedIn ? (
-              // Mostrar botones de Registro y Login si el usuario NO está logueado
               <>
                 <Link to="/register" className="btn btn-outline-primary me-2">
                   Register
@@ -173,7 +159,6 @@ export const Navbar = () => {
                 </Link>
               </>
             ) : (
-              // Mostrar menú de usuario y botón de carrito si el usuario SÍ está logueado
               <>
                 <div className="dropdown me-2">
                   <button
@@ -186,7 +171,6 @@ export const Navbar = () => {
                     {currentUser?.username ||
                       currentUser?.email ||
                       "My Account"}{" "}
-                    {/* Muestra username, sino email, sino "My Account" */}
                   </button>
                   <ul
                     className="dropdown-menu dropdown-menu-end dropdown-menu-user"
@@ -197,7 +181,6 @@ export const Navbar = () => {
                         Profile
                       </Link>
                     </li>
-                    {/* MODIFICADO: "Mis Compras" es para usuarios LOGUEADOS y NO administradores */}
                     {!currentUser?.isAdmin && (
                       <li>
                         <Link className="dropdown-item" to="/mypurchases">
@@ -205,24 +188,16 @@ export const Navbar = () => {
                         </Link>
                       </li>
                     )}
-                    {/* Condicional para mostrar enlaces de administrador, basado en `isAdmin` del token */}
                     {currentUser?.isAdmin && (
                       <>
                         <li>
-                          <hr className="dropdown-divider" />{" "}
-                          {/* Separador visual */}
+                          <hr className="dropdown-divider" />
                         </li>
                         <li>
                           <Link className="dropdown-item" to="/admin">
                             Panel Administrador
                           </Link>
                         </li>
-                        {/* Si tienes una página separada para administrar usuarios: */}
-                        {/* <li>
-                          <Link className="dropdown-item" to="/useradmin">
-                            Administrar Usuarios
-                          </Link>
-                        </li> */}
                       </>
                     )}
                     <li>
@@ -232,6 +207,7 @@ export const Navbar = () => {
                     </li>
                   </ul>
                 </div>
+                {/* Botón del Carrito (¡Ya lo tenías, solo confirmo su posición!) */}
                 <button
                   className="btn btn-outline-warning"
                   onClick={handleCartClick}
