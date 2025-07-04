@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import * as productService from "../../services/productService.js";
+import * as cartService from "../../services/cartService.js"; // Importamos el servicio de carrito
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -44,6 +45,25 @@ const ProductDetail = () => {
     }
   }, [id]);
 
+  // Función para manejar el clic en "Añadir al Carrito"
+  const handleAddToCart = async () => {
+    if (!product || product.stock <= 0) {
+      alert("Este producto no está disponible o no tiene stock.");
+      return;
+    }
+    try {
+      await cartService.addOrUpdateItemInCart(product._id, 1);
+      alert(`${product.name} ha sido añadido al carrito.`);
+    } catch (error) {
+      console.error("Error al añadir al carrito desde el detalle:", error);
+      alert(
+        `No se pudo añadir ${product.name} al carrito. Motivo: ${
+          error.message || "Error desconocido"
+        }`
+      );
+    }
+  };
+
   if (loading) {
     return (
       <div className="text-center mt-5" style={{ color: "black" }}>
@@ -70,7 +90,7 @@ const ProductDetail = () => {
     currency: "ARS",
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  }).format(product.price); // Usa product.price directamente
+  }).format(product.price);
 
   return (
     <div className="container mt-5 text-dark">
@@ -97,15 +117,28 @@ const ProductDetail = () => {
           <p>
             <strong>Stock Disponible:</strong> {product.stock}
           </p>
-          {/* Muestra el Rating */}
-          <p>
+          {/* ELIMINADO: Muestra el Rating (ya no visible al cliente) */}
+          {/* <p>
             <strong>Rating:</strong> {product.rating} / 5
-          </p>
-          {/* MUESTRA EL PRECIO AQUI EN LA VISTA DE DETALLE */}
+          </p> */}
           <h3 className="text-primary mt-3">
             <strong>Precio: {formattedPrice}</strong>
           </h3>
-          {/* Aquí podrías añadir botones para "Agregar al Carrito", "Comprar", etc. */}
+          {/* Aquí añadimos el botón "Añadir al Carrito" */}
+          <div className="mt-4">
+            {product.stock > 0 ? (
+              <button
+                className="btn btn-success btn-lg w-100" // Botón grande y ancho
+                onClick={handleAddToCart}
+              >
+                Añadir al Carrito
+              </button>
+            ) : (
+              <button className="btn btn-secondary btn-lg w-100" disabled>
+                Sin Stock
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>

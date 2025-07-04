@@ -1,0 +1,163 @@
+/* src/css/OfferSection.css */
+
+.offer-section-carousel-wrapper {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.offer-book-item {
+  position: relative;
+  width: 280px; /* Ancho fijo para cada tarjeta de oferta */
+  height: 480px; /* Altura fija para cada tarjeta de oferta: CRUCIAL */
+  border: 2px solid #dc3545; /* Borde rojo distintivo de oferta */
+  border-radius: 8px;
+  overflow: hidden; /* Importante para que el contenido se recorte si excede el tamaño */
+  display: flex;
+  flex-direction: column; /* Columna para imagen y cuerpo */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.offer-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 70%; /* La imagen ocupa el 70% de la altura de la tarjeta */
+  overflow: hidden; /* Recorta la imagen si es más grande que el wrapper */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.offer-book-image {
+  width: 100%;
+  height: 100%; /* La imagen ocupa el 100% del alto y ancho de su contenedor */
+  object-fit: cover; /* CLAVE: Cubre el área, recortando si es necesario para evitar distorsión */
+  object-position: center; /* Centra la imagen dentro del contenedor */
+  transition: transform 0.3s ease-in-out;
+}
+
+.offer-book-item:hover .offer-book-image {
+  transform: scale(1.05);
+}
+
+/* Badge de oferta */
+.offer-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: #dc3545; /* Fondo rojo */
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 0.9em;
+  z-index: 10;
+}
+
+/* ESTILOS PARA EL NUEVO CARD.BODY Y LOS PRECIOS */
+.offer-card-body {
+  height: 30%; /* El 30% restante de la altura para el cuerpo */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Espacia el contenido verticalmente */
+  background-color: #343a40; /* Fondo oscuro para el cuerpo */
+  color: white;
+  padding: 10px;
+  text-align: center; /* Centra el texto */
+}
+
+.offer-card-body .card-title {
+  font-size: 1.1em; /* Tamaño de fuente para el título del libro */
+  white-space: nowrap; /* Evita que el título se rompa en varias líneas */
+  overflow: hidden; /* Oculta el texto que desborde */
+  text-overflow: ellipsis; /* Añade puntos suspensivos */
+  margin-bottom: 5px; /* Pequeño margen inferior */
+}
+
+.price-container {
+  margin-top: auto; /* Empuja el contenedor de precios hacia abajo */
+  display: flex; /* Para organizar los precios */
+  flex-direction: column; /* Apila los precios */
+  align-items: center; /* Centra los precios */
+}
+
+.original-price {
+  text-decoration: line-through; /* Tacha el precio original */
+  color: #dc3545; /* ROJO para el precio original tachado */
+  font-size: 0.9em;
+  margin-bottom: 2px; /* Espacio entre precios */
+}
+
+.discounted-price {
+  color: #28a745; /* VERDE para el precio con descuento */
+  font-weight: bold;
+  font-size: 1.4em; /* Tamaño más grande para el precio con descuento */
+}
+
+/* Ajustes para el carrusel de ofertas */
+.offer-section-carousel-wrapper .carousel-item .d-flex {
+  width: 100%;
+  justify-content: center;
+  align-items: stretch;
+}
+
+/* Ajusta los controles de navegación del carrusel */
+.offer-section-carousel-wrapper .carousel-control-prev,
+.offer-section-carousel-wrapper .carousel-control-next {
+  width: 5%;
+  opacity: 0.7;
+}
+
+.offer-section-carousel-wrapper .carousel-control-prev-icon,
+.offer-section-carousel-wrapper .carousel-control-next-icon {
+  width: 2rem;
+  height: 2rem;
+  background-size: 100%, 100%;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Media queries para responsividad */
+@media (max-width: 768px) {
+  .offer-book-item {
+    width: 200px; /* Ajustada la altura para tabletas */
+    height: 360px;
+  }
+  .offer-image-wrapper {
+    height: 65%;
+  }
+  .offer-card-body {
+    height: 35%;
+  }
+  .card-title {
+    font-size: 1em;
+  }
+  .original-price {
+    font-size: 0.8em;
+  }
+  .discounted-price {
+    font-size: 1.2em;
+  }
+}
+
+@media (max-width: 576px) {
+  .offer-book-item {
+    width: 150px;
+    height: 280px; /* Ajustada la altura para móviles */
+  }
+  .offer-image-wrapper {
+    height: 60%;
+  }
+  .offer-card-body {
+    height: 40%;
+  }
+  .card-title {
+    font-size: 0.9em;
+  }
+  .original-price {
+    font-size: 0.7em;
+  }
+  .discounted-price {
+    font-size: 1em;
+  }
+}

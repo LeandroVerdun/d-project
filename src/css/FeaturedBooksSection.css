@@ -1,112 +1,150 @@
-.featured-books-container {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
-}
+/* src/css/FeaturedBooksSection.css */
 
+/* Contenedor de la tarjeta del libro destacado */
 .featured-book-item {
-  position: relative;
-  width: 300px;
-  height: 450px;
+  position: relative; /* Necesario para posicionar el overlay */
+  width: 300px; /* Ancho fijo para cada tarjeta */
+  height: 480px; /* Altura fija para cada tarjeta, ajusta si es necesario */
+  border: 1px solid #ffc107; /* Borde amarillo para destacar */
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  overflow: hidden; /* Asegura que la imagen y el overlay no se salgan */
+  display: flex; /* Para flexbox si la Card tiene mas cosas */
+  flex-direction: column; /* Organizar contenido en columna */
+}
+
+/* Wrapper para la imagen y el overlay de información */
+.card-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%; /* Ocupa toda la altura disponible en la tarjeta */
   overflow: hidden;
-  transition: transform 0.3s ease;
+  display: flex; /* Asegura que la imagen dentro pueda estirarse */
 }
 
-.featured-book-item:hover {
-  transform: translateY(-5px);
-}
-
+/* La imagen en sí */
 .featured-book-image {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+  height: 100%; /* Ocupa toda la altura del wrapper */
+  object-fit: cover; /* Esto hace que la imagen cubra el área, recortando si es necesario */
+  object-position: center; /* Centra la imagen */
+  transition: transform 0.3s ease-in-out; /* Pequeña animación al pasar el mouse */
 }
 
-.featured-book-overlay {
+/* Efecto hover en la imagen (opcional) */
+.featured-book-item:hover .featured-book-image {
+  transform: scale(1.05); /* Ligeramente más grande al pasar el mouse */
+}
+
+/* Overlay de información que se superpone a la imagen */
+.featured-book-info-overlay {
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 100%;
-  /* Cambiamos el gradiente y el punto de inicio para que se vea más al hacer hover */
+  right: 0;
   background: linear-gradient(
     to top,
     rgba(0, 0, 0, 0.9),
-    rgba(0, 0, 0, 0.6) 50%,
+    rgba(0, 0, 0, 0.5),
     rgba(0, 0, 0, 0)
-  );
+  ); /* Degradado de negro a transparente */
   color: white;
   padding: 15px;
-  box-sizing: border-box;
-  /* Hacemos que se deslice más arriba al hacer hover */
-  transform: translateY(
-    calc(100% - 100px)
-  ); /* Por ejemplo, muestra los últimos 100px por defecto */
-  transition: transform 0.3s ease-in-out;
-  display: flex; /* Añadido para mejor flujo de los elementos internos */
-  flex-direction: column; /* Añadido para mejor flujo de los elementos internos */
-  justify-content: flex-end; /* Alinea el contenido al final de la superposición */
+  padding-bottom: 5px; /* Menos padding inferior para la categoría */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* Empuja el contenido hacia abajo */
+  max-height: 100%; /* Para que no desborde */
+  transition: background 0.3s ease-in-out; /* Suaviza el cambio de fondo */
 }
 
-.featured-book-item:hover .featured-book-overlay {
-  transform: translateY(0); /* Al hacer hover, se muestra completamente */
+/* Estilo para el título en el overlay */
+.featured-book-info-overlay .card-title {
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+  line-height: 1.3;
 }
 
-/* Quitamos los posicionamientos absolutos de los elementos internos */
-.featured-book-item .card-title,
-.featured-book-item .card-text {
-  position: static; /* Cambiado a static para que fluyan normalmente */
-  margin-bottom: 5px; /* Espaciado entre elementos */
-  text-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
-  width: auto; /* Quitamos width definido, que no es necesario con static */
-  left: auto; /* Quitamos left */
-  right: auto; /* Quitamos right */
-  bottom: auto; /* Quitamos bottom */
+/* Estilo para el autor y descripción */
+.featured-book-info-overlay .card-text {
+  font-size: 0.85rem;
+  line-height: 1.3;
+  margin-bottom: 0.25rem;
 }
 
-.featured-book-item .card-title {
-  margin-bottom: 0px; /* Elimina margen inferior del titulo */
-}
-
-/* Aseguramos que la descripción se muestre con opacidad 1 al hacer hover */
-.featured-description {
+/* Control de truncado para la descripción */
+.text-truncate-lines-2 {
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2; /* Limita a 2 líneas */
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  opacity: 0; /* Por defecto oculta la descripción */
-  transition: opacity 0.3s ease-in-out;
-  margin-bottom: 0;
 }
 
-.featured-book-item:hover .featured-description {
-  opacity: 1; /* Al hacer hover, la descripción es visible */
+/* Estilo para el precio */
+.featured-book-info-overlay h5.text-success {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.4rem;
+  font-weight: bold;
 }
 
-/* Aseguramos que el badge de stock siempre esté visible en la parte inferior */
-.featured-book-overlay .badge {
-  margin-top: auto; /* Empuja el badge hacia abajo */
-  align-self: flex-start; /* Alinea el badge a la izquierda si el flex-direction es column */
+/* NUEVO: Estilo para la etiqueta de categoría */
+.category-tag {
+  align-self: flex-end; /* Asegura que la categoría se alinee a la derecha si es flex */
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 3px 8px;
+  margin-top: 5px; /* Espacio por encima de la etiqueta */
 }
 
+/* Ajustes para el carrusel y los elementos dentro */
+.featured-books-carousel-wrapper .carousel-item .d-flex {
+  width: 100%;
+  justify-content: center;
+  align-items: stretch; /* Asegura que todas las cards tengan la misma altura */
+}
+
+/* Ajusta los botones de navegación del carrusel si es necesario */
+.featured-books-carousel-wrapper .carousel-control-prev,
+.featured-books-carousel-wrapper .carousel-control-next {
+  width: 5%; /* Ocupan menos espacio */
+  opacity: 0.7;
+}
+
+.featured-books-carousel-wrapper .carousel-control-prev-icon,
+.featured-books-carousel-wrapper .carousel-control-next-icon {
+  width: 2rem;
+  height: 2rem;
+  background-size: 100%, 100%;
+  border-radius: 50%;
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.3
+  ); /* Fondo semitransparente para los iconos */
+}
+
+/* Media queries para responsividad (ajusta según necesites) */
 @media (max-width: 768px) {
   .featured-book-item {
-    width: 250px;
-    height: 375px;
+    width: 250px; /* Más pequeño en pantallas medianas */
+    height: 400px;
   }
 }
 
 @media (max-width: 576px) {
   .featured-book-item {
-    width: 100%;
-    height: 400px;
+    width: 200px; /* Aún más pequeño en móviles */
+    height: 350px;
   }
-  .featured-books-container {
-    flex-direction: column;
-    align-items: center;
+  .featured-book-info-overlay .card-title {
+    font-size: 1rem;
+  }
+  .featured-book-info-overlay .card-text {
+    font-size: 0.75rem;
+  }
+  .featured-book-info-overlay h5.text-success {
+    font-size: 1.2rem;
   }
 }
