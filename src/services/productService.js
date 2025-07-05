@@ -96,7 +96,8 @@ export const getProductById = async (id) => {
   try {
     const response = await fetch(`${API_URL}/${id}`, {
       method: "GET",
-      headers: getAuthHeaders(),
+      // No siempre necesitas headers de auth para GET públicos, pero no molesta tenerlos.
+      // headers: getAuthHeaders(),
     });
     if (!response.ok) {
       const errorData = await response.json();
@@ -108,6 +109,27 @@ export const getProductById = async (id) => {
     return data;
   } catch (error) {
     console.error(`Error en getProductById para ID ${id}:`, error);
+    throw error;
+  }
+};
+
+// **NUEVA FUNCIÓN: buscar libros por término**
+export const searchProducts = async (query) => {
+  try {
+    // Codifica el término de búsqueda para la URL
+    const encodedQuery = encodeURIComponent(query);
+    const response = await fetch(`${API_URL}/search?q=${encodedQuery}`);
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(
+        errorData.message ||
+          `Error al buscar productos para la consulta "${query}".`
+      );
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(`Error en searchProducts para query "${query}":`, error);
     throw error;
   }
 };
