@@ -29,6 +29,9 @@ import AdminOrderHistoryPage from "./component/admin/AdminOrderHistoryPage"; // 
 // Componente del Carrito
 import CartPage from "./component/CartPage"; // Asegúrate que esta ruta es correcta: src/component/CartPage.jsx
 
+// ¡NUEVA IMPORTACIÓN PARA MIS COMPRAS!
+import MyPurchases from "./component/MyPurchases"; // Asegúrate que esta ruta es correcta: src/component/MyPurchases.jsx
+
 function App() {
   return (
     <Router>
@@ -44,6 +47,10 @@ function App() {
           <Route path="/cart" element={<CartPage />} />
           {/* NUEVA RUTA PARA BÚSQUEDA */}
           <Route path="/search/books/:query" element={<SearchResultsPage />} />
+
+          {/* ¡NUEVA RUTA PARA MIS COMPRAS DEL USUARIO! */}
+          {/* Esta ruta NO necesita ProtectedUserAdmin, ya que es para usuarios normales */}
+          <Route path="/mypurchases" element={<MyPurchases />} />
 
           {/* Rutas protegidas para administradores */}
           <Route
