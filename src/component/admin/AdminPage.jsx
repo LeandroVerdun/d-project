@@ -114,10 +114,15 @@ const AdminPage = () => {
     <div>
       <div className={styles.adminContainer}>
         <h1>Administrar Stock de la Librería</h1>
-        {/* ENLACE PARA ADMINISTRAR USUARIOS */}
+        {/* ENLACES DE NAVEGACIÓN DEL ADMINISTRADOR */}
         <div className="d-flex justify-content-end mb-3">
           <Link to="/admin/users" className="btn btn-info me-3">
             Administrar Usuarios
+          </Link>
+          <Link to="/admin/orders" className="btn btn-secondary me-3">
+            {" "}
+            {/* NUEVO ENLACE A ORDENES */}
+            Historial de Órdenes
           </Link>
           <button
             className={styles.newProductButton}
