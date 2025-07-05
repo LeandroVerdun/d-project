@@ -1,7 +1,8 @@
+// C:\Users\Usuario\Desktop\Rolling Code School\Proyecto final\d-project\src\services\api.js
 import axios from "axios";
 
 // Paso 1: Configurar la URL base de tu backend
-const API_BASE_URL = "http://localhost:5000/api"; // Asegúrate que esta URL sea la correcta de tu backend
+const API_BASE_URL = "http://localhost:5000"; // Asegúrate que esta URL sea la correcta de tu backend
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -44,7 +45,7 @@ apiClient.interceptors.response.use(
 // Funciones de Autenticación (movidas y adaptadas a Axios)
 export const registerUser = async (userData) => {
   try {
-    const response = await apiClient.post("/users/register", userData);
+    const response = await apiClient.post("/api/users/register", userData); // ¡CORREGIDO!
     return response.data;
   } catch (error) {
     console.error("Error in registerUser:", error);
@@ -54,7 +55,7 @@ export const registerUser = async (userData) => {
 
 export const loginUser = async (credentials) => {
   try {
-    const response = await apiClient.post("/users/login", credentials);
+    const response = await apiClient.post("/api/users/login", credentials); // ¡CORREGIDO!
     return response.data; // Esto debería contener el token JWT y la información del usuario
   } catch (error) {
     console.error("Error in loginUser:", error);
@@ -62,4 +63,4 @@ export const loginUser = async (credentials) => {
   }
 };
 
-export default apiClient; // Exporta la instancia de Axios para usarla en otros servicios
+export default apiClient;

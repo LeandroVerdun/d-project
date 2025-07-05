@@ -1,9 +1,10 @@
+// src\services\cartService.js
 import apiClient from "./api"; // Importa el cliente Axios desde api.js
 
 // Obtener el carrito del usuario actual
 export const getMyCart = async () => {
   try {
-    const response = await apiClient.get("/cart");
+    const response = await apiClient.get("/api/cart"); // <-- ¡CAMBIO AQUÍ!
     return response.data;
   } catch (error) {
     console.error("Error en getMyCart:", error);
@@ -14,7 +15,7 @@ export const getMyCart = async () => {
 // Añadir un producto al carrito o actualizar su cantidad
 export const addOrUpdateItemInCart = async (productId, quantity) => {
   try {
-    const response = await apiClient.post("/cart", { productId, quantity });
+    const response = await apiClient.post("/api/cart", { productId, quantity }); // <-- ¡CAMBIO AQUÍ!
     return response.data;
   } catch (error) {
     console.error("Error en addOrUpdateItemInCart:", error);
@@ -25,7 +26,7 @@ export const addOrUpdateItemInCart = async (productId, quantity) => {
 // Eliminar un producto del carrito
 export const removeItemFromCart = async (productId) => {
   try {
-    const response = await apiClient.delete(`/cart/${productId}`);
+    const response = await apiClient.delete(`/api/cart/${productId}`); // <-- ¡CAMBIO AQUÍ!
     return response.data;
   } catch (error) {
     console.error("Error en removeItemFromCart:", error);
@@ -36,7 +37,7 @@ export const removeItemFromCart = async (productId) => {
 // Vaciar el carrito completo
 export const clearMyCart = async () => {
   try {
-    const response = await apiClient.delete("/cart");
+    const response = await apiClient.delete("/api/cart"); // <-- ¡CAMBIO AQUÍ!
     return response.data;
   } catch (error) {
     console.error("Error en clearMyCart:", error);

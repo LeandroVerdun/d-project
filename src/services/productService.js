@@ -3,7 +3,7 @@ import apiClient from "./api"; // Importa el cliente Axios desde api.js
 // Obtener todos los productos
 export const getAllProducts = async () => {
   try {
-    const response = await apiClient.get("/products");
+    const response = await apiClient.get("/api/products"); // <-- CAMBIO AQUÍ
     return response.data;
   } catch (error) {
     console.error("Error en getAllProducts:", error);
@@ -14,7 +14,7 @@ export const getAllProducts = async () => {
 // Agregar un nuevo producto
 export const addProduct = async (product) => {
   try {
-    const response = await apiClient.post("/products", product);
+    const response = await apiClient.post("/api/products", product); // <-- CAMBIO AQUÍ
     return response.data;
   } catch (error) {
     console.error("Error en addProduct:", error);
@@ -25,7 +25,7 @@ export const addProduct = async (product) => {
 // Actualizar un producto existente
 export const updateProduct = async (id, product) => {
   try {
-    const response = await apiClient.put(`/products/${id}`, product);
+    const response = await apiClient.put(`/api/products/${id}`, product); // <-- CAMBIO AQUÍ
     return response.data;
   } catch (error) {
     console.error("Error en updateProduct:", error);
@@ -36,7 +36,7 @@ export const updateProduct = async (id, product) => {
 // Eliminar un producto
 export const deleteProduct = async (id) => {
   try {
-    const response = await apiClient.delete(`/products/${id}`);
+    const response = await apiClient.delete(`/api/products/${id}`); // <-- CAMBIO AQUÍ
     return response.data;
   } catch (error) {
     console.error("Error en deleteProduct:", error);
@@ -47,7 +47,7 @@ export const deleteProduct = async (id) => {
 // Obtener un producto por ID
 export const getProductById = async (id) => {
   try {
-    const response = await apiClient.get(`/products/${id}`);
+    const response = await apiClient.get(`/api/products/${id}`); // <-- CAMBIO AQUÍ
     return response.data;
   } catch (error) {
     console.error(`Error en getProductById para ID ${id}:`, error);
@@ -59,7 +59,9 @@ export const getProductById = async (id) => {
 export const searchProducts = async (query) => {
   try {
     const encodedQuery = encodeURIComponent(query);
-    const response = await apiClient.get(`/products/search?q=${encodedQuery}`);
+    const response = await apiClient.get(
+      `/api/products/search?q=${encodedQuery}`
+    ); // <-- CAMBIO AQUÍ
     return response.data;
   } catch (error) {
     console.error(`Error en searchProducts para query "${query}":`, error);

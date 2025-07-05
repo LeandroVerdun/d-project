@@ -1,29 +1,43 @@
-// src/component/CartPage.jsx
+// src\component\CartPage.jsx
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import * as cartService from "../services/cartService";
-import "../css/CartPage.css"; // Asegúrate que la ruta sea correcta
+import * as orderService from "../services/orderService"; // ¡NUEVA IMPORTACIÓN!
+import "../css/CartPage.css";
 import CheckoutModal from "./CheckoutModal";
+import PurchaseSuccessModal from "./PurchaseSuccessModal";
 
 const CartPage = () => {
   const [cart, setCart] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log("CartPage: useEffect de montaje. Llamando fetchCart.");
     fetchCart();
   }, []);
+
+  useEffect(() => {
+    console.log("CartPage: showCheckoutModal cambió a:", showCheckoutModal);
+  }, [showCheckoutModal]);
+
+  useEffect(() => {
+    console.log("CartPage: showSuccessModal cambió a:", showSuccessModal);
+  }, [showSuccessModal]);
 
   const fetchCart = async () => {
     setLoading(true);
     setError(null);
     try {
+      console.log("CartPage: Iniciando fetchCart...");
       const data = await cartService.getMyCart();
       setCart(data);
+      console.log("CartPage: Carrito obtenido con éxito.", data);
     } catch (err) {
-      console.error("Error al obtener el carrito:", err);
+      console.error("CartPage: Error al obtener el carrito:", err);
       if (
         err.message.includes("No autorizado") ||
         err.message.includes("token")
@@ -37,6 +51,7 @@ const CartPage = () => {
       }
     } finally {
       setLoading(false);
+      console.log("CartPage: fetchCart finalizado. Loading:", false);
     }
   };
 
@@ -55,10 +70,14 @@ const CartPage = () => {
     }
 
     try {
+      console.log(
+        `CartPage: Actualizando cantidad para producto ${productId} a ${newQuantity}`
+      );
       await cartService.addOrUpdateItemInCart(productId, newQuantity);
       fetchCart();
+      console.log("CartPage: Cantidad actualizada. Refetching cart.");
     } catch (err) {
-      console.error("Error al actualizar cantidad:", err);
+      console.error("CartPage: Error al actualizar cantidad:", err);
       alert(
         `Error al actualizar la cantidad: ${err.message || "Error desconocido"}`
       );
@@ -72,10 +91,12 @@ const CartPage = () => {
       )
     ) {
       try {
+        console.log(`CartPage: Eliminando producto ${productId}`);
         await cartService.removeItemFromCart(productId);
         fetchCart();
+        console.log("CartPage: Producto eliminado. Refetching cart.");
       } catch (err) {
-        console.error("Error al eliminar producto:", err);
+        console.error("CartPage: Error al eliminar producto:", err);
         alert(
           `Error al eliminar el producto: ${err.message || "Error desconocido"}`
         );
@@ -88,11 +109,13 @@ const CartPage = () => {
       window.confirm("¿Estás seguro de que quieres vaciar todo el carrito?")
     ) {
       try {
+        console.log("CartPage: Vaciando carrito...");
         await cartService.clearMyCart();
         fetchCart();
         alert("Carrito vaciado con éxito.");
+        console.log("CartPage: Carrito vaciado. Refetching cart.");
       } catch (err) {
-        console.error("Error al vaciar el carrito:", err);
+        console.error("CartPage: Error al vaciar el carrito:", err);
         alert(
           `Error al vaciar el carrito: ${err.message || "Error desconocido"}`
         );
@@ -103,20 +126,101 @@ const CartPage = () => {
   const calculateTotal = () => {
     if (!cart || !cart.items) return 0;
     return cart.items.reduce((acc, item) => {
-      // Comprobar que item.product y item.product.price existan
       if (item && item.product && typeof item.product.price === "number") {
         return acc + item.product.price * item.quantity;
       }
-      return acc; // Si no es válido, no lo sumamos al total
+      return acc;
     }, 0);
   };
 
-  const handleShowCheckoutModal = () => setShowCheckoutModal(true);
-  const handleCloseCheckoutModal = () => setShowCheckoutModal(false);
-
-  const handlePurchaseSuccess = () => {
-    fetchCart();
+  const handleShowCheckoutModal = () => {
+    console.log(
+      "CartPage: handleShowCheckoutModal llamado. Setting showCheckoutModal a true."
+    );
+    setShowCheckoutModal(true);
   };
+
+  const handleCloseCheckoutModal = () => {
+    console.log(
+      "CartPage: handleCloseCheckoutModal llamado. Setting showCheckoutModal a false."
+    );
+    setShowCheckoutModal(false);
+  };
+
+  const handleCloseSuccessModal = () => {
+    console.log(
+      "CartPage: handleCloseSuccessModal llamado. Setting showSuccessModal a false."
+    );
+    setShowSuccessModal(false);
+  };
+
+  // Esta función ahora recibe los detalles de la orden del CheckoutModal
+  const handlePurchaseSuccess = async (orderDetailsFromCheckout) => {
+    console.log(
+      "CartPage: handlePurchaseSuccess (prop de CheckoutModal) llamado con detalles:",
+      orderDetailsFromCheckout
+    );
+    try {
+      // 1. Obtener los datos del carrito ACTUAL para crear la orden
+      // Asegurarse de tener el carrito más reciente antes de crear la orden
+      const currentCart = await cartService.getMyCart();
+
+      if (!currentCart || currentCart.items.length === 0) {
+        console.warn("CartPage: Intento de crear orden con carrito vacío.");
+        alert("Error: El carrito está vacío, no se puede finalizar la compra.");
+        setShowCheckoutModal(false); // Cierra el modal de checkout si el carrito está vacío
+        return;
+      }
+
+      // Preparar los datos para la orden, combinando items del carrito y detalles del checkout
+      const orderData = {
+        items: currentCart.items.map((item) => ({
+          product: item.product._id, // Enviar solo el ID del producto
+          name: item.product.name,
+          quantity: item.quantity,
+          price: item.product.price,
+          image: item.product.image, // Puedes incluir la imagen si tu esquema de orden la acepta
+        })),
+        totalAmount: calculateTotal(), // Calcula el total desde el carrito actual
+        ...orderDetailsFromCheckout, // Añade los datos de envío y pago pasados desde CheckoutModal
+      };
+
+      console.log("CartPage: Creando orden con datos COMBINADOS:", orderData);
+      const newOrder = await orderService.createOrder(orderData); // ¡Llama a createOrder!
+      console.log("CartPage: Orden creada en el backend:", newOrder);
+
+      // Ahora sí, vaciar el carrito después de que la orden se creó con éxito
+      console.log("CartPage: Limpiando carrito después de compra exitosa...");
+      await cartService.clearMyCart(); // Vacía el carrito en el backend
+      fetchCart(); // Actualiza el estado local del carrito (lo pone vacío)
+      console.log("CartPage: Carrito limpiado y refeteado.");
+
+      setShowCheckoutModal(false); // Cierra el modal de checkout
+      setShowSuccessModal(true); // Abre el nuevo modal de éxito
+      console.log(
+        "CartPage: CheckoutModal cerrado y PurchaseSuccessModal abierto."
+      );
+    } catch (err) {
+      console.error(
+        "CartPage: Error en handlePurchaseSuccess (creando orden o limpiando carrito):",
+        err
+      );
+      const errorMessage =
+        err.response && err.response.data && err.response.data.message
+          ? err.response.data.message
+          : err.message || "Error desconocido";
+      alert(`Hubo un error al finalizar la compra: ${errorMessage}`);
+      setShowCheckoutModal(false); // Si hay un error, cierra el modal de checkout
+      // Opcional: navigate("/"); o navigate("/cart") si quieres que se quede en el carrito para reintentar
+    }
+  };
+
+  console.log(
+    "CartPage: Renderizando. showCheckoutModal actual:",
+    showCheckoutModal,
+    "showSuccessModal actual:",
+    showSuccessModal
+  );
 
   if (loading) {
     return (
@@ -134,7 +238,7 @@ const CartPage = () => {
     );
   }
 
-  if (!cart || cart.items.length === 0) {
+  if (!cart || (cart.items.length === 0 && !showSuccessModal)) {
     return (
       <div className="cart-container empty-cart text-white text-center mt-5">
         <h2>Tu carrito está vacío 🛒</h2>
@@ -153,8 +257,7 @@ const CartPage = () => {
         {cart.items.map((item) => (
           <div key={item.product?._id || item._id} className="cart-item-card">
             {" "}
-            {/* Uso de optional chaining para key */}
-            {item.product ? ( // Comprobar si item.product existe antes de renderizar
+            {item.product ? (
               <>
                 <img
                   src={item.product.image}
@@ -164,12 +267,10 @@ const CartPage = () => {
                 <div className="cart-item-details">
                   <h4>{item.product.name}</h4>
                   <p>
-                    Precio unitario: $
-                    {
-                      typeof item.product.price === "number"
-                        ? item.product.price.toFixed(2)
-                        : "N/A" // Si no es número, muestra N/A
-                    }
+                    Precio unitario: ${" "}
+                    {typeof item.product.price === "number"
+                      ? item.product.price.toFixed(2)
+                      : "N/A"}{" "}
                   </p>
                   <div className="item-quantity-control">
                     <button
@@ -209,7 +310,7 @@ const CartPage = () => {
             ) : (
               <div className="text-danger">
                 Producto no disponible o eliminado.
-              </div> // Mensaje si el producto no existe
+              </div>
             )}
           </div>
         ))}
@@ -238,7 +339,13 @@ const CartPage = () => {
       <CheckoutModal
         show={showCheckoutModal}
         handleClose={handleCloseCheckoutModal}
-        onPurchaseSuccess={handlePurchaseSuccess}
+        onPurchaseSuccess={handlePurchaseSuccess} // Pasa la función que ahora espera datos
+        totalAmount={calculateTotal()}
+      />
+
+      <PurchaseSuccessModal
+        show={showSuccessModal}
+        handleClose={handleCloseSuccessModal}
       />
     </div>
   );

@@ -24,6 +24,7 @@ import SearchResultsPage from "./component/products/SearchResultsPage";
 // Componente de Administración
 import AdminPage from "./component/admin/AdminPage";
 import UserManagementPage from "./component/admin/UserManagementPage"; // Asegúrate de que esta ruta es correcta
+import AdminOrderHistoryPage from "./component/admin/AdminOrderHistoryPage"; // <--- ¡NUEVA IMPORTACIÓN!
 
 // Componente del Carrito
 import CartPage from "./component/CartPage"; // Asegúrate que esta ruta es correcta: src/component/CartPage.jsx
@@ -43,7 +44,8 @@ function App() {
           <Route path="/cart" element={<CartPage />} />
           {/* NUEVA RUTA PARA BÚSQUEDA */}
           <Route path="/search/books/:query" element={<SearchResultsPage />} />
-          {/* La ruta principal del panel de administración */}
+
+          {/* Rutas protegidas para administradores */}
           <Route
             path="/admin"
             element={
@@ -53,13 +55,22 @@ function App() {
             }
           />
           <Route
-            path="/admin/users" // Nueva ruta para la gestión de usuarios
+            path="/admin/users" // Ruta para la gestión de usuarios
             element={
               <ProtectedUserAdmin>
                 <UserManagementPage />
               </ProtectedUserAdmin>
             }
           />
+          <Route
+            path="/admin/orders" // <--- ¡NUEVA RUTA PARA EL HISTORIAL DE ÓRDENES DE ADMINISTRADOR!
+            element={
+              <ProtectedUserAdmin>
+                <AdminOrderHistoryPage />
+              </ProtectedUserAdmin>
+            }
+          />
+
           {/* Ruta 404 para cualquier otra cosa */}
           <Route path="*" element={<NotFound />} />
         </Routes>
