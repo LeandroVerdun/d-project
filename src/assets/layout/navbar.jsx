@@ -89,45 +89,6 @@ export const Navbar = () => {
                 Home
               </Link>
             </li>
-            <li className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle text-white"
-                href="#"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Categories
-              </a>
-              <ul className="dropdown-menu genre-scroll">
-                {[
-                  "fiction",
-                  "non-fiction",
-                  "fantasy",
-                  "science fiction",
-                  "thriller",
-                  "romance",
-                  "biography",
-                  "history",
-                  "poetry",
-                  "mystery",
-                  "horror",
-                  "young adult",
-                  "children",
-                  "cookbooks",
-                  "self-help",
-                ].map((category) => (
-                  <li key={category}>
-                    <Link
-                      className="dropdown-item"
-                      to={`/categories?category=${category}`}
-                    >
-                      {category.charAt(0).toUpperCase() + category.slice(1)}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </li>
           </ul>
 
           <form
