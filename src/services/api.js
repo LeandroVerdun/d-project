@@ -1,57 +1,65 @@
-// Paso 1: Configurar la URL base de tu backend
-const BASE_URL = "http://localhost:5000/api";
+import axios from "axios";
 
-// Paso 2: Crear una función para el registro de usuarios
+// Paso 1: Configurar la URL base de tu backend
+const API_BASE_URL = "http://localhost:5000/api"; // Asegúrate que esta URL sea la correcta de tu backend
+
+const apiClient = axios.create({
+  baseURL: API_BASE_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+// Paso 2: Configurar un interceptor para añadir el token JWT a cada solicitud
+apiClient.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Paso 3: Configurar un interceptor para manejar errores de respuesta comunes
+apiClient.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    // Aquí puedes manejar errores globales, como redireccionar al login si el token expira
+    if (error.response && error.response.status === 401) {
+      console.error("Error 401: No autorizado. Redirigiendo al login...");
+      // Opcional: limpiar el token y redirigir
+      // localStorage.removeItem("token");
+      // window.location.href = "/login";
+    }
+    return Promise.reject(error);
+  }
+);
+
+// Funciones de Autenticación (movidas y adaptadas a Axios)
 export const registerUser = async (userData) => {
   try {
-    const response = await fetch(`${BASE_URL}/users/register`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userData),
-    });
-
-    // Verificar si la respuesta fue exitosa (código 2xx)
-    if (!response.ok) {
-      // Si hay un error, leer el mensaje del backend y lanzarlo
-      const errorData = await response.json();
-      throw new Error(
-        errorData.message || "Something went wrong during registration."
-      );
-    }
-
-    // Si es exitoso, devolver la data de la respuesta (por ejemplo, el usuario creado)
-    const data = await response.json();
-    return data;
+    const response = await apiClient.post("/users/register", userData);
+    return response.data;
   } catch (error) {
-    // Capturar cualquier error de red o de la petición
     console.error("Error in registerUser:", error);
-    throw error; // Relanzar el error para que el componente lo maneje
+    throw error;
   }
 };
 
-// Puedes añadir más funciones aquí más adelante, como loginUser, getProducts, etc.
-// Paso 3: Crear una función para el inicio de sesión
 export const loginUser = async (credentials) => {
   try {
-    const response = await fetch(`${BASE_URL}/users/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(credentials),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "Incorrect email or password.");
-    }
-
-    const data = await response.json();
-    return data; // Esto debería contener el token JWT y la información del usuario
+    const response = await apiClient.post("/users/login", credentials);
+    return response.data; // Esto debería contener el token JWT y la información del usuario
   } catch (error) {
     console.error("Error in loginUser:", error);
     throw error;
   }
 };
+
+export default apiClient; // Exporta la instancia de Axios para usarla en otros servicios
