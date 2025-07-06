@@ -1,21 +1,14 @@
-<<<<<<< HEAD
-=======
-// src/component/admin/AdminOrderHistoryPage.jsx
->>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
 import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import * as orderService from "../../services/orderService";
-import styles from "./AdminPage.module.css"; // Reutilizamos estilos
-import { format } from "date-fns"; // Para formatear fechas
-import { es } from "date-fns/locale"; // Para fechas en español
+import styles from "./AdminPage.module.css"; 
+import { format } from "date-fns"; 
+import { es } from "date-fns/locale"; 
 
-<<<<<<< HEAD
-import AdminMenu from "./AdminMenu"; // Importa el menú admin
+import AdminMenu from "./AdminMenu"; 
 
 const orderStatuses = ["processing", "shipped", "completed", "cancelled"];
 
-=======
->>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
 const AdminOrderHistoryPage = () => {
   const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
@@ -47,7 +40,6 @@ const AdminOrderHistoryPage = () => {
     }
   };
 
-<<<<<<< HEAD
   const handleStatusChange = async (orderId, newStatus) => {
     try {
       const updatedOrder = await orderService.updateOrderStatus(orderId, newStatus);
@@ -62,9 +54,6 @@ const AdminOrderHistoryPage = () => {
     }
   };
 
-=======
-  // Calcular estadísticas para "usuario que compró más" y "valor precio que compró"
->>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
   const { topCustomers, totalRevenue } = useMemo(() => {
     const customerSpending = new Map();
     let totalRev = 0;
@@ -72,11 +61,7 @@ const AdminOrderHistoryPage = () => {
     orders.forEach((order) => {
       totalRev += order.totalAmount;
       const userId = order.user._id;
-<<<<<<< HEAD
       const userName = order.user.name || order.user.email;
-=======
-      const userName = order.user.name || order.user.email; // Usar nombre o email
->>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
       const userEmail = order.user.email;
 
       if (!customerSpending.has(userId)) {
@@ -116,16 +101,12 @@ const AdminOrderHistoryPage = () => {
 
   return (
     <div className={styles.adminContainer}>
-<<<<<<< HEAD
       {/* Contenedor flex para título y menú */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
         <h1>Historial de Órdenes (Administrador)</h1>
         {/* Usamos el menú admin aquí */}
         <AdminMenu onNewProduct={() => alert("Implementa aquí la función de nuevo producto o navega")} />
       </div>
-=======
-      <h1>Historial de Órdenes (Administrador)</h1>
->>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
 
       <div className="mb-4">
         <h2 className="text-white mb-3">Estadísticas Clave</h2>
@@ -188,10 +169,7 @@ const AdminOrderHistoryPage = () => {
                 <th>Email Cliente</th>
                 <th>Fecha</th>
                 <th>Cantidad Total</th>
-<<<<<<< HEAD
                 <th>Estado</th>
-=======
->>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
               </tr>
             </thead>
             <tbody>
@@ -206,7 +184,6 @@ const AdminOrderHistoryPage = () => {
                     })}
                   </td>
                   <td>${order.totalAmount.toFixed(2)}</td>
-<<<<<<< HEAD
                   <td>
                     <select
                       value={order.status}
@@ -220,8 +197,6 @@ const AdminOrderHistoryPage = () => {
                       ))}
                     </select>
                   </td>
-=======
->>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
                 </tr>
               ))}
             </tbody>

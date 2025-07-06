@@ -1,9 +1,9 @@
 // src/component/products/SearchResultsPage.jsx
 import React, { useState, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
-import { searchProducts } from "../../services/productService"; // Importa la nueva función
-import ProductCard from "./ProductCard"; // Tu componente ProductCard uniforme
-import "../../css/SearchResultsPage.css"; // Puedes crear este archivo si necesitas estilos específicos
+import { searchProducts } from "../../services/productService"; 
+import ProductCard from "./ProductCard"; 
+import "../../css/SearchResultsPage.css"; 
 
 const SearchResultsPage = () => {
   const { query: urlQuery } = useParams(); // Obtiene el parámetro 'query' de la URL
