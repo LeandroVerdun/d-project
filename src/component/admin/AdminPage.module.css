@@ -1,34 +1,52 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
 .adminContainer {
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  background-color: #212529; /* Fondo oscuro casi negro */
+  color: #f8f9fa; /* Texto blanco */
+  padding: 30px;
+  border-radius: 10px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5); /* Sombra pronunciada para destacar */
+  max-width: 1200px; /* Limita el ancho para que no se extienda demasiado en pantallas grandes */
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .adminContainer h1 {
-  color: white;
-  font-size: 1.5rem; 
-  margin-bottom: 1rem;
-  text-align: center; 
+  color: #ffc107; /* Amarillo de Bootstrap 'warning' */
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: 700;
+  font-size: 2.5em;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
 }
 
 .newMovieButton {
-  padding: 0.5rem 0.8rem;
-  background-color: #007bff;
+  /* Ya que en tu AdminPage.jsx lo tienes como .newMovieButton, lo mantendremos así aquí */
+  background-color: #28a745; /* Verde de Bootstrap 'success' */
   color: white;
   border: none;
+  padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
-  margin-bottom: 1rem;
-  font-size: 0.9rem; 
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-size: 1.1em;
+  display: block;
+  margin-left: auto; /* Para alinear a la derecha */
+  margin-right: 0;
+  margin-bottom: 20px; /* Espacio debajo del botón */
 }
 
 .newMovieButton:hover {
-  background-color: #0056b3;
+  background-color: #218838; /* Verde más oscuro al pasar el ratón */
+  transform: translateY(-2px); /* Pequeño efecto de elevación */
 }
 
+<<<<<<< HEAD
 /* Estilo mobile */
 @media (max-width: 600px) {
   .adminContainer {
@@ -87,6 +105,8 @@
   transform: translateY(-2px); /* Pequeño efecto de elevación */
 }
 
+=======
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
 /* Estilos para los mensajes de carga/error */
 .adminContainer .text-center {
   padding: 20px;
@@ -95,5 +115,8 @@
 
 .adminContainer .text-danger {
   color: #dc3545 !important; /* Rojo de Bootstrap 'danger' */
+<<<<<<< HEAD
 >>>>>>> backup-local-cambios
+=======
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
 }

@@ -2,6 +2,7 @@ import React from "react";
 import { FaFacebookF, FaTwitter, FaInstagram, FaYoutube } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import "../../css/Footer.css"; 
 import backgroundFooter from "../img/Footerimg.png"; 
 
@@ -17,6 +18,15 @@ export const Footer = () => {
   const userString = localStorage.getItem("user");
   const user = userString ? JSON.parse(userString) : null;
 >>>>>>> backup-local-cambios
+=======
+import "../../css/Footer.css";
+import backgroundFooter from "../img/Footerimg.png";
+
+export const Footer = () => {
+  const navigate = useNavigate();
+  const userString = localStorage.getItem("user");
+  const user = userString ? JSON.parse(userString) : null;
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
   const isLoggedIn = !!user;
 
   const handleProfileLink = (e) => {
@@ -61,19 +71,33 @@ export const Footer = () => {
             <ul className="list-unstyled">
               <li>
 <<<<<<< HEAD
+<<<<<<< HEAD
                 <Link to="/about-us" className="text-light text-decoration-none">
 =======
                 <Link to="/about" className="text-light text-decoration-none">
 >>>>>>> backup-local-cambios
+=======
+                <Link
+                  to="/about-us"
+                  className="text-light text-decoration-none"
+                >
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
                   About Us
                 </Link>
               </li>
               <li>
 <<<<<<< HEAD
+<<<<<<< HEAD
                 <Link to="/terms-of-service" className="text-light text-decoration-none">
 =======
                 <Link to="/terms" className="text-light text-decoration-none">
 >>>>>>> backup-local-cambios
+=======
+                <Link
+                  to="/terms-of-service"
+                  className="text-light text-decoration-none"
+                >
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
                   Terms of Service
                 </Link>
               </li>
@@ -94,7 +118,10 @@ export const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/register" className="text-light text-decoration-none">
+                <Link
+                  to="/register"
+                  className="text-light text-decoration-none"
+                >
                   Sign Up
                 </Link>
               </li>
@@ -105,6 +132,7 @@ export const Footer = () => {
           <div className="col-6 col-md-3 mb-4">
             <h5 className="text-uppercase mb-3">Follow Us</h5>
             <div className="social-icons-container">
+<<<<<<< HEAD
               <a href="#" className="text-light fs-5" onClick={handleFollowUsLink}>
 <<<<<<< HEAD
 =======
@@ -112,12 +140,27 @@ export const Footer = () => {
               </a>
               <a href="#" className="text-light fs-5" onClick={handleFollowUsLink}>
 >>>>>>> backup-local-cambios
+=======
+              <a
+                href="#"
+                className="text-light fs-5"
+                onClick={handleFollowUsLink}
+              >
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
                 <FaTwitter />
               </a>
-              <a href="#" className="text-light fs-5" onClick={handleFollowUsLink}>
+              <a
+                href="#"
+                className="text-light fs-5"
+                onClick={handleFollowUsLink}
+              >
                 <FaInstagram />
               </a>
-              <a href="#" className="text-light fs-5" onClick={handleFollowUsLink}>
+              <a
+                href="#"
+                className="text-light fs-5"
+                onClick={handleFollowUsLink}
+              >
                 <FaYoutube />
               </a>
             </div>
@@ -129,7 +172,8 @@ export const Footer = () => {
         <div className="text-center">
 <<<<<<< HEAD
           <p className="mb-0">
-            &copy; {new Date().getFullYear()} MovieApp. All rights reserved.
+            &copy; {new Date().getFullYear()} BookApp. All rights reserved.{" "}
+            {/* Cambiado de MovieApp a BookApp */}
           </p>
 =======
           <p className="mb-0">&copy; {new Date().getFullYear()} BookApp. All rights reserved.</p>
@@ -140,7 +184,11 @@ export const Footer = () => {
   );
 };
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 export default Footer;
 >>>>>>> backup-local-cambios
+=======
+export default Footer;
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4

@@ -24,9 +24,16 @@ const ProductCard = ({ product }) => {
       console.error("Error al añadir al carrito:", error);
       // Muestra un mensaje de error más amigable al usuario
       alert(
+<<<<<<< HEAD
         `No se pudo añadir ${product.name} al carrito. Motivo: Debes de estar logueado para realizar una compra.`
       );
 
+=======
+        `No se pudo añadir ${product.name} al carrito. Motivo: ${
+          error.message || "Error desconocido"
+        }`
+      );
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
     }
   };
 

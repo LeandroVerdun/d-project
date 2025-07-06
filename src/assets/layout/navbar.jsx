@@ -1,8 +1,13 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+// navbar.jsx
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useFetchMovies } from "../../hook/useFetchMovies";
+
 import { BsCart } from "react-icons/bs";
+<<<<<<< HEAD
 import "../../css/Navbar.css";
 import logoImg from "../../assets/img/home.png";
 =======
@@ -14,6 +19,10 @@ import { BsCart } from "react-icons/bs";
 import "../../css/Navbar.css"; // Asegúrate que esta ruta es correcta
 import logoImg from "../../assets/img/home.png"; // Asegúrate que esta ruta es correcta
 >>>>>>> backup-local-cambios
+=======
+import "../../css/Navbar.css"; // Asegúrate que esta ruta es correcta
+import logoImg from "../../assets/img/home.png"; // Asegúrate que esta ruta es correcta
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
 
 export const Navbar = () => {
   const [query, setQuery] = useState("");
@@ -26,10 +35,13 @@ export const Navbar = () => {
   const dropdownRef = useRef(null);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   const { movies, loading } = useFetchMovies(query, 10);
 
 =======
 >>>>>>> backup-local-cambios
+=======
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     setIsLoggedIn(!!user);
@@ -40,26 +52,35 @@ export const Navbar = () => {
     setQuery(e.target.value);
     setTriggerSearch(false);
 <<<<<<< HEAD
+<<<<<<< HEAD
     setDropdownVisible(true);
 =======
     setDropdownVisible(false);
 >>>>>>> backup-local-cambios
+=======
+    setDropdownVisible(false);
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (query.trim()) {
 <<<<<<< HEAD
+<<<<<<< HEAD
       navigate(`/search/${encodeURIComponent(query)}`);
 =======
       navigate(`/search/books/${encodeURIComponent(query)}`);
 >>>>>>> backup-local-cambios
+=======
+      navigate(`/search/books/${encodeURIComponent(query)}`);
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
     } else {
       navigate("/404");
     }
   };
 
   const handleCartClick = () => {
+<<<<<<< HEAD
 <<<<<<< HEAD
     navigate("/cart");
   };
@@ -72,6 +93,13 @@ export const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
 >>>>>>> backup-local-cambios
+=======
+    navigate("/cart"); // Navega a la ruta del carrito
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
     localStorage.removeItem("user");
     setIsLoggedIn(false);
     setCurrentUser(null);
@@ -115,6 +143,7 @@ export const Navbar = () => {
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
 <<<<<<< HEAD
+<<<<<<< HEAD
               <Link className="nav-link active text-white" to="/">Home</Link>
             </li>
             <li className="nav-item dropdown">
@@ -140,13 +169,23 @@ export const Navbar = () => {
                   </li>
                 ))}
               </ul>
+=======
+              <Link className="nav-link active text-white" to="/">
+                Home
+              </Link>
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
             </li>
           </ul>
 
-          <form className="d-flex align-items-center position-relative me-3" role="search" onSubmit={handleSubmit}>
+          <form
+            className="d-flex align-items-center position-relative me-3"
+            role="search"
+            onSubmit={handleSubmit}
+          >
             <input
               className="form-control me-2"
               type="search"
+<<<<<<< HEAD
               placeholder="Search movie"
 =======
               <Link className="nav-link active text-white" to="/">
@@ -165,6 +204,9 @@ export const Navbar = () => {
               type="search"
               placeholder="Search book"
 >>>>>>> backup-local-cambios
+=======
+              placeholder="Search book"
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
               value={query}
               onChange={handleInputChange}
               aria-label="Search"
@@ -172,6 +214,7 @@ export const Navbar = () => {
             <button className="btn btn-outline-success" type="submit">
               <i className="bi bi-search"></i>
             </button>
+<<<<<<< HEAD
 <<<<<<< HEAD
 
             {query && !triggerSearch && !loading && movies.length > 0 && dropdownVisible && (
@@ -207,6 +250,8 @@ export const Navbar = () => {
             )}
 =======
 >>>>>>> backup-local-cambios
+=======
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
           </form>
 
           <div className="d-flex align-items-center me-3">
@@ -230,21 +275,50 @@ export const Navbar = () => {
                     aria-expanded="false"
                   >
 <<<<<<< HEAD
+<<<<<<< HEAD
                     {currentUser?.username || "My Account"}
+=======
+                    {currentUser?.username ||
+                      currentUser?.email ||
+                      "My Account"}{" "}
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
                   </button>
-                  <ul className="dropdown-menu dropdown-menu-end dropdown-menu-user" aria-labelledby="dropdownAccount">
-                    <li><Link className="dropdown-item" to="/profile">Profile</Link></li>
-                    <li><Link className="dropdown-item" to="/mypurchases">My Movie</Link></li>
-                    {currentUser?.username === "Chisato" && (
+                  <ul
+                    className="dropdown-menu dropdown-menu-end dropdown-menu-user"
+                    aria-labelledby="dropdownAccount"
+                  >
+                    <li>
+                      <Link className="dropdown-item" to="/profile">
+                        Profile
+                      </Link>
+                    </li>
+                    {!currentUser?.isAdmin && (
+                      <li>
+                        <Link className="dropdown-item" to="/mypurchases">
+                          Mis Compras
+                        </Link>
+                      </li>
+                    )}
+                    {currentUser?.isAdmin && (
                       <>
-                        <li><hr className="dropdown-divider" /></li>
-                        <li><Link className="dropdown-item" to="/admin">Movie</Link></li>
-                        <li><Link className="dropdown-item" to="/useradmin">User Admin</Link></li>
+                        <li>
+                          <hr className="dropdown-divider" />
+                        </li>
+                        <li>
+                          <Link className="dropdown-item" to="/admin">
+                            Panel Administrador
+                          </Link>
+                        </li>
                       </>
                     )}
-                    <li><button className="dropdown-item" onClick={handleLogout}>Logout</button></li>
+                    <li>
+                      <button className="dropdown-item" onClick={handleLogout}>
+                        Logout
+                      </button>
+                    </li>
                   </ul>
                 </div>
+<<<<<<< HEAD
 =======
                     {currentUser?.username ||
                       currentUser?.email ||
@@ -287,6 +361,9 @@ export const Navbar = () => {
                 </div>
                 {/* Botón del Carrito (¡Ya lo tenías, solo confirmo su posición!) */}
 >>>>>>> backup-local-cambios
+=======
+                {/* Botón del Carrito (¡Ya lo tenías, solo confirmo su posición!) */}
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
                 <button
                   className="btn btn-outline-warning"
                   onClick={handleCartClick}
@@ -303,7 +380,12 @@ export const Navbar = () => {
   );
 };
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 export default Navbar;
 >>>>>>> backup-local-cambios
+=======
+
+export default Navbar;
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4

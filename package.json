@@ -11,11 +11,21 @@
   },
   "dependencies": {
 <<<<<<< HEAD
+<<<<<<< HEAD
     "bootstrap": "^5.3.5",
+=======
+    "axios": "^1.10.0",
+    "bootstrap": "^5.3.7",
+    "bootstrap-icons": "^1.13.1",
+    "cors": "^2.8.5",
+    "date-fns": "^4.1.0",
+    "jwt-decode": "^4.0.0",
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
     "react": "^19.0.0",
-    "react-bootstrap": "^2.10.9",
+    "react-bootstrap": "^2.10.10",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
+<<<<<<< HEAD
     "react-router-dom": "^7.5.0",
 =======
     "axios": "^1.10.0",
@@ -30,6 +40,9 @@
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.6.3",
 >>>>>>> backup-local-cambios
+=======
+    "react-router-dom": "^7.6.3",
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
     "swiper": "^11.2.6"
   },
   "devDependencies": {

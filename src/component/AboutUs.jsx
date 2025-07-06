@@ -68,7 +68,6 @@ export const AboutUs = () => {
             position: "relative",
             zIndex: -1,
             top: "6vh",
-            position: "absolute",
           }}
         >
           <div className="about-us-wrapper text-white w-100 h-100 d-flex flex-column align-items-center justify-content-center p-2 mt-5">

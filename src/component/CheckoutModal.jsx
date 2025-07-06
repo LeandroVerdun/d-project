@@ -1,11 +1,22 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Form, Alert } from "react-bootstrap";
+=======
+// src\component\CheckoutModal.jsx
+import React, { useState, useEffect } from "react";
+import { Modal, Button, Form, Alert } from "react-bootstrap";
+// import { createOrder } from "../services/orderService"; // YA NO SE NECESITA AQUÍ
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
 import { useNavigate } from "react-router-dom";
 
 const CheckoutModal = ({
   show,
   handleClose,
+<<<<<<< HEAD
   onPurchaseSuccess,
+=======
+  onPurchaseSuccess, // Esta prop ahora DEBE recibir los datos del formulario
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
   totalAmount,
 }) => {
   const navigate = useNavigate();
@@ -49,13 +60,24 @@ const CheckoutModal = ({
   }, [show]);
 
   const handleCloseModalAndReset = () => {
+<<<<<<< HEAD
     resetFormStates();
     setLoading(false);
+=======
+    console.log("CheckoutModal: handleCloseModalAndReset llamado.");
+    resetFormStates();
+    setLoading(false);
+    console.log("CheckoutModal: Llamando handleClose (prop de CartPage).");
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
     handleClose();
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+<<<<<<< HEAD
+=======
+    console.log(`CheckoutModal: handleChange - Name: ${name}, Value: ${value}`);
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
 
     if (name === "cardNumber") {
       const digitsOnly = value.replace(/\D/g, "");
@@ -94,6 +116,7 @@ const CheckoutModal = ({
     } else if (
       ["address", "city", "postalCode", "country", "province"].includes(name)
     ) {
+<<<<<<< HEAD
       let newValue = value;
 
       if (["city", "province", "country"].includes(name)) {
@@ -107,6 +130,9 @@ const CheckoutModal = ({
       if (newValue.length <= 10) {
         setShippingAddress({ ...shippingAddress, [name]: newValue });
       }
+=======
+      setShippingAddress({ ...shippingAddress, [name]: value });
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
     } else if (name === "paymentMethod") {
       setPaymentMethod(value);
       if (value !== "credit_card") {
@@ -119,13 +145,22 @@ const CheckoutModal = ({
 
   const validateForm = () => {
     setError(null);
+<<<<<<< HEAD
 
     if (!deliveryOption) {
       setError("Por favor, seleccione una opción de entrega.");
+=======
+    console.log("CheckoutModal: Validando formulario...");
+
+    if (!deliveryOption) {
+      setError("Por favor, seleccione una opción de entrega.");
+      console.log("CheckoutModal: Validación fallida - deliveryOption.");
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
       return false;
     }
 
     if (deliveryOption === "home_delivery") {
+<<<<<<< HEAD
       const { address, city, province, postalCode, country } = shippingAddress;
 
       if (!address || !city || !postalCode || !country || !province) {
@@ -151,23 +186,53 @@ const CheckoutModal = ({
       const regexPostal = /^\d{4}$/;
       if (!regexPostal.test(postalCode)) {
         setError("El código postal debe tener exactamente 4 números.");
+=======
+      if (
+        !shippingAddress.address ||
+        !shippingAddress.city ||
+        !shippingAddress.postalCode ||
+        !shippingAddress.country ||
+        !shippingAddress.province
+      ) {
+        setError(
+          "Por favor, complete todos los campos de la dirección de envío."
+        );
+        console.log("CheckoutModal: Validación fallida - shippingAddress.");
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
         return false;
       }
     }
 
     if (!paymentMethod) {
       setError("Por favor, seleccione un método de pago.");
+<<<<<<< HEAD
+=======
+      console.log("CheckoutModal: Validación fallida - paymentMethod.");
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
       return false;
     }
 
     if (paymentMethod === "credit_card") {
       const cleanCardNumber = cardNumber.replace(/\s/g, "");
       if (!cleanCardNumber || cleanCardNumber.length < 16) {
+<<<<<<< HEAD
         setError("Por favor, ingrese un número de tarjeta válido (16 dígitos).");
+=======
+        setError(
+          "Por favor, ingrese un número de tarjeta válido (16 dígitos)."
+        );
+        console.log("CheckoutModal: Validación fallida - cardNumber.");
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
         return false;
       }
       if (!expirationDate || !/^\d{2}\/\d{2}$/.test(expirationDate)) {
         setError("Por favor, ingrese una fecha de expiración válida (MM/AA).");
+<<<<<<< HEAD
+=======
+        console.log(
+          "CheckoutModal: Validación fallida - expirationDate format."
+        );
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
         return false;
       }
       const [month, year] = expirationDate.split("/").map(Number);
@@ -176,15 +241,32 @@ const CheckoutModal = ({
 
       if (month < 1 || month > 12) {
         setError("Mes de expiración no válido.");
+<<<<<<< HEAD
         return false;
       }
       if (year < currentYear || (year === currentYear && month < currentMonth)) {
         setError("La tarjeta ha expirado.");
+=======
+        console.log(
+          "CheckoutModal: Validación fallida - expirationDate month."
+        );
+        return false;
+      }
+      if (
+        year < currentYear ||
+        (year === currentYear && month < currentMonth)
+      ) {
+        setError("La tarjeta ha expirado.");
+        console.log(
+          "CheckoutModal: Validación fallida - expirationDate expired."
+        );
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
         return false;
       }
 
       if (!cvv || cvv.length < 3) {
         setError("Por favor, ingrese un CVV válido (3 dígitos).");
+<<<<<<< HEAD
         return false;
       }
     } else if (paymentMethod === "paypal" && deliveryOption === "store_pickup") {
@@ -195,11 +277,38 @@ const CheckoutModal = ({
       return false;
     }
 
+=======
+        console.log("CheckoutModal: Validación fallida - cvv.");
+        return false;
+      }
+    } else if (
+      paymentMethod === "paypal" &&
+      deliveryOption === "store_pickup"
+    ) {
+      setError("PayPal no está disponible para retiro en el local.");
+      console.log(
+        "CheckoutModal: Validación fallida - PayPal con store_pickup."
+      );
+      return false;
+    } else if (
+      paymentMethod === "pay_at_store" &&
+      deliveryOption === "home_delivery"
+    ) {
+      setError("Pago en el local no está disponible para envío a domicilio.");
+      console.log(
+        "CheckoutModal: Validación fallida - Pay at store con home_delivery."
+      );
+      return false;
+    }
+
+    console.log("CheckoutModal: Formulario validado con éxito.");
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
     return true;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+<<<<<<< HEAD
 
     if (!validateForm()) return;
 
@@ -217,10 +326,45 @@ const CheckoutModal = ({
           paymentMethod === "credit_card"
             ? {
                 cardNumber: cardNumber.replace(/\s/g, ""),
+=======
+    console.log("CheckoutModal: handleSubmit llamado.");
+
+    if (!validateForm()) {
+      console.log(
+        "CheckoutModal: Validación de formulario fallida en handleSubmit."
+      );
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+    console.log(
+      "CheckoutModal: Estados de carga y error reseteados para la sumisión."
+    );
+
+    try {
+      console.log("CheckoutModal: Simulando retraso de red (1.5s)...");
+      await new Promise((resolve) => setTimeout(resolve, 1500)); // Simula un retraso de red
+      console.log("CheckoutModal: Simulación de pago completada.");
+
+      // Recopilar todos los datos necesarios para la orden
+      const orderDetails = {
+        deliveryOption,
+        // Solo incluir shippingAddress si la opción de entrega es a domicilio
+        shippingAddress:
+          deliveryOption === "home_delivery" ? shippingAddress : undefined,
+        paymentMethod,
+        // Solo incluir paymentDetails si el método de pago es tarjeta de crédito
+        paymentDetails:
+          paymentMethod === "credit_card"
+            ? {
+                cardNumber: cardNumber.replace(/\s/g, ""), // Limpiar espacios del número de tarjeta
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
                 expirationDate,
                 cvv,
               }
             : undefined,
+<<<<<<< HEAD
       };
 
       onPurchaseSuccess(orderDetails);
@@ -235,10 +379,63 @@ const CheckoutModal = ({
   return (
     <Modal show={show} onHide={handleCloseModalAndReset} centered backdrop="static" keyboard={false}>
       <Modal.Header className="bg-dark text-white" closeButton onClick={handleCloseModalAndReset}>
+=======
+        // No pasamos totalAmount aquí, ya que CartPage lo calculará desde el carrito real
+      };
+
+      console.log(
+        "CheckoutModal: Llamando onPurchaseSuccess con detalles de la orden:",
+        orderDetails
+      );
+      // Llama a la prop onPurchaseSuccess y PÁSALE los detalles de la orden
+      onPurchaseSuccess(orderDetails);
+
+      // Este modal NO se cierra desde aquí directamente, CartPage lo cerrará
+      // cuando llame a setShowCheckoutModal(false) después de onPurchaseSuccess.
+    } catch (err) {
+      console.error(
+        "CheckoutModal: Error al finalizar la compra en handleSubmit:",
+        err
+      );
+      setError(
+        err.response?.data?.message ||
+          "Error al procesar la compra. Por favor, inténtelo de nuevo."
+      );
+      handleCloseModalAndReset();
+      console.log(
+        "CheckoutModal: Error en la compra, llamando handleCloseModalAndReset."
+      );
+    } finally {
+      setLoading(false);
+      console.log("CheckoutModal: Loading seteado a false.");
+    }
+  };
+
+  console.log(`CheckoutModal: Renderizando. Prop 'show': ${show}`);
+
+  return (
+    <Modal
+      show={show}
+      onHide={handleCloseModalAndReset}
+      centered
+      backdrop="static"
+      keyboard={false}
+    >
+      <Modal.Header
+        className="bg-dark text-white"
+        closeButton
+        onClick={handleCloseModalAndReset}
+      >
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
         <Modal.Title>Finalizar Compra</Modal.Title>
       </Modal.Header>
       <Modal.Body className="bg-light text-dark">
         <Form onSubmit={handleSubmit}>
+<<<<<<< HEAD
+=======
+          {/* ... (el resto del formulario de CheckoutModal, sin cambios) ... */}
+          {/* Opción de Entrega/Retiro */}
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
           <Form.Group className="mb-3" controlId="deliveryOption">
             <Form.Label>¿Cómo deseas recibir tu pedido?</Form.Label>
             <Form.Control
@@ -255,6 +452,10 @@ const CheckoutModal = ({
             </Form.Control>
           </Form.Group>
 
+<<<<<<< HEAD
+=======
+          {/* Campos para la dirección de envío (se muestran condicionalmente) */}
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
           {deliveryOption === "home_delivery" && (
             <>
               <h5 className="mt-4 mb-3">Datos de Envío</h5>
@@ -266,9 +467,14 @@ const CheckoutModal = ({
                   placeholder="Calle y número"
                   value={shippingAddress.address}
                   onChange={handleChange}
+<<<<<<< HEAD
                   required
                   className="bg-info text-white border-primary"
                   maxLength={10}
+=======
+                  required={deliveryOption === "home_delivery"}
+                  className="bg-info text-white border-primary"
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
                 />
               </Form.Group>
               <Form.Group className="mb-3" controlId="city">
@@ -279,9 +485,14 @@ const CheckoutModal = ({
                   placeholder="Ciudad"
                   value={shippingAddress.city}
                   onChange={handleChange}
+<<<<<<< HEAD
                   required
                   className="bg-info text-white border-primary"
                   maxLength={10}
+=======
+                  required={deliveryOption === "home_delivery"}
+                  className="bg-info text-white border-primary"
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
                 />
               </Form.Group>
               <Form.Group className="mb-3" controlId="province">
@@ -289,12 +500,20 @@ const CheckoutModal = ({
                 <Form.Control
                   type="text"
                   name="province"
+<<<<<<< HEAD
                   placeholder="Provincia"
                   value={shippingAddress.province}
                   onChange={handleChange}
                   required
                   className="bg-info text-white border-primary"
                   maxLength={10}
+=======
+                  placeholder="Provincia (Ej: Tucumán)"
+                  value={shippingAddress.province}
+                  onChange={handleChange}
+                  required={deliveryOption === "home_delivery"}
+                  className="bg-info text-white border-primary"
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
                 />
               </Form.Group>
               <Form.Group className="mb-3" controlId="postalCode">
@@ -305,9 +524,14 @@ const CheckoutModal = ({
                   placeholder="Ej: 4000"
                   value={shippingAddress.postalCode}
                   onChange={handleChange}
+<<<<<<< HEAD
                   required
                   className="bg-info text-white border-primary"
                   maxLength={4}
+=======
+                  required={deliveryOption === "home_delivery"}
+                  className="bg-info text-white border-primary"
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
                 />
               </Form.Group>
               <Form.Group className="mb-3" controlId="country">
@@ -315,17 +539,29 @@ const CheckoutModal = ({
                 <Form.Control
                   type="text"
                   name="country"
+<<<<<<< HEAD
                   placeholder="País"
                   value={shippingAddress.country}
                   onChange={handleChange}
                   required
                   className="bg-info text-white border-primary"
                   maxLength={10}
+=======
+                  placeholder="País (Ej: Argentina)"
+                  value={shippingAddress.country}
+                  onChange={handleChange}
+                  required={deliveryOption === "home_delivery"}
+                  className="bg-info text-white border-primary"
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
                 />
               </Form.Group>
             </>
           )}
 
+<<<<<<< HEAD
+=======
+          {/* Campo para el método de pago (se muestran condicionalmente según la opción de entrega) */}
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
           {deliveryOption && (
             <Form.Group className="mb-3 mt-4" controlId="paymentMethod">
               <Form.Label>Método de Pago</Form.Label>
@@ -338,13 +574,26 @@ const CheckoutModal = ({
                 className="bg-info text-white border-primary"
               >
                 <option value="">Seleccione un método</option>
+<<<<<<< HEAD
+=======
+                {/* Opciones para Envío a Domicilio */}
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
                 {deliveryOption === "home_delivery" && (
                   <>
                     <option value="credit_card">Tarjeta de Crédito</option>
                     <option value="paypal">PayPal</option>
+<<<<<<< HEAD
                     <option value="cash_on_delivery">Pago Contra Entrega</option>
                   </>
                 )}
+=======
+                    <option value="cash_on_delivery">
+                      Pago Contra Entrega
+                    </option>
+                  </>
+                )}
+                {/* Opciones para Retiro en el Local */}
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
                 {deliveryOption === "store_pickup" && (
                   <>
                     <option value="credit_card">Tarjeta de Crédito</option>
@@ -355,6 +604,10 @@ const CheckoutModal = ({
             </Form.Group>
           )}
 
+<<<<<<< HEAD
+=======
+          {/* CAMPOS DE LA TARJETA DE CRÉDITO (SE MUESTRAN CONDICIONALMENTE) */}
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
           {paymentMethod === "credit_card" && (
             <>
               <h5 className="mt-4 mb-3">Datos de Tarjeta de Crédito</h5>
@@ -366,6 +619,7 @@ const CheckoutModal = ({
                   placeholder="XXXX XXXX XXXX XXXX"
                   value={cardNumber}
                   onChange={handleChange}
+<<<<<<< HEAD
                   required
                   className="bg-info text-white border-primary"
                   maxLength={19}
@@ -373,6 +627,18 @@ const CheckoutModal = ({
               </Form.Group>
               <div className="d-flex justify-content-between">
                 <Form.Group className="mb-3 flex-grow-1 me-2" controlId="expirationDate">
+=======
+                  required={paymentMethod === "credit_card"}
+                  className="bg-info text-white border-primary"
+                  maxLength="19" // 16 dígitos + 3 espacios
+                />
+              </Form.Group>
+              <div className="d-flex justify-content-between">
+                <Form.Group
+                  className="mb-3 flex-grow-1 me-2"
+                  controlId="expirationDate"
+                >
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
                   <Form.Label>Fecha de Vencimiento (MM/AA)</Form.Label>
                   <Form.Control
                     type="text"
@@ -380,9 +646,15 @@ const CheckoutModal = ({
                     placeholder="MM/AA"
                     value={expirationDate}
                     onChange={handleChange}
+<<<<<<< HEAD
                     required
                     className="bg-info text-white border-primary"
                     maxLength={5}
+=======
+                    required={paymentMethod === "credit_card"}
+                    className="bg-info text-white border-primary"
+                    maxLength="5"
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
                   />
                 </Form.Group>
                 <Form.Group className="mb-3 flex-grow-1 ms-2" controlId="cvv">
@@ -393,16 +665,30 @@ const CheckoutModal = ({
                     placeholder="XXX"
                     value={cvv}
                     onChange={handleChange}
+<<<<<<< HEAD
                     required
                     className="bg-info text-white border-primary"
                     maxLength={3}
+=======
+                    required={paymentMethod === "credit_card"}
+                    className="bg-info text-white border-primary"
+                    maxLength="3" // Limitado a 3 dígitos
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
                   />
                 </Form.Group>
               </div>
             </>
           )}
 
+<<<<<<< HEAD
           {error && <Alert variant="danger" className="mt-2">{error}</Alert>}
+=======
+          {error && (
+            <Alert variant="danger" className="mt-2">
+              {error}
+            </Alert>
+          )}
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
 
           <Button
             type="submit"
@@ -412,7 +698,15 @@ const CheckoutModal = ({
           >
             {loading
               ? "Procesando compra..."
+<<<<<<< HEAD
               : `Pagar $${totalAmount?.toFixed(2) || "0.00"}`}
+=======
+              : `Pagar $${
+                  typeof totalAmount === "number" && totalAmount > 0
+                    ? totalAmount.toFixed(2)
+                    : "0.00"
+                }`}
+>>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
           </Button>
         </Form>
       </Modal.Body>
