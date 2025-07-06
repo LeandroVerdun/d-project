@@ -162,24 +162,13 @@ const Profile = () => {
 
   return (
     <div className="container p-0 d-flex flex-wrap justify-content-between text-white p-md-5 m-0">
-<<<<<<< HEAD
-      {/* Segunda versión de las imágenes */}
-=======
->>>>>>> backup-local-cambios
       <div className="profile-image col-lg-6 col-md-12 d-flex justify-content-between p-3 bg-dark border border-white d-none img-container-2">
         <div className="profile-image-container col-6 col-md-3 d-flex flex-column justify-content-center align-items-start">
           <img
             src={ChisatoZone}
             alt="logo_chisato_zone"
             className="img-fluid mb-3"
-<<<<<<< HEAD
-            style={{
-              width: "100%", // Asegura que la imagen ocupe el 100% del contenedor
-              height: "auto", // Mantiene la proporción de la imagen
-            }}
-=======
             style={{ width: "100%", height: "auto" }}
->>>>>>> backup-local-cambios
           />
         </div>
         <div className="profile-image-container col-6 col-md-3 d-flex flex-column justify-content-center align-items-end">
