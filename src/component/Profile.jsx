@@ -5,7 +5,7 @@ import axios from "axios";
 >>>>>>> backup-local-cambios
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import chisatoAvatar from "../assets/img/register.webp"; 
+import chisatoAvatar from "../assets/img/register.webp";
 import ChisatoZone from "../assets/img/logo-chisato-zone.png";
 import "../css/Profile.css";
 
@@ -23,7 +23,7 @@ const Profile = () => {
 =======
     name: "",
     email: "",
-    password: "", // para cambiar contraseña, por seguridad no mostrar la real
+    password: "",
     isAdmin: false,
 >>>>>>> backup-local-cambios
   });
@@ -58,7 +58,10 @@ const Profile = () => {
           headers: { Authorization: `Bearer ${token}` },
         };
 
-        const { data } = await axios.get("http://localhost:5000/api/users/me", config);
+        const { data } = await axios.get(
+          "http://localhost:5000/api/users/me",
+          config
+        );
 
         setUserData({
           name: data.name || "",
@@ -69,7 +72,6 @@ const Profile = () => {
       } catch (err) {
         console.error(err);
         setError("Error al cargar perfil. Por favor inicia sesión nuevamente.");
-        
       }
     };
 
@@ -143,7 +145,11 @@ const Profile = () => {
       const updateData = { name, email };
       if (password.trim()) updateData.password = password;
 
-      await axios.put(`http://localhost:5000/api/users/${userId}`, updateData, config);
+      await axios.put(
+        `http://localhost:5000/api/users/${userId}`,
+        updateData,
+        config
+      );
       alert("Perfil actualizado correctamente");
       setUserData((prev) => ({ ...prev, password: "" }));
       setError("");
@@ -242,7 +248,9 @@ const Profile = () => {
 
         <form>
           <div className="mb-3">
-            <label htmlFor="name" className="form-label">Nombre</label>
+            <label htmlFor="name" className="form-label">
+              Nombre
+            </label>
             <input
               type="text"
               className="form-control bg-dark text-white border-secondary"
@@ -255,8 +263,9 @@ const Profile = () => {
           </div>
 
           <div className="mb-3">
-            <label htmlFor="email" className="form-label">Email</label>
->>>>>>> backup-local-cambios
+            <label htmlFor="email" className="form-label">
+              Email
+            </label>
             <input
               type="email"
               className="form-control bg-dark text-white border-secondary"
@@ -280,8 +289,9 @@ const Profile = () => {
           </div>
 
           <div className="mb-3">
-            <label htmlFor="password" className="form-label">Nueva Contraseña (Opcional)</label>
->>>>>>> backup-local-cambios
+            <label htmlFor="password" className="form-label">
+              Nueva Contraseña (Opcional)
+            </label>
             <input
               type="password"
               className="form-control bg-dark text-white border-secondary"
@@ -356,7 +366,11 @@ const Profile = () => {
             </div>
           )}
 
-          <button type="button" className="btn btn-primary" onClick={handleSave}>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={handleSave}
+          >
             Guardar Cambios
 >>>>>>> backup-local-cambios
           </button>

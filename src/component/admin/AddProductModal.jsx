@@ -16,7 +16,7 @@ const AddProductModal = ({
     author: "",
     image: "",
     rating: 1,
-    price: 0, // <-- ¡NUEVO CAMPO EN EL ESTADO INICIAL!
+    price: 0,
   });
 
   useEffect(() => {
@@ -24,7 +24,7 @@ const AddProductModal = ({
       setProductData({
         ...productToEdit,
         rating: productToEdit.rating || 1,
-        price: productToEdit.price || 0, // <-- ¡Asegurarse de cargar el precio si se edita!
+        price: productToEdit.price || 0,
       });
     } else {
       setProductData({
@@ -167,7 +167,7 @@ const AddProductModal = ({
               value={productData.price}
               onChange={handleChange}
               min="0"
-              step="0.01" // Permite decimales para centavos
+              step="0.01"
               required
             />
           </Form.Group>

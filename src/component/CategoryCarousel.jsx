@@ -1,8 +1,8 @@
 // src/component/CategoryCarousel.jsx
 import React, { useState, useEffect } from "react";
-import { getAllProducts } from "../services/productService"; // Asegúrate de que la ruta sea correcta
-import ProductCard from "./products/ProductCard"; // Usaremos el ProductCard existente
-import "../css/CategoryCarousel.css"; // Crearemos este archivo CSS para estilos específicos
+import { getAllProducts } from "../services/productService";
+import ProductCard from "./products/ProductCard";
+import "../css/CategoryCarousel.css";
 
 const CategoryCarousel = () => {
   const [categories, setCategories] = useState([]);

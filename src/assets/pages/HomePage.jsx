@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react";
-<<<<<<< HEAD
-// Asegúrate de que las rutas a los CSS y assets sean correctas
-=======
->>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
 import "../../css/MainPage.css";
 import FeaturedBooksSection from "../../component/FeaturedBooksSection";
-import CategoryCarousel from "../../component/CategoryCarousel"; // <-- ¡IMPORTAMOS EL NUEVO COMPONENTE AQUÍ!
+import CategoryCarousel from "../../component/CategoryCarousel";
 import LogoChisato from "../../assets/img/logo-main.png";
 
 export const HomePage = () => {
@@ -54,22 +50,9 @@ export const HomePage = () => {
         </div>
       </div>
 
-<<<<<<< HEAD
-      {/* TODO: Aquí irán las secciones de las 3 Mejores Categorías de Libros con Sliders.
-          Necesitaremos un nuevo componente que gestione esto, por ejemplo, <BookCategoriesSliders />
-          Este componente probablemente necesitará:
-          1. Un endpoint para obtener las "mejores" categorías.
-          2. Un endpoint para obtener libros por categoría (y con un límite para los sliders).
-      */}
-      <div className="row my-5">
-        <div className="col-12">
-          {/* Aquí insertamos el nuevo componente del carrusel de categorías */}
-          <CategoryCarousel /> {/* <-- ¡NUEVO COMPONENTE AGREGADO AQUÍ! */}
-=======
       <div className="row my-5">
         <div className="col-12">
           <CategoryCarousel />
->>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
         </div>
       </div>
 
@@ -79,11 +62,6 @@ export const HomePage = () => {
           <hr className="border-warning" style={{ borderTopWidth: "3px" }} />
         </div>
       </div>
-<<<<<<< HEAD
-
-      {/* Puedes añadir más secciones aquí si lo deseas */}
-=======
->>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
     </div>
   );
 };

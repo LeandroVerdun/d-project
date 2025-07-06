@@ -111,9 +111,8 @@ const MyPurchases = () => {
           navigate("/login");
           return;
         }
-        // No necesitas pasar el userId aquí, el backend lo obtendrá del token.
-        // Asegúrate de que tu orderService.js también lo llame sin el ID.
-        const data = await getUserOrders(); // <--- La llamada se mantiene igual si userService está bien.
+
+        const data = await getUserOrders();
         setOrders(data);
       } catch (err) {
         console.error("Error fetching user orders:", err);
@@ -157,21 +156,16 @@ const MyPurchases = () => {
                 </p>
                 <h6>Productos:</h6>
                 <ul className="list-group list-group-flush">
-                  {/* Asegúrate que 'items' es el array correcto de productos en la orden */}
-                  {order.items.map(
-                    (
-                      item // <--- Cambiado de order.products a order.items
-                    ) => (
-                      <li
-                        key={item.product._id}
-                        className="list-group-item bg-secondary text-white"
-                      >
-                        {item.name} - Cantidad: {item.quantity} - Precio
-                        Unitario: ${item.priceAtPurchase.toFixed(2)}{" "}
-                        {/* Usar priceAtPurchase */}
-                      </li>
-                    )
-                  )}
+                  {order.items.map((item) => (
+                    <li
+                      key={item.product._id}
+                      className="list-group-item bg-secondary text-white"
+                    >
+                      {item.name} - Cantidad: {item.quantity} - Precio Unitario:
+                      ${item.priceAtPurchase.toFixed(2)}{" "}
+                      {/* Usar priceAtPurchase */}
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>

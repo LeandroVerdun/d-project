@@ -18,8 +18,6 @@ const ProductCard = ({ product }) => {
       // Por defecto, añadimos 1 unidad. Puedes añadir un input para que el usuario elija la cantidad.
       await cartService.addOrUpdateItemInCart(product._id, 1);
       alert(`${product.name} ha sido añadido al carrito.`);
-      // Opcional: Aquí podrías disparar una actualización de un contexto global
-      // o un contador en la navbar si lo implementas más adelante.
     } catch (error) {
       console.error("Error al añadir al carrito:", error);
       // Muestra un mensaje de error más amigable al usuario
@@ -27,6 +25,7 @@ const ProductCard = ({ product }) => {
 <<<<<<< HEAD
         `No se pudo añadir ${product.name} al carrito. Motivo: Debes de estar logueado para realizar una compra.`
       );
+<<<<<<< HEAD
 
 =======
         `No se pudo añadir ${product.name} al carrito. Motivo: ${
@@ -34,6 +33,8 @@ const ProductCard = ({ product }) => {
         }`
       );
 >>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
+=======
+>>>>>>> backup-local-cambios
     }
   };
 
@@ -58,7 +59,6 @@ const ProductCard = ({ product }) => {
           </h6>
           <div className="mt-auto text-center d-flex justify-content-center gap-2">
             {" "}
-            {/* Usar d-flex y gap-2 para los botones */}
             <Link
               to={`/products/${product._id}`}
               className="btn btn-primary btn-sm"

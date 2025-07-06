@@ -157,7 +157,7 @@ Este proyecto ha sido desarrollado siguiendo buenas prácticas de la industria:
     npm start
     # o yarn start
     ```
-    La aplicación React se abrirá en tu navegador en `http://localhost:3000` (o un puerto similar).
+    La aplicación React se abrirá en tu navegador en `http://localhost:5173`
 
 ## 📞 Contacto
 
