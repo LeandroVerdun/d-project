@@ -3,13 +3,15 @@
 /* Contenedor de la tarjeta del libro destacado */
 .featured-book-item {
   position: relative; /* Necesario para posicionar el overlay */
-  width: 300px; /* Ancho fijo para cada tarjeta */
-  height: 480px; /* Altura fija para cada tarjeta, ajusta si es necesario */
+  width: 100%; /* Será controlado por el Bootstrap Grid / Flexbox */
+  height: 480px; /* Altura fija para la uniformidad en escritorio */
+  max-width: 300px; /* Limitar el ancho máximo para que no se estiren demasiado en pantallas grandes */
   border: 1px solid #ffc107; /* Borde amarillo para destacar */
   border-radius: 8px;
   overflow: hidden; /* Asegura que la imagen y el overlay no se salgan */
   display: flex; /* Para flexbox si la Card tiene mas cosas */
   flex-direction: column; /* Organizar contenido en columna */
+  margin: 0 auto; /* Centra la tarjeta si no ocupa todo el col */
 }
 
 /* Wrapper para la imagen y el overlay de información */
@@ -102,6 +104,7 @@
   width: 100%;
   justify-content: center;
   align-items: stretch; /* Asegura que todas las cards tengan la misma altura */
+  flex-wrap: wrap; /* Permitir que los elementos se envuelvan si no hay espacio */
 }
 
 /* Ajusta los botones de navegación del carrusel si es necesario */
@@ -125,26 +128,112 @@
   ); /* Fondo semitransparente para los iconos */
 }
 
-/* Media queries para responsividad (ajusta según necesites) */
-@media (max-width: 768px) {
-  .featured-book-item {
-    width: 250px; /* Más pequeño en pantallas medianas */
-    height: 400px;
+/* --- MEDIA QUERIES PARA RESPONSIVIDAD --- */
+
+/* Ajustes para pantallas grandes (ej. más de 992px) - para mostrar 3 por fila */
+@media (min-width: 992px) {
+  .featured-books-carousel-wrapper .carousel-item .d-flex {
+    gap: 2rem; /* Espacio entre tarjetas en pantallas grandes */
   }
 }
 
-@media (max-width: 576px) {
+/* Tabletas y pantallas medianas (768px a 991px) */
+@media (min-width: 768px) and (max-width: 991px) {
   .featured-book-item {
-    width: 200px; /* Aún más pequeño en móviles */
-    height: 350px;
+    width: 100%; /* Ocupa todo el ancho disponible en la columna de Bootstrap */
+    max-width: 280px; /* Limita el tamaño de la tarjeta individual */
+    height: 450px;
+  }
+  .featured-books-carousel-wrapper .carousel-item .d-flex {
+    gap: 1.5rem; /* Espacio entre tarjetas */
+  }
+}
+
+/* Móviles pequeños (hasta 767px) */
+@media (max-width: 767px) {
+  .featured-book-item {
+    width: 100%;
+    max-width: 220px; /* Un ancho máximo para la tarjeta */
+    height: 380px; /* Altura fija para la tarjeta completa */
+    display: flex;
+    flex-direction: column; /* Asegura que la imagen y el overlay se comporten correctamente */
+  }
+
+  .card-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%; /* La imagen wrapper ocupa toda la altura de la tarjeta */
+    overflow: hidden;
+  }
+
+  .featured-book-image {
+    width: 100%;
+    height: 100%; /* La imagen ocupa todo el wrapper */
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .featured-book-info-overlay {
+    position: absolute; /* El overlay se superpone a la imagen */
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(
+      0,
+      0,
+      0,
+      0.75
+    ); /* Fondo semitransparente más sólido para mejor legibilidad */
+    color: white;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    max-height: 100%; /* Asegura que el overlay no se desborde */
+    box-sizing: border-box; /* Incluye padding y borde en el ancho/alto */
+  }
+
+  .featured-book-info-overlay .card-title {
+    font-size: 1.1rem; /* Un poco más pequeño en móviles */
+    margin-bottom: 0.2rem;
+  }
+
+  .featured-book-info-overlay .card-text {
+    font-size: 0.75rem; /* Más pequeño para la descripción/autor */
+    margin-bottom: 0.1rem;
+    -webkit-line-clamp: 1; /* Limitar la descripción a una línea para ahorrar espacio */
+  }
+
+  .featured-book-info-overlay h5.text-success {
+    font-size: 1.2rem; /* Precio un poco más pequeño */
+    margin-top: 0.3rem;
+    margin-bottom: 0;
+  }
+
+  .category-tag {
+    align-self: flex-start; /* Alinea la categoría a la izquierda dentro del overlay */
+    font-size: 0.65rem;
+    padding: 2px 6px;
+    margin-top: 2px;
+  }
+}
+
+/* Ajustes para pantallas muy pequeñas si lo necesitas */
+@media (max-width: 480px) {
+  .featured-book-item {
+    max-width: 180px; /* Aún más pequeño en móviles muy chicos */
+    height: 320px; /* Ajusta la altura si es necesario */
+  }
+  .featured-book-info-overlay {
+    padding: 8px;
   }
   .featured-book-info-overlay .card-title {
-    font-size: 1rem;
-  }
-  .featured-book-info-overlay .card-text {
-    font-size: 0.75rem;
+    font-size: 0.95rem;
   }
   .featured-book-info-overlay h5.text-success {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+  }
+  .featured-book-info-overlay .card-text {
+    font-size: 0.68rem;
   }
 }
