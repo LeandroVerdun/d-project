@@ -9,6 +9,7 @@ const FeaturedBooksSection = () => {
   const [featuredBooks, setFeaturedBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [chunkSize, setChunkSize] = useState(3); // Estado para el tamaño de chunk
 
   // Función auxiliar para mezclar un array (algoritmo de Fisher-Yates)
   const shuffleArray = (array) => {
@@ -57,7 +58,26 @@ const FeaturedBooksSection = () => {
       }
     };
 
+    // Función para actualizar el chunkSize basado en el tamaño de la ventana
+    const updateChunkSize = () => {
+      if (window.innerWidth >= 992) {
+        setChunkSize(3); // 3 tarjetas en pantallas grandes (Lg y Xl)
+      } else if (window.innerWidth >= 768) {
+        setChunkSize(2); // 2 tarjetas en pantallas medianas (Md)
+      } else {
+        setChunkSize(1); // 1 tarjeta en pantallas pequeñas (Sm y Xs)
+      }
+    };
+
+    // Escuchar el evento de redimensionamiento de la ventana
+    window.addEventListener("resize", updateChunkSize);
+
+    // Llamar una vez al inicio para establecer el chunkSize inicial
+    updateChunkSize();
     fetchFeaturedBooks();
+
+    // Limpiar el event listener al desmontar el componente
+    return () => window.removeEventListener("resize", updateChunkSize);
   }, []);
 
   if (loading) {
@@ -92,7 +112,7 @@ const FeaturedBooksSection = () => {
     return result;
   };
 
-  const bookChunks = chunkArray(featuredBooks, 3);
+  const bookChunks = chunkArray(featuredBooks, chunkSize); // Usa el chunkSize dinámico
 
   return (
     <div className="featured-books-carousel-wrapper">
