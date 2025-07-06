@@ -93,7 +93,7 @@ const ProductDetail = () => {
   }).format(product.price);
 
   return (
-    <div className="container mt-5 text-dark">
+    <div className="container mt-5 text-light">
       <div className="row">
         <div className="col-md-6 text-center mb-4 mb-md-0">
           <img
