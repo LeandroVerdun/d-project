@@ -1,11 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-<<<<<<< HEAD
-import forgotPasswordImg from "../assets/img/forgot.jpg"; 
-=======
 import axios from "axios";
 import forgotPasswordImg from "../assets/img/forgot.jpg";
->>>>>>> backup-local-cambios
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -13,39 +9,6 @@ const ForgotPassword = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
 
-<<<<<<< HEAD
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
- 
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-
-
-    const foundUser = users.find((user) => user.email === email);
-
-    if (foundUser) {
-
-      setSuccessMessage("Password reset instructions have been sent to your email.");
-      setEmail(""); 
-      setError("");
-    } else {
-      setError("Email not found. Please check your email and try again.");
-      setSuccessMessage("");
-    }
-  };
-
-  return (
-    <div className="container mt-5 text-white">
-      <h2>Forgot Password</h2>
-      
-      {/* Imagen redonda debajo del título */}
-      <div className="d-flex justify-content-center mb-4">
-        <img
-          src={forgotPasswordImg}
-          alt="Forgot Password"
-          className="img-fluid rounded-circle"
-          style={{ width: "150px", height: "150px" }} 
-=======
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -86,23 +49,15 @@ return (
           alt="Olvidé mi contraseña"
           className="img-fluid rounded-circle"
           style={{ width: "150px", height: "150px", objectFit: "cover" }}
->>>>>>> backup-local-cambios
         />
       </div>
 
       {error && <div className="alert alert-danger">{error}</div>}
       {successMessage && <div className="alert alert-success">{successMessage}</div>}
-<<<<<<< HEAD
-      
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label>Email</label>
-=======
 
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label>Correo electrónico</label>
->>>>>>> backup-local-cambios
           <input
             type="email"
             className="form-control"
@@ -111,18 +66,6 @@ return (
             required
           />
         </div>
-<<<<<<< HEAD
-        <button type="submit" className="btn btn-primary">
-          Send Instructions
-        </button>
-      </form>
-
-      <div className="mt-3">
-        <p>
-          Remembered your password?{" "}
-          <a href="/login" className="text-primary">
-            Login
-=======
         <button type="submit" className="btn btn-primary w-100">
           Enviar instrucciones
         </button>
@@ -133,19 +76,14 @@ return (
           ¿Recordaste tu contraseña?{" "}
           <a href="/login" className="text-primary">
             Iniciar sesión
->>>>>>> backup-local-cambios
           </a>
         </p>
       </div>
     </div>
-<<<<<<< HEAD
-  );
-=======
   </div>
 );
 
 
->>>>>>> backup-local-cambios
 };
 
 export default ForgotPassword;
