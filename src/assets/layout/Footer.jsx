@@ -1,12 +1,22 @@
 import React from "react";
 import { FaFacebookF, FaTwitter, FaInstagram, FaYoutube } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
+<<<<<<< HEAD
 import "../../css/Footer.css"; 
 import backgroundFooter from "../img/Footerimg.png"; 
 
 export const Footer = () => {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
+=======
+import "../../css/Footer.css";
+import backgroundFooter from "../img/Footerimg.png";
+
+export const Footer = () => {
+  const navigate = useNavigate();
+  const userString = localStorage.getItem("user");
+  const user = userString ? JSON.parse(userString) : null;
+>>>>>>> backup-local-cambios
   const isLoggedIn = !!user;
 
   const handleProfileLink = (e) => {
@@ -50,12 +60,20 @@ export const Footer = () => {
             <h5 className="text-uppercase mb-3">Help</h5>
             <ul className="list-unstyled">
               <li>
+<<<<<<< HEAD
                 <Link to="/about-us" className="text-light text-decoration-none">
+=======
+                <Link to="/about" className="text-light text-decoration-none">
+>>>>>>> backup-local-cambios
                   About Us
                 </Link>
               </li>
               <li>
+<<<<<<< HEAD
                 <Link to="/terms-of-service" className="text-light text-decoration-none">
+=======
+                <Link to="/terms" className="text-light text-decoration-none">
+>>>>>>> backup-local-cambios
                   Terms of Service
                 </Link>
               </li>
@@ -88,6 +106,12 @@ export const Footer = () => {
             <h5 className="text-uppercase mb-3">Follow Us</h5>
             <div className="social-icons-container">
               <a href="#" className="text-light fs-5" onClick={handleFollowUsLink}>
+<<<<<<< HEAD
+=======
+                <FaFacebookF />
+              </a>
+              <a href="#" className="text-light fs-5" onClick={handleFollowUsLink}>
+>>>>>>> backup-local-cambios
                 <FaTwitter />
               </a>
               <a href="#" className="text-light fs-5" onClick={handleFollowUsLink}>
@@ -103,11 +127,20 @@ export const Footer = () => {
         {/* Bottom Line */}
         <hr className="bg-secondary" />
         <div className="text-center">
+<<<<<<< HEAD
           <p className="mb-0">
             &copy; {new Date().getFullYear()} MovieApp. All rights reserved.
           </p>
+=======
+          <p className="mb-0">&copy; {new Date().getFullYear()} BookApp. All rights reserved.</p>
+>>>>>>> backup-local-cambios
         </div>
       </div>
     </footer>
   );
 };
+<<<<<<< HEAD
+=======
+
+export default Footer;
+>>>>>>> backup-local-cambios

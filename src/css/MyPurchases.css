@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 .my-card:hover {
     border-color: #00bfff; 
@@ -54,3 +55,14 @@
     padding: 15px;
   }
   
+=======
+/* src/css/MyPurchases.css */
+.orders-list .card {
+  border: 1px solid #495057; /* Darker border for cards */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.orders-list .list-group-item {
+  border-color: #6c757d; /* Slightly lighter border for list items */
+}
+>>>>>>> backup-local-cambios

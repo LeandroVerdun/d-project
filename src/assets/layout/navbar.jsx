@@ -1,9 +1,19 @@
+<<<<<<< HEAD
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useFetchMovies } from "../../hook/useFetchMovies";
 import { BsCart } from "react-icons/bs";
 import "../../css/Navbar.css";
 import logoImg from "../../assets/img/home.png";
+=======
+// navbar.jsx
+import React, { useState, useEffect, useRef } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+
+import { BsCart } from "react-icons/bs";
+import "../../css/Navbar.css"; // Asegúrate que esta ruta es correcta
+import logoImg from "../../assets/img/home.png"; // Asegúrate que esta ruta es correcta
+>>>>>>> backup-local-cambios
 
 export const Navbar = () => {
   const [query, setQuery] = useState("");
@@ -15,8 +25,11 @@ export const Navbar = () => {
   const location = useLocation();
   const dropdownRef = useRef(null);
 
+<<<<<<< HEAD
   const { movies, loading } = useFetchMovies(query, 10);
 
+=======
+>>>>>>> backup-local-cambios
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     setIsLoggedIn(!!user);
@@ -26,23 +39,39 @@ export const Navbar = () => {
   const handleInputChange = (e) => {
     setQuery(e.target.value);
     setTriggerSearch(false);
+<<<<<<< HEAD
     setDropdownVisible(true);
+=======
+    setDropdownVisible(false);
+>>>>>>> backup-local-cambios
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (query.trim()) {
+<<<<<<< HEAD
       navigate(`/search/${encodeURIComponent(query)}`);
+=======
+      navigate(`/search/books/${encodeURIComponent(query)}`);
+>>>>>>> backup-local-cambios
     } else {
       navigate("/404");
     }
   };
 
   const handleCartClick = () => {
+<<<<<<< HEAD
     navigate("/cart");
   };
 
   const handleLogout = () => {
+=======
+    navigate("/cart"); // Navega a la ruta del carrito
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+>>>>>>> backup-local-cambios
     localStorage.removeItem("user");
     setIsLoggedIn(false);
     setCurrentUser(null);
@@ -85,6 +114,7 @@ export const Navbar = () => {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
+<<<<<<< HEAD
               <Link className="nav-link active text-white" to="/">Home</Link>
             </li>
             <li className="nav-item dropdown">
@@ -118,6 +148,23 @@ export const Navbar = () => {
               className="form-control me-2"
               type="search"
               placeholder="Search movie"
+=======
+              <Link className="nav-link active text-white" to="/">
+                Home
+              </Link>
+            </li>
+          </ul>
+
+          <form
+            className="d-flex align-items-center position-relative me-3"
+            role="search"
+            onSubmit={handleSubmit}
+          >
+            <input
+              className="form-control me-2"
+              type="search"
+              placeholder="Search book"
+>>>>>>> backup-local-cambios
               value={query}
               onChange={handleInputChange}
               aria-label="Search"
@@ -125,6 +172,7 @@ export const Navbar = () => {
             <button className="btn btn-outline-success" type="submit">
               <i className="bi bi-search"></i>
             </button>
+<<<<<<< HEAD
 
             {query && !triggerSearch && !loading && movies.length > 0 && dropdownVisible && (
               <div ref={dropdownRef} className="search-dropdown">
@@ -157,6 +205,8 @@ export const Navbar = () => {
                 ))}
               </div>
             )}
+=======
+>>>>>>> backup-local-cambios
           </form>
 
           <div className="d-flex align-items-center me-3">
@@ -179,6 +229,7 @@ export const Navbar = () => {
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
+<<<<<<< HEAD
                     {currentUser?.username || "My Account"}
                   </button>
                   <ul className="dropdown-menu dropdown-menu-end dropdown-menu-user" aria-labelledby="dropdownAccount">
@@ -194,6 +245,48 @@ export const Navbar = () => {
                     <li><button className="dropdown-item" onClick={handleLogout}>Logout</button></li>
                   </ul>
                 </div>
+=======
+                    {currentUser?.username ||
+                      currentUser?.email ||
+                      "My Account"}{" "}
+                  </button>
+                  <ul
+                    className="dropdown-menu dropdown-menu-end dropdown-menu-user"
+                    aria-labelledby="dropdownAccount"
+                  >
+                    <li>
+                      <Link className="dropdown-item" to="/profile">
+                        Profile
+                      </Link>
+                    </li>
+                    {!currentUser?.isAdmin && (
+                      <li>
+                        <Link className="dropdown-item" to="/mypurchases">
+                          Mis Compras
+                        </Link>
+                      </li>
+                    )}
+                    {currentUser?.isAdmin && (
+                      <>
+                        <li>
+                          <hr className="dropdown-divider" />
+                        </li>
+                        <li>
+                          <Link className="dropdown-item" to="/admin">
+                            Panel Administrador
+                          </Link>
+                        </li>
+                      </>
+                    )}
+                    <li>
+                      <button className="dropdown-item" onClick={handleLogout}>
+                        Logout
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+                {/* Botón del Carrito (¡Ya lo tenías, solo confirmo su posición!) */}
+>>>>>>> backup-local-cambios
                 <button
                   className="btn btn-outline-warning"
                   onClick={handleCartClick}
@@ -209,3 +302,8 @@ export const Navbar = () => {
     </nav>
   );
 };
+<<<<<<< HEAD
+=======
+
+export default Navbar;
+>>>>>>> backup-local-cambios
