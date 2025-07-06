@@ -1,4 +1,4 @@
-// C:\Users\Usuario\Desktop\Rolling Code School\Proyecto final\d-project\src\component\admin\ProductTable.jsx
+// src\component\admin\ProductTable.jsx
 import React from "react";
 import styles from "./ProductTable.module.css";
 
