@@ -3,10 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import * as userService from "../../services/userService";
 import styles from "./AdminPage.module.css";
-
-// Importar el nuevo modal de edición
 import EditUserModal from "./EditUserModal";
-// Importar el menú de administración
 import AdminMenu from "./AdminMenu";
 
 const UserManagementPage = () => {

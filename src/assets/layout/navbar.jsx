@@ -3,8 +3,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
 import { BsCart } from "react-icons/bs";
-import "../../css/Navbar.css"; // Asegúrate que esta ruta es correcta
-import logoImg from "../../assets/img/home.png"; // Asegúrate que esta ruta es correcta
+import "../../css/Navbar.css";
+import logoImg from "../../assets/img/home.png";
 
 export const Navbar = () => {
   const [query, setQuery] = useState("");
@@ -168,7 +168,7 @@ export const Navbar = () => {
                     </li>
                   </ul>
                 </div>
-                {/* Botón del Carrito (¡Ya lo tenías, solo confirmo su posición!) */}
+                {/* Botón del Carrito */}
                 <button
                   className="btn btn-outline-warning"
                   onClick={handleCartClick}

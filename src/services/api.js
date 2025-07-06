@@ -2,7 +2,7 @@
 import axios from "axios";
 
 // Paso 1: Configurar la URL base de tu backend
-const API_BASE_URL = "http://localhost:5000"; // Asegúrate que esta URL sea la correcta de tu backend
+const API_BASE_URL = "http://localhost:5000";
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -34,9 +34,6 @@ apiClient.interceptors.response.use(
     // Aquí puedes manejar errores globales, como redireccionar al login si el token expira
     if (error.response && error.response.status === 401) {
       console.error("Error 401: No autorizado. Redirigiendo al login...");
-      // Opcional: limpiar el token y redirigir
-      // localStorage.removeItem("token");
-      // window.location.href = "/login";
     }
     return Promise.reject(error);
   }
@@ -55,7 +52,7 @@ export const registerUser = async (userData) => {
 
 export const loginUser = async (credentials) => {
   try {
-    const response = await apiClient.post("/api/users/login", credentials); // ¡CORREGIDO!
+    const response = await apiClient.post("/api/users/login", credentials);
     return response.data; // Esto debería contener el token JWT y la información del usuario
   } catch (error) {
     console.error("Error in loginUser:", error);

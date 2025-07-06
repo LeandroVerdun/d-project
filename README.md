@@ -1,152 +1,166 @@
-# Chizato Zone
+# 🛍️ Sistema Integral de Gestión de Stock (Chisato Zone)
 
-**Descripción:**
+Este proyecto es un sistema web completo diseñado para la gestión y control de stock de productos, así como la administración de usuarios y órdenes de compra en un entorno de comercio electrónico. Se ha desarrollado con un enfoque en la modularidad, la escalabilidad y una experiencia de usuario intuitiva, utilizando tecnologías modernas para el frontend y el backend.
 
-Chizato Zone es una aplicación web desarrollada con React y Vite que permite a los usuarios explorar información sobre películas. La aplicación ofrece funcionalidades como la búsqueda de películas, visualización de detalles, gestión de un carrito de compras y autenticación de usuarios. Además, incluye una página de categorías y manejo de errores con una página "404".
+## 🎯 Objetivo del Proyecto
 
-**Tabla de Contenidos**
+El objetivo principal es proporcionar una plataforma robusta y eficiente que permita a los administradores de un comercio electrónico:
 
-1.  [Características](#características)
-2.  [Tecnologías Utilizadas](#tecnologías-utilizadas)
-3.  [API Utilizada](#api-utilizada)
-4.  [Requisitos del Sistema](#requisitos-del-sistema)
-5.  [Instalación](#instalación)
-6.  [Uso](#uso)
-7.  [Estructura del Proyecto](#estructura-del-proyecto)
-8.  [Rutas de la Aplicación](#rutas-de-la-aplicación)
-9.  [Contribuciones](#contribuciones)
-10. [Licencia](#licencia)
-11. [Contacto](#contacto)
+1.  **Controlar el inventario** de productos de venta de manera exhaustiva.
+2.  **Administrar los productos** (creación, lectura, actualización y eliminación).
+3.  **Gestionar los usuarios** registrados en el sistema.
+4.  **Monitorear y procesar las órdenes** de compra.
 
-**Características**
+Simultáneamente, ofrece a los usuarios finales una experiencia fluida para la navegación de productos, el proceso de compra y el seguimiento de sus pedidos.
 
-- **Búsqueda de Películas:** Los usuarios pueden buscar películas utilizando la API de OMDB.
-- **Detalles de Películas:** Se muestra información detallada de cada película, incluyendo sinopsis y otros datos relevantes.
-- **Autenticación de Usuarios:** Funcionalidades de inicio de sesión y registro de usuarios.
-- **Carrito de Compras:** Los usuarios pueden agregar y gestionar películas en un carrito de compras.
-- **Página de Categorías:** Navegación por categorías de películas.
-- **Manejo de Errores:** Página personalizada para errores 404.
-- **Diseño Responsivo:** Interfaz de usuario adaptada a diferentes tamaños de pantalla.
+## ✨ Funcionalidades Principales
 
-**Tecnologías Utilizadas**
+El sistema se divide en dos roles principales: Administrador y Usuario, cada uno con funcionalidades específicas.
 
-- React (v19.0.0)
-- React Router DOM (v7.5.0)
-- React Bootstrap (v2.10.9)
-- Vite (v6.2.0)
-- OMDB API
-- CSS
-- ESLint
+### Para el Administrador:
 
-**API Utilizada**
+- **Gestión Completa de Productos (CRUD)**:
+  - **Crear**: Añadir nuevos productos con detalles (nombre, stock, descripción, fecha de último control).
+  - **Leer**: Visualizar todos los productos, con opciones de filtrado por categoría. Vista detallada de cada producto.
+  - **Actualizar**: Modificar la información de productos existentes (stock, precio, descripción).
+  - **Eliminar**: Dar de baja productos del inventario.
+  - _Nota_: Todas las operaciones CRUD están protegidas y requieren autenticación y autorización de administrador.
+- **Administración de Usuarios**:
+  - Visualizar y listar todos los usuarios registrados.
+  - Capacidad de eliminar o suspender cuentas de usuario.
+  - Funcionalidad para otorgar o revocar roles de administrador a usuarios existentes.
 
-- **OMDB API:** Se utiliza para obtener información sobre películas. Puedes encontrar más detalles sobre la API aquí: [http://www.omdbapi.com/](http://www.omdbapi.com/) apiKey = "d511530c"
+### Para el Usuario Final:
 
-**Datos Admin**
--**E-MAIL**: Chisato@gmail.com
--**CONTRASEÑA**: 1234
+- **Registro y Autenticación**: Proceso seguro de creación de cuentas y inicio de sesión.
+- **Exploración de Productos**: Navegación intuitiva por el catálogo de productos con filtros por categorías.
+- **Proceso de Compra**:
+  - Gestión del carrito de compras (selección de productos).
+  - Proceso de checkout y confirmación de compra.
+- **Historial de Compras**: Acceso a un listado detallado de todas las órdenes realizadas, incluyendo productos, cantidades, precios unitarios y el estado de cada pedido.
 
-**Requisitos del Sistema**
+### Secciones Adicionales:
 
-- Node.js (versión recomendada: >=18.x)
-- npm o yarn
+- **Quiénes Somos**: Información sobre el negocio.
+- **Contacto**: Canales de comunicación para soporte o consultas.
 
-**Instalación**
+## ⚙️ Especificaciones Técnicas y Arquitectura
 
-1.  Clona el repositorio:
+El proyecto está diseñado con una arquitectura cliente-servidor (frontend y backend desacoplados), lo que permite un desarrollo independiente, mayor escalabilidad y facilidad de mantenimiento.
 
+### 🌐 Frontend (Cliente)
+
+- **Tecnologías**:
+  - **React.js**: Librería principal para la construcción de interfaces de usuario interactivas y dinámicas.
+  - **React Router DOM**: Para la gestión de la navegación y las rutas de la aplicación de una sola página (SPA).
+  - **Bootstrap**: Framework CSS para el diseño responsivo y el estilizado rápido de componentes UI.
+  - **CSS Personalizado**: Archivos `.css` adicionales para estilos específicos y branding.
+  - **Axios**: Cliente HTTP basado en promesas para realizar peticiones al backend.
+- **Estructura de Carpetas (`src/`)**:
+  - `assets/`: Imágenes y otros recursos estáticos.
+  - `component/`: Componentes reutilizables de React (ej., `MyPurchases.jsx`, `PurchaseSuccessModal.jsx`, `Register.jsx`).
+  - `css/`: Archivos CSS personalizados.
+  - `services/`: Módulos que encapsulan la lógica de las llamadas a la API (ej., `orderService.js`, `api.js`).
+  - `App.js`: Componente principal que define las rutas y la estructura general de la aplicación.
+- **Flujo de Datos (Componentes ↔ Servicios ↔ Backend)**:
+  - Los componentes manejan el estado local (`useState`) y los efectos secundarios (`useEffect`).
+  - Las interacciones del usuario o el ciclo de vida del componente disparan llamadas a funciones en los archivos de `services`.
+  - Los servicios usan `Axios` para realizar peticiones HTTP (GET, POST, PUT, DELETE) al backend, incluyendo tokens JWT en los headers para rutas protegidas.
+  - La respuesta del backend actualiza el estado del componente, lo que re-renderiza la interfaz de usuario.
+
+### 💻 Backend (Servidor)
+
+- **Tecnologías**:
+  - **Node.js**: Entorno de ejecución para JavaScript en el servidor.
+  - **Express.js**: Framework web minimalista y flexible para construir APIs RESTful.
+  - **MongoDB**: Base de datos NoSQL orientada a documentos para el almacenamiento de datos.
+  - **Mongoose**: Librería de modelado de objetos para MongoDB en Node.js, facilitando la interacción con la base de datos.
+  - **JSON Web Tokens (JWT)**: Para la autenticación y gestión de sesiones seguras y sin estado.
+  - **Bcrypt**: Para el hashing seguro de contraseñas de usuario.
+- **Arquitectura (inspirada en MVC)**:
+  - **`models/`**: Define los esquemas de datos y la lógica de interacción con MongoDB (ej., `UserModel.js`, `ProductModel.js`, `OrderModel.js`).
+  - **`controllers/`**: Contiene la lógica de negocio que procesa las solicitudes y coordina con los modelos (ej., `userController.js`, `productController.js`, `orderController.js`).
+  - **`routes/`**: Define los endpoints de la API y asocia las URL con las funciones de los controladores (ej., `userRoutes.js`, `productRoutes.js`, `orderRoutes.js`).
+  - **`middleware/`**: Funciones que se ejecutan antes de que las solicitudes lleguen a los controladores (ej., `authMiddleware.js` para autenticación y autorización, manejo de errores).
+  - `server.js` (o `app.js`): Archivo principal que configura el servidor Express, la conexión a la base de datos y registra las rutas y middlewares.
+- **Flujo de Datos (Petición HTTP ↔ Rutas ↔ Middleware ↔ Controladores ↔ Modelos ↔ Base de Datos)**:
+  - Una petición HTTP llega al servidor.
+  - Es interceptada por el **middleware** (ej., para autenticación JWT, parsing del cuerpo).
+  - Las **rutas** dirigen la petición al **controlador** apropiado.
+  - El **controlador** ejecuta la lógica de negocio, interactuando con uno o varios **modelos**.
+  - Los **modelos** se comunican con **MongoDB** para realizar operaciones CRUD.
+  - El controlador construye una respuesta HTTP (con el código de estado y los datos pertinentes) y la envía de vuelta al cliente.
+
+## 🤝 Gestión del Proyecto y Prácticas Profesionales
+
+Este proyecto ha sido desarrollado siguiendo buenas prácticas de la industria:
+
+- **Control de Versiones**: Gestionado con **Git** y alojado en **GitHub** (con repositorios separados para frontend y backend).
+- **Metodología Ágil**: Se ha utilizado un panel en **Trello** para la gestión de tareas, el seguimiento del progreso y la definición de requisitos (incluyendo mockups).
+- **Documentación**: Creación de un documento PDF con la documentación técnica del proyecto.
+- **Diseño Responsivo**: La interfaz de usuario está completamente optimizada para dispositivos móviles, tabletas y escritorios, asegurando una experiencia consistente.
+- **Validaciones Robustas**: Implementación de validaciones de entrada de datos tanto en el frontend como en el backend para garantizar la integridad de la información y mejorar la experiencia de usuario con feedback en tiempo real.
+- **Manejo de Errores**: Gestión centralizada de errores en el backend (ej., errores 404, 500) con mensajes significativos, y consumo adecuado de estos errores en el frontend para informar al usuario de manera clara.
+- **Códigos de Estado HTTP**: Utilización coherente y semántica de los códigos de estado HTTP para comunicar el resultado de las operaciones de la API.
+
+## 🚀 Cómo Ejecutar el Proyecto
+
+### Requisitos Previos:
+
+- Node.js (versión 14 o superior)
+- npm (Node Package Manager) o Yarn
+- MongoDB (instancia local o remota, como MongoDB Atlas)
+
+### Configuración del Backend:
+
+1.  Clona el repositorio del backend:
     ```bash
-    git clone [https://github.com/LeandroVerdun/d-project.git](https://github.com/LeandroVerdun/d-project.git)
+    git clone <URL_DEL_REPOSITORIO_BACKEND>
+    cd <nombre_del_repositorio_backend>
     ```
-
-2.  Navega al directorio del proyecto:
-
+2.  Instala las dependencias:
     ```bash
-    cd d-project
+    npm install
+    # o yarn install
     ```
-
-3.  Instala las dependencias:
-
+3.  Crea un archivo `.env` en la raíz del proyecto y configura tus variables de entorno:
+    ```env
+    PORT=5000
+    MONGO_URI=mongodb://localhost:27017/nombreDeTuBaseDeDatos
+    JWT_SECRET=tu_secreto_jwt_muy_seguro
+    ```
+4.  Inicia el servidor:
     ```bash
-    npm install  # o yarn install
+    npm start
+    # o node server.js
     ```
+    El backend estará corriendo en `http://localhost:5000` (o el puerto que hayas configurado).
 
-**Uso**
+### Configuración del Frontend:
 
-1.  Ejecuta la aplicación en modo de desarrollo:
-
+1.  Clona el repositorio del frontend:
     ```bash
-    npm run dev  # o yarn dev
+    git clone <URL_DEL_REPOSITORIO_FRONTEND>
+    cd <nombre_del_repositorio_frontend>
     ```
-
-2.  Abre tu navegador y visita la URL proporcionada (generalmente `http://localhost:5173`).
-
-3.  Para construir la aplicación para producción:
-
+2.  Instala las dependencias:
     ```bash
-    npm run build # o yarn build
+    npm install
+    # o yarn install
     ```
-
-4.  Para previsualizar la build de producción:
-
+3.  Crea un archivo `.env` en la raíz del proyecto y configura la URL de tu backend:
+    ```env
+    REACT_APP_BACKEND_URL=http://localhost:5000/api
+    ```
+4.  Inicia la aplicación React:
     ```bash
-    npm run preview # o yarn preview
+    npm start
+    # o yarn start
     ```
+    La aplicación React se abrirá en tu navegador en `http://localhost:5173`
 
-**Estructura del Proyecto**
+## 📞 Contacto
 
-d-project/
-├── index.html # Archivo HTML principal
-├── src/
-│ ├── main.jsx # Punto de entrada de la aplicación React
-│ ├── App.jsx # Componente raíz de la aplicación
-│ ├── App.css # Estilos generales de la aplicación
-│ ├── index.css # Estilos globales
-│ ├── useFetchMovies.jsx # Hook personalizado para obtener datos de películas
-│ ├── assets/
-│ │ ├── pages/ # Componentes de las páginas
-│ │ │ ├── main.jsx # Página principal
-│ │ │ ├── Error404.jsx # Página de error 404
-│ │ ├── layout/ # Componentes de layout (Navbar, Footer)
-│ │ │ ├── navbar.jsx
-│ │ │ ├── Footer.jsx
-│ │ ├── component/ # Componentes reutilizables
-│ │ │ ├── Login.jsx # Página de inicio de sesión
-│ │ │ ├── Register.jsx # Página de registro
-│ │ │ ├── CartPage.jsx # Página del carrito
-│ │ │ ├── Categories.jsx # Página de categorías
-│ │ ├── ... # Otros archivos y directorios
-│ │
+Para cualquier consulta o colaboración, no dudes en contactarme.
 
-├── package.json # Archivo de configuración de npm
-├── package-lock.json # Archivo de bloqueo de dependencias
-├── vite.config.js # Archivo de configuración de Vite
-├── eslint.config.js # Archivo de configuración de ESLint
-└── README.md # Este archivo
-
-**Rutas de la Aplicación**
-
-- `/` : Página principal (MainPage)
-- `/login` : Página de inicio de sesión (Login)
-- `/register` : Página de registro (RegistrationForm)
-- `/cart` : Página del carrito de compras (CartPage)
-- `/categories` : Página de categorías (Categories)
-- `/*` : Página de error 404 (NoFound)
-
-**Contribuciones**
-
-Las contribuciones son bienvenidas. Si deseas contribuir al proyecto, por favor sigue estos pasos:
-
-1.  Haz un fork del repositorio.
-2.  Crea una rama con tu funcionalidad (`git checkout -b feature/mi-nueva-funcionalidad`).
-3.  Realiza los cambios y commitealos (`git commit -m 'Agrega una nueva funcionalidad'`).
-4.  Sube los cambios a la rama (`git push origin feature/mi-nueva-funcionalidad`).
-5.  Crea un Pull Request.
-
-**Licencia**
-
-Este proyecto está bajo la Licencia [MIT](https://opensource.org/licenses/MIT).
-
-**Contacto**
-
-Si tienes alguna pregunta o sugerencia, no dudes en contactarme a [tu_correo@ejemplo.com](mailto:tu_correo@ejemplo.com) o a través de los issues del repositorio.
+---

@@ -17,7 +17,6 @@ const Register = () => {
     phone: "",
     password: "",
     confirmPassword: "",
-    // Eliminamos los campos de tarjeta como habíamos acordado
     avatar: "",
   });
 
@@ -101,9 +100,6 @@ const Register = () => {
       email: formData.email,
       password: formData.password,
       isAdmin: false,
-      // Considera añadir phone y avatar si son parte de tu modelo de usuario y son requeridos
-      // phone: formData.phone,
-      // avatar: formData.avatar,
     };
 
     try {
@@ -170,7 +166,6 @@ const Register = () => {
 
   return (
     <div className="container p-0 d-flex flex-wrap justify-content-between text-white p-md-5 m-0">
-      {/* Imágenes para móvil/tablet - puedes mantenerlas o ajustar clases de Bootstrap */}
       <div className="registration-image col-lg-6 col-md-12 d-flex justify-content-between p-3 bg-dark border border-white d-none img-container-2 m-0">
         <div className="profile-image-container col-6 col-md-3 d-flex flex-column justify-content-center align-items-start">
           <img
@@ -256,14 +251,6 @@ const Register = () => {
           >
             {isLoading ? "Registrando..." : "Registrarse"}
           </button>
-
-          {/* Eliminamos la sección de "Iniciar Sesión" en el formulario de registro */}
-          {/* <div className="create-account d-flex gap-2 p-2">
-            <p>¿Ya tienes una cuenta?</p>
-            <a href="/login" className="text-lowercase fw-bolder">
-              Iniciar Sesión
-            </a>
-          </div> */}
         </form>
       </div>
 

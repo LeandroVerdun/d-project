@@ -1,7 +1,6 @@
 // src/component/admin/AdminPage.jsx
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-// Importamos las funciones de nuestro nuevo servicio de API
 import * as productService from "../../services/productService";
 import ProductTable from "./ProductTable";
 import AdminMenu from "./AdminMenu";
@@ -123,7 +122,7 @@ const AdminPage = () => {
           >
             Nuevo Producto
           </button>
-          
+
           <AdminMenu
             onNewProduct={() => openModal(null)}
             isModalOpen={isModalOpen}
@@ -132,8 +131,6 @@ const AdminPage = () => {
             onUpdateProduct={handleUpdateProduct}
             productToEdit={productToEdit}
           />
-          
-          
         </div>
         <ProductTable
           products={products}

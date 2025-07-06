@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import * as cartService from "../services/cartService";
-import * as orderService from "../services/orderService"; // ¡NUEVA IMPORTACIÓN!
+import * as orderService from "../services/orderService";
 import "../css/CartPage.css";
 import CheckoutModal from "./CheckoutModal";
 import PurchaseSuccessModal from "./PurchaseSuccessModal";

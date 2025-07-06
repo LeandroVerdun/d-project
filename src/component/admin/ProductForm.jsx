@@ -9,7 +9,6 @@ const ProductForm = ({ productToEdit, onSave, onCancel }) => {
     genre: "",
     stock: "",
     image: "",
-    // Otros campos que tu modelo de producto pueda tener
   };
   const [formData, setFormData] = useState(initialState);
   const [errors, setErrors] = useState({});

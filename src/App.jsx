@@ -7,17 +7,14 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import Login from "./component/Login";
 import Register from "./component/Register";
 import { ProtectedUserAdmin } from "./component/ProtectedUserAdmin";
-// Si tenés ProtectedUser para usuarios normales, importalo aquí:
-// import { ProtectedUser } from "./component/ProtectedUser";
 
 // Componentes de Layout y Páginas principales
 import NotFound from "./assets/pages/Error404";
 import Navbar from "./assets/layout/navbar";
 import Footer from "./assets/layout/Footer";
 import { HomePage } from "./assets/pages/HomePage";
-import AboutUs from "./component/AboutUs"; 
+import AboutUs from "./component/AboutUs";
 import { TermsofService } from "./component/TermsofService";
-
 
 // Componentes de Productos (parte pública)
 import ProductList from "./component/products/ProductList";
@@ -46,8 +43,10 @@ function App() {
   return (
     <Router>
       <Navbar />
-      <main style={{ backgroundColor: "black", minHeight: "100vh" }}
-            className="d-flex justify-content-center align-items-center">
+      <main
+        style={{ backgroundColor: "black", minHeight: "100vh" }}
+        className="d-flex justify-content-center align-items-center"
+      >
         <div className="container py-5 border border-white rounded mt-4 mb-4">
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -56,7 +55,10 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/cart" element={<CartPage />} />
-            <Route path="/search/books/:query" element={<SearchResultsPage />} />
+            <Route
+              path="/search/books/:query"
+              element={<SearchResultsPage />}
+            />
             <Route path="/mypurchases" element={<MyPurchases />} />
             <Route path="/about" element={<AboutUs />} />
             <Route path="/terms" element={<TermsofService />} />
@@ -97,7 +99,7 @@ function App() {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
-</main>
+      </main>
 
       <Footer />
     </Router>

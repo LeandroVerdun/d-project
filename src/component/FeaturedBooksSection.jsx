@@ -1,7 +1,7 @@
 // src/component/FeaturedBooksSection.jsx
 import React, { useState, useEffect } from "react";
 import { getAllProducts } from "../services/productService";
-import "../css/FeaturedBooksSection.css"; // Asegúrate de que este CSS existe y se aplica
+import "../css/FeaturedBooksSection.css";
 import { Carousel, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
