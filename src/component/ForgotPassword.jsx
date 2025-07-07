@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import forgotPasswordImg from "../assets/img/forgot.jpg";
 import { API_BASE_URL } from "../services/api";
@@ -38,6 +38,7 @@ const ForgotPassword = () => {
       }
     }
   };
+
   // Función para cerrar el modal
   const handleCloseModal = () => {
     setShowModal(false);
@@ -89,9 +90,9 @@ const ForgotPassword = () => {
         <div className="mt-3 text-center">
           <p>
             ¿Recordaste tu contraseña?{" "}
-            <a href="/login" className="text-primary">
+            <Link to="/login" className="text-primary">
               Iniciar sesión
-            </a>
+            </Link>
           </p>
         </div>
       </div>
