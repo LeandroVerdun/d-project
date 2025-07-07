@@ -1,62 +1,52 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
+.my-card:hover {
+  border-color: #00bfff;
+  box-shadow: 0 4px 8px rgba(0, 191, 255, 0.2);
+}
+
+.card-text-container {
+  max-height: 120px;
+  overflow-y: auto;
+  margin-bottom: 15px;
+}
+
+.card-text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100%;
+}
+
+.card-img-top {
+  height: 200px;
+  object-fit: contain;
+  width: 100%;
+  border-bottom: 1px solid #ddd;
+}
+
+.badge {
+  margin: 2px 0;
+}
+
+.my-card {
+  transition: all 0.3s ease;
+}
 
 .my-card:hover {
-    border-color: #00bfff; 
-    box-shadow: 0 4px 8px rgba(0, 191, 255, 0.2); 
-  }
-  
+  border-color: #00bfff;
+  box-shadow: 0 4px 8px rgba(0, 191, 255, 0.2);
+  transform: scale(1.05);
+}
 
-  .card-text-container {
-    max-height: 120px;  
-    overflow-y: auto;   
-    margin-bottom: 15px;
-  }
-  
+.card-body {
+  padding: 15px;
+}
 
-  .card-text {
-    margin: 0;
-    font-size: 14px;
-    line-height: 1.6;
-  }
-  
-
-  .card-body {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start; 
-    height: 100%;
-  }
-  
-
-  .card-img-top {
-    height: 200px;
-    object-fit: contain; 
-    width: 100%;
-    border-bottom: 1px solid #ddd;
-  }
-  
-
-  .badge {
-    margin: 2px 0;
-  }
-  
-
-  .my-card {
-    transition: all 0.3s ease; 
-  }
-  
-  .my-card:hover {
-    border-color: #00bfff; 
-    box-shadow: 0 4px 8px rgba(0, 191, 255, 0.2); 
-    transform: scale(1.05); 
-  }
-  
-  .card-body {
-    padding: 15px;
-  }
-  
-=======
 /* src/css/MyPurchases.css */
 .orders-list .card {
   border: 1px solid #495057; /* Darker border for cards */
@@ -66,8 +56,7 @@
 .orders-list .list-group-item {
   border-color: #6c757d; /* Slightly lighter border for list items */
 }
->>>>>>> backup-local-cambios
-=======
+
 /* src/css/MyPurchases.css */
 .orders-list .card {
   border: 1px solid #495057; /* Darker border for cards */
@@ -77,4 +66,3 @@
 .orders-list .list-group-item {
   border-color: #6c757d; /* Slightly lighter border for list items */
 }
->>>>>>> e15b98533c8a38368c98fefbab410f256d85b0f4
