@@ -2,7 +2,7 @@ import React from "react";
 import { FaFacebookF, FaTwitter, FaInstagram, FaYoutube } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import "../../css/Footer.css";
-import backgroundFooter from "../img/Footerimg.png";
+import backgroundFooter from "../img/FooterImg1.png";
 
 export const Footer = () => {
   const navigate = useNavigate();
