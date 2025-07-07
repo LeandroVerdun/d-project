@@ -39,7 +39,6 @@ const ForgotPassword = () => {
     }
   };
 
-  // Función para cerrar el modal
   const handleCloseModal = () => {
     setShowModal(false);
     navigate("/login");
@@ -86,15 +85,6 @@ const ForgotPassword = () => {
             Enviar instrucciones
           </button>
         </form>
-
-        <div className="mt-3 text-center">
-          <p>
-            ¿Recordaste tu contraseña?{" "}
-            <Link to="/login" className="text-primary">
-              Iniciar sesión
-            </Link>
-          </p>
-        </div>
       </div>
       {/* Modal para el mensaje de éxito */}
       {showModal && (
