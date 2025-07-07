@@ -154,49 +154,45 @@ const CartPage = () => {
     setShowSuccessModal(false);
   };
 
-  // Esta función ahora recibe los detalles de la orden del CheckoutModal
   const handlePurchaseSuccess = async (orderDetailsFromCheckout) => {
     console.log(
       "CartPage: handlePurchaseSuccess (prop de CheckoutModal) llamado con detalles:",
       orderDetailsFromCheckout
     );
     try {
-      // 1. Obtener los datos del carrito ACTUAL para crear la orden
-      // Asegurarse de tener el carrito más reciente antes de crear la orden
       const currentCart = await cartService.getMyCart();
 
       if (!currentCart || currentCart.items.length === 0) {
         console.warn("CartPage: Intento de crear orden con carrito vacío.");
         alert("Error: El carrito está vacío, no se puede finalizar la compra.");
-        setShowCheckoutModal(false); // Cierra el modal de checkout si el carrito está vacío
+        setShowCheckoutModal(false);
         return;
       }
 
       // Preparar los datos para la orden, combinando items del carrito y detalles del checkout
       const orderData = {
         items: currentCart.items.map((item) => ({
-          product: item.product._id, // Enviar solo el ID del producto
+          product: item.product._id,
           name: item.product.name,
           quantity: item.quantity,
           price: item.product.price,
-          image: item.product.image, // Puedes incluir la imagen si tu esquema de orden la acepta
+          image: item.product.image,
         })),
-        totalAmount: calculateTotal(), // Calcula el total desde el carrito actual
-        ...orderDetailsFromCheckout, // Añade los datos de envío y pago pasados desde CheckoutModal
+        totalAmount: calculateTotal(),
+        ...orderDetailsFromCheckout,
       };
 
       console.log("CartPage: Creando orden con datos COMBINADOS:", orderData);
-      const newOrder = await orderService.createOrder(orderData); // ¡Llama a createOrder!
+      const newOrder = await orderService.createOrder(orderData);
       console.log("CartPage: Orden creada en el backend:", newOrder);
 
-      // Ahora sí, vaciar el carrito después de que la orden se creó con éxito
       console.log("CartPage: Limpiando carrito después de compra exitosa...");
-      await cartService.clearMyCart(); // Vacía el carrito en el backend
-      fetchCart(); // Actualiza el estado local del carrito (lo pone vacío)
+      await cartService.clearMyCart();
+      fetchCart();
       console.log("CartPage: Carrito limpiado y refeteado.");
 
-      setShowCheckoutModal(false); // Cierra el modal de checkout
-      setShowSuccessModal(true); // Abre el nuevo modal de éxito
+      setShowCheckoutModal(false);
+      setShowSuccessModal(true);
       console.log(
         "CartPage: CheckoutModal cerrado y PurchaseSuccessModal abierto."
       );
@@ -210,8 +206,7 @@ const CartPage = () => {
           ? err.response.data.message
           : err.message || "Error desconocido";
       alert(`Hubo un error al finalizar la compra: ${errorMessage}`);
-      setShowCheckoutModal(false); // Si hay un error, cierra el modal de checkout
-      // Opcional: navigate("/"); o navigate("/cart") si quieres que se quede en el carrito para reintentar
+      setShowCheckoutModal(false);
     }
   };
 
@@ -339,7 +334,7 @@ const CartPage = () => {
       <CheckoutModal
         show={showCheckoutModal}
         handleClose={handleCloseCheckoutModal}
-        onPurchaseSuccess={handlePurchaseSuccess} // Pasa la función que ahora espera datos
+        onPurchaseSuccess={handlePurchaseSuccess}
         totalAmount={calculateTotal()}
       />
 
@@ -352,4 +347,3 @@ const CartPage = () => {
 };
 
 export default CartPage;
-

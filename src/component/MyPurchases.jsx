@@ -1,14 +1,32 @@
 // src/component/MyPurchases.jsx
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getUserOrders } from "../services/orderService"; // Import the service
-import "../css/MyPurchases.css"; // You can create this CSS file for styling
+import { getUserOrders } from "../services/orderService";
+import "../css/MyPurchases.css";
 
 const MyPurchases = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  // Función para traducir los estados del backend a español
+  const translateStatus = (status) => {
+    switch (status) {
+      case "pending":
+        return "Pendiente (a pagar/retirar)";
+      case "processing":
+        return "En Proceso";
+      case "shipped":
+        return "Enviado";
+      case "completed":
+        return "Completada";
+      case "cancelled":
+        return "Cancelada";
+      default:
+        return status;
+    }
+  };
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -55,9 +73,10 @@ const MyPurchases = () => {
                 <h5 className="card-title">Orden ID: {order._id}</h5>
                 <p className="card-text">
                   Fecha: {new Date(order.createdAt).toLocaleDateString()}{" "}
-                  {/* Usar order.createdAt */}
                 </p>
-                <p className="card-text">Estado: {order.status}</p>
+                <p className="card-text">
+                  Estado: <strong>{translateStatus(order.status)}</strong>
+                </p>{" "}
                 <p className="card-text">
                   Total: ${order.totalAmount.toFixed(2)}
                 </p>
@@ -70,7 +89,6 @@ const MyPurchases = () => {
                     >
                       {item.name} - Cantidad: {item.quantity} - Precio Unitario:
                       ${item.priceAtPurchase.toFixed(2)}{" "}
-                      {/* Usar priceAtPurchase */}
                     </li>
                   ))}
                 </ul>

@@ -15,7 +15,7 @@ const CategoryCarousel = () => {
       setLoading(true);
       setError(null);
       try {
-        const allBooks = await getAllProducts(); // Obtener todos los libros
+        const allBooks = await getAllProducts();
 
         const uniqueCategories = [
           ...new Set(allBooks.map((book) => book.category)),
@@ -23,7 +23,15 @@ const CategoryCarousel = () => {
         setCategories(uniqueCategories);
 
         const groupedBooks = uniqueCategories.reduce((acc, category) => {
-          acc[category] = allBooks.filter((book) => book.category === category);
+          // Filtrar libros por categoría
+          let categoryBooks = allBooks.filter(
+            (book) => book.category === category
+          );
+
+          // ORDENAR LIBROS POR RATING DE FORMA DESCENDENTE (5 a 1)
+          categoryBooks.sort((a, b) => b.rating - a.rating);
+
+          acc[category] = categoryBooks;
           return acc;
         }, {});
         setBooksByCategory(groupedBooks);

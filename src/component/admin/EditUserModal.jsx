@@ -9,9 +9,11 @@ const EditUserModal = ({ isOpen, onClose, userToEdit, onUpdateUser }) => {
     name: "",
     email: "",
     isAdmin: false,
-    password: "", // Campo opcional para cambiar la contraseña
+    password: "",
   });
   const [errors, setErrors] = useState({});
+
+  const loggedInUserId = JSON.parse(localStorage.getItem("user"))?.id;
 
   useEffect(() => {
     if (userToEdit) {
@@ -19,11 +21,11 @@ const EditUserModal = ({ isOpen, onClose, userToEdit, onUpdateUser }) => {
         name: userToEdit.name || "",
         email: userToEdit.email || "",
         isAdmin: userToEdit.isAdmin || false,
-        password: "", // Resetear la contraseña al abrir el modal
+        password: "",
       });
-      setErrors({}); // Limpiar errores al abrir el modal
+      setErrors({});
     }
-  }, [userToEdit, isOpen]); // Recargar cuando userToEdit o isOpen cambie
+  }, [userToEdit, isOpen]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -31,7 +33,7 @@ const EditUserModal = ({ isOpen, onClose, userToEdit, onUpdateUser }) => {
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
-    // Limpiar error específico al cambiar el campo
+
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
@@ -67,6 +69,10 @@ const EditUserModal = ({ isOpen, onClose, userToEdit, onUpdateUser }) => {
       isAdmin: formData.isAdmin,
     };
 
+    if (userToEdit && userToEdit._id === loggedInUserId) {
+      updatedData.isAdmin = userToEdit.isAdmin;
+    }
+
     // Solo incluir la contraseña si se ha modificado
     if (formData.password.trim()) {
       updatedData.password = formData.password;
@@ -75,6 +81,8 @@ const EditUserModal = ({ isOpen, onClose, userToEdit, onUpdateUser }) => {
     onUpdateUser(userToEdit._id, updatedData);
     onClose();
   };
+
+  const isCurrentUser = userToEdit && userToEdit._id === loggedInUserId;
 
   return (
     <Modal
@@ -138,6 +146,7 @@ const EditUserModal = ({ isOpen, onClose, userToEdit, onUpdateUser }) => {
             </Form.Control.Feedback>
           </Form.Group>
 
+          {/* CHECKBOX "ES ADMINISTRADOR" */}
           <Form.Group className="mb-3" controlId="formIsAdmin">
             <Form.Check
               type="checkbox"
@@ -145,7 +154,18 @@ const EditUserModal = ({ isOpen, onClose, userToEdit, onUpdateUser }) => {
               name="isAdmin"
               checked={formData.isAdmin}
               onChange={handleChange}
+              disabled={isCurrentUser}
+              title={
+                isCurrentUser
+                  ? "No puedes cambiar tu propio rol de administrador."
+                  : ""
+              }
             />
+            {isCurrentUser && (
+              <Form.Text className="text-muted">
+                No puedes cambiar tu propio rol de administrador.
+              </Form.Text>
+            )}
           </Form.Group>
 
           <Modal.Footer>

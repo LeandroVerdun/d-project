@@ -8,9 +8,10 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://chizatoback.onrender.com", // 🔁 Cambiado para apuntar al backend local
+        //target: "http://localhost:5000", // 🔁 Cambiado para apuntar al backend local
+        target: "https://chizatoback.onrender.com",
         changeOrigin: true,
-        secure: false, // Opcional, útil si usás HTTPS con certificado autofirmado
+        secure: false,
       },
     },
   },

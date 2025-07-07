@@ -1,15 +1,26 @@
-// src\component\PurchaseSuccessModal.jsx
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-const PurchaseSuccessModal = ({ show, handleClose }) => {
+const PurchaseSuccessModal = ({ show, handleClose, messageType }) => {
   const navigate = useNavigate();
 
   const handleGoHome = () => {
-    handleClose(); // Cierra el modal primero
-    navigate("/"); // Luego navega a la página principal
+    handleClose();
+    navigate("/");
   };
+
+  const getModalContent = () => {
+    return {
+      title: "Estado del Pedido",
+      heading: "🎉 ¡Muchas gracias por confiar en Chisato Zone! 🎉",
+      body: <p>Tu compra ha sido recibida y está siendo preparada!</p>,
+      headerClass: "bg-primary text-white",
+      headingClass: "text-primary",
+    };
+  };
+
+  const content = getModalContent();
 
   return (
     <Modal
@@ -20,19 +31,18 @@ const PurchaseSuccessModal = ({ show, handleClose }) => {
       keyboard={false}
     >
       <Modal.Header
-        className="bg-success text-white"
+        className={content.headerClass}
         closeButton
         onClick={handleClose}
       >
-        <Modal.Title>¡Compra Exitosa!</Modal.Title>
+        <Modal.Title>{content.title}</Modal.Title>
       </Modal.Header>
       <Modal.Body className="bg-light text-dark text-center p-4">
-        <h4 className="text-success mb-3">🎉 ¡Gracias por tu compra! 🎉</h4>
-        <p>Tu pedido ha sido procesado con éxito.</p>
-
-        <div className="d-flex justify-content-center mt-4">
+        <h4 className={`${content.headingClass} mb-3`}>{content.heading}</h4>{" "}
+        {content.body}
+        <div className="d-flex justify-content-center">
+          {" "}
           <Button variant="primary" onClick={handleGoHome}>
-            {" "}
             Volver al Inicio
           </Button>
         </div>

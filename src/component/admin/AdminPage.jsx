@@ -15,27 +15,23 @@ const AdminPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // **Paso 1: Verificación de acceso por rol 'isAdmin'**
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (!user || !user.isAdmin) {
       navigate("/404");
     }
-    // Llamamos a la función para obtener los productos del backend
     fetchProducts();
   }, [navigate]);
 
-  // **Función para obtener los productos del backend (ahora con la API)**
   const fetchProducts = async () => {
     setLoading(true);
-    setError(null); // Resetea el error antes de la llamada
+    setError(null);
     try {
       const data = await productService.getAllProducts();
       console.log(data);
       setProducts(data);
     } catch (err) {
       console.error("Error al obtener los productos:", err);
-
       setError(
         "No se pudieron cargar los productos. Asegúrate de que tu backend esté funcionando."
       );
@@ -52,11 +48,9 @@ const AdminPage = () => {
   const closeModal = () => {
     setIsModalOpen(false);
     setProductToEdit(null);
-    // Volver a cargar la lista de productos al cerrar el modal para ver los cambios
     fetchProducts();
   };
 
-  // **Funciones para manejar el CRUD de productos con llamadas a la API**
   const handleAddProduct = async (newProduct) => {
     try {
       await productService.addProduct(newProduct);
@@ -65,7 +59,6 @@ const AdminPage = () => {
       console.error("Error al agregar el producto:", err);
       alert("Error al agregar el producto. Revisa la consola.");
     } finally {
-      // Volver a cargar los datos para reflejar el cambio
       fetchProducts();
     }
   };
@@ -78,7 +71,6 @@ const AdminPage = () => {
       console.error("Error al actualizar el producto:", err);
       alert("Error al actualizar el producto. Revisa la consola.");
     } finally {
-      // Volver a cargar los datos para reflejar el cambio
       fetchProducts();
     }
   };
@@ -94,7 +86,6 @@ const AdminPage = () => {
         console.error("Error al eliminar el producto:", err);
         alert("Error al eliminar el producto. Revisa la consola.");
       } finally {
-        // Volver a cargar los datos para reflejar el cambio
         fetchProducts();
       }
     }
@@ -114,23 +105,13 @@ const AdminPage = () => {
     <div>
       <div className={styles.adminContainer}>
         <h1>Administrar Stock de la Librería</h1>
-        {/* ENLACES DE NAVEGACIÓN DEL ADMINISTRADOR */}
-        <div className="d-flex justify-content-end mb-3">
-          <button
-            className={styles.newProductButton}
-            onClick={() => openModal(null)}
-          >
+
+        <div className="d-flex justify-content-center flex-wrap gap-3 mb-3">
+          {" "}
+          <button className="btn btn-success" onClick={() => openModal(null)}>
             Nuevo Producto
           </button>
-
-          <AdminMenu
-            onNewProduct={() => openModal(null)}
-            isModalOpen={isModalOpen}
-            onCloseModal={closeModal}
-            onAddProduct={handleAddProduct}
-            onUpdateProduct={handleUpdateProduct}
-            productToEdit={productToEdit}
-          />
+          <AdminMenu />
         </div>
         <ProductTable
           products={products}
@@ -150,4 +131,3 @@ const AdminPage = () => {
 };
 
 export default AdminPage;
-

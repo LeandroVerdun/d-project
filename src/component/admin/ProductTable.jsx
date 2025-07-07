@@ -16,8 +16,7 @@ const ProductTable = ({ products, onEdit, onDelete }) => {
             <th>Autor</th>
             <th>Último Control</th>
             <th>Rating</th>
-            <th>Precio</th>{" "}
-            {/* <-- ¡NUEVA COLUMNA DE ENCABEZADO AÑADIDA AQUÍ! */}
+            <th>Precio</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -42,7 +41,7 @@ const ProductTable = ({ products, onEdit, onDelete }) => {
                   : "N/A"}
               </td>
               <td>{product.rating ? `${product.rating}/5` : "N/A"}</td>
-              {/* <-- ¡NUEVA CELDA PARA MOSTRAR EL PRECIO FORMATEADO! --> */}
+
               <td>
                 {new Intl.NumberFormat("es-AR", {
                   style: "currency",

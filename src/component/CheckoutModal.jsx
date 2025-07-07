@@ -104,9 +104,7 @@ const CheckoutModal = ({
         newValue = value.replace(/\D/g, "").slice(0, 4);
       }
 
-      if (newValue.length <= 10) {
-        setShippingAddress({ ...shippingAddress, [name]: newValue });
-      }
+      setShippingAddress({ ...shippingAddress, [name]: newValue });
     } else if (name === "paymentMethod") {
       setPaymentMethod(value);
       if (value !== "credit_card") {
@@ -129,22 +127,43 @@ const CheckoutModal = ({
       const { address, city, province, postalCode, country } = shippingAddress;
 
       if (!address || !city || !postalCode || !country || !province) {
-        setError("Por favor, complete todos los campos de la dirección de envío.");
+        setError(
+          "Por favor, complete todos los campos de la dirección de envío."
+        );
         return false;
       }
 
-      const regexLetras = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,10}$/;
-      if (
-        !regexLetras.test(city) ||
-        !regexLetras.test(province) ||
-        !regexLetras.test(country)
-      ) {
-        setError("Ciudad, Provincia y País solo pueden contener letras y hasta 10 caracteres.");
+      const regexLetrasGenerico = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
+
+      if (!regexLetrasGenerico.test(city)) {
+        setError("La Ciudad solo puede contener letras y espacios.");
+        return false;
+      }
+      if (city.length > 24) {
+        setError("La Ciudad no puede superar los 24 caracteres.");
         return false;
       }
 
-      if (address.length > 10) {
-        setError("La dirección no puede superar los 10 caracteres.");
+      if (!regexLetrasGenerico.test(province)) {
+        setError("La Provincia solo puede contener letras y espacios.");
+        return false;
+      }
+      if (province.length > 19) {
+        setError("La Provincia no puede superar los 19 caracteres.");
+        return false;
+      }
+
+      if (!regexLetrasGenerico.test(country)) {
+        setError("El País solo puede contener letras y espacios.");
+        return false;
+      }
+      if (country.length > 10) {
+        setError("El País no puede superar los 10 caracteres.");
+        return false;
+      }
+
+      if (address.length > 30) {
+        setError("La dirección no puede superar los 30 caracteres.");
         return false;
       }
 
@@ -163,7 +182,9 @@ const CheckoutModal = ({
     if (paymentMethod === "credit_card") {
       const cleanCardNumber = cardNumber.replace(/\s/g, "");
       if (!cleanCardNumber || cleanCardNumber.length < 16) {
-        setError("Por favor, ingrese un número de tarjeta válido (16 dígitos).");
+        setError(
+          "Por favor, ingrese un número de tarjeta válido (16 dígitos)."
+        );
         return false;
       }
       if (!expirationDate || !/^\d{2}\/\d{2}$/.test(expirationDate)) {
@@ -178,7 +199,10 @@ const CheckoutModal = ({
         setError("Mes de expiración no válido.");
         return false;
       }
-      if (year < currentYear || (year === currentYear && month < currentMonth)) {
+      if (
+        year < currentYear ||
+        (year === currentYear && month < currentMonth)
+      ) {
         setError("La tarjeta ha expirado.");
         return false;
       }
@@ -187,12 +211,6 @@ const CheckoutModal = ({
         setError("Por favor, ingrese un CVV válido (3 dígitos).");
         return false;
       }
-    } else if (paymentMethod === "paypal" && deliveryOption === "store_pickup") {
-      setError("PayPal no está disponible para retiro en el local.");
-      return false;
-    } else if (paymentMethod === "pay_at_store" && deliveryOption === "home_delivery") {
-      setError("Pago en el local no está disponible para envío a domicilio.");
-      return false;
     }
 
     return true;
@@ -209,9 +227,12 @@ const CheckoutModal = ({
     try {
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
+      let orderStatus = "completed";
+
       const orderDetails = {
         deliveryOption,
-        shippingAddress: deliveryOption === "home_delivery" ? shippingAddress : undefined,
+        shippingAddress:
+          deliveryOption === "home_delivery" ? shippingAddress : undefined,
         paymentMethod,
         paymentDetails:
           paymentMethod === "credit_card"
@@ -221,6 +242,7 @@ const CheckoutModal = ({
                 cvv,
               }
             : undefined,
+        status: orderStatus,
       };
 
       onPurchaseSuccess(orderDetails);
@@ -233,8 +255,18 @@ const CheckoutModal = ({
   };
 
   return (
-    <Modal show={show} onHide={handleCloseModalAndReset} centered backdrop="static" keyboard={false}>
-      <Modal.Header className="bg-dark text-white" closeButton onClick={handleCloseModalAndReset}>
+    <Modal
+      show={show}
+      onHide={handleCloseModalAndReset}
+      centered
+      backdrop="static"
+      keyboard={false}
+    >
+      <Modal.Header
+        className="bg-dark text-white"
+        closeButton
+        onClick={handleCloseModalAndReset}
+      >
         <Modal.Title>Finalizar Compra</Modal.Title>
       </Modal.Header>
       <Modal.Body className="bg-light text-dark">
@@ -268,7 +300,7 @@ const CheckoutModal = ({
                   onChange={handleChange}
                   required
                   className="bg-info text-white border-primary"
-                  maxLength={10}
+                  maxLength={30}
                 />
               </Form.Group>
               <Form.Group className="mb-3" controlId="city">
@@ -281,7 +313,7 @@ const CheckoutModal = ({
                   onChange={handleChange}
                   required
                   className="bg-info text-white border-primary"
-                  maxLength={10}
+                  maxLength={24}
                 />
               </Form.Group>
               <Form.Group className="mb-3" controlId="province">
@@ -294,7 +326,7 @@ const CheckoutModal = ({
                   onChange={handleChange}
                   required
                   className="bg-info text-white border-primary"
-                  maxLength={10}
+                  maxLength={19}
                 />
               </Form.Group>
               <Form.Group className="mb-3" controlId="postalCode">
@@ -341,8 +373,10 @@ const CheckoutModal = ({
                 {deliveryOption === "home_delivery" && (
                   <>
                     <option value="credit_card">Tarjeta de Crédito</option>
-                    <option value="paypal">PayPal</option>
-                    <option value="cash_on_delivery">Pago Contra Entrega</option>
+
+                    <option value="cash_on_delivery">
+                      Pago Contra Entrega
+                    </option>
                   </>
                 )}
                 {deliveryOption === "store_pickup" && (
@@ -372,7 +406,10 @@ const CheckoutModal = ({
                 />
               </Form.Group>
               <div className="d-flex justify-content-between">
-                <Form.Group className="mb-3 flex-grow-1 me-2" controlId="expirationDate">
+                <Form.Group
+                  className="mb-3 flex-grow-1 me-2"
+                  controlId="expirationDate"
+                >
                   <Form.Label>Fecha de Vencimiento (MM/AA)</Form.Label>
                   <Form.Control
                     type="text"
@@ -402,7 +439,11 @@ const CheckoutModal = ({
             </>
           )}
 
-          {error && <Alert variant="danger" className="mt-2">{error}</Alert>}
+          {error && (
+            <Alert variant="danger" className="mt-2">
+              {error}
+            </Alert>
+          )}
 
           <Button
             type="submit"

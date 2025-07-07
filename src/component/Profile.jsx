@@ -26,6 +26,15 @@ const Profile = () => {
           return;
         }
 
+        const user = JSON.parse(localStorage.getItem("user"));
+        const userId = user?.id;
+
+        if (!userId) {
+          setError("ID de usuario no encontrado en la sesión.");
+          navigate("/login");
+          return;
+        }
+
         const config = {
           headers: { Authorization: `Bearer ${token}` },
         };
@@ -75,7 +84,6 @@ const Profile = () => {
         headers: { Authorization: `Bearer ${token}` },
       };
 
-      // Obtener id usuario del token decodificado (o de localStorage si guardas)
       const userId = JSON.parse(localStorage.getItem("user"))?.id || null;
       if (!userId) {
         setError("Usuario no encontrado en sesión.");

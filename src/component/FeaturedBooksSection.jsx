@@ -112,20 +112,20 @@ const FeaturedBooksSection = () => {
     return result;
   };
 
-  const bookChunks = chunkArray(featuredBooks, chunkSize); // Usa el chunkSize dinámico
+  const bookChunks = chunkArray(featuredBooks, chunkSize);
 
   return (
     <div className="featured-books-carousel-wrapper">
       <Carousel interval={null} indicators={false}>
         {bookChunks.map((chunk, index) => (
           <Carousel.Item key={index}>
-            <div className="d-flex justify-content-center gap-4">
+            <div className="d-flex justify-content-center align-items-stretch gap-4 featured-books-row">
+              {" "}
               {chunk.map((book) => (
                 <Card
                   key={book._id}
                   className="featured-book-item bg-dark text-white p-0 overflow-hidden"
                 >
-                  {/* Contenedor principal para la imagen y el overlay de texto */}
                   <div className="card-image-wrapper">
                     <Link to={`/products/${book._id}`}>
                       <Card.Img
@@ -141,13 +141,13 @@ const FeaturedBooksSection = () => {
                         }}
                       />
                     </Link>
-                    {/* Overlay para todo el texto, incluido el nombre y el precio */}
+
                     <div className="featured-book-info-overlay">
                       <h5 className="card-title text-warning">{book.name}</h5>
                       <p className="card-text">
                         <small>{book.author}</small>
                       </p>
-                      {/* Limitamos la descripción para que no ocupe demasiado espacio */}
+
                       <p className="card-text featured-description text-truncate-lines-2">
                         {book.description}
                       </p>
@@ -159,7 +159,7 @@ const FeaturedBooksSection = () => {
                           maximumFractionDigits: 2,
                         }).format(book.price)}
                       </h5>
-                      {/* NUEVO: Categoría en la parte inferior */}
+
                       <div className="category-tag bg-warning text-dark px-2 py-1 rounded">
                         {book.category}
                       </div>

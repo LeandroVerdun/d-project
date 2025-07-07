@@ -14,6 +14,9 @@ const UserManagementPage = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [userToEdit, setUserToEdit] = useState(null);
 
+  // Obtener el ID del usuario logueado al cargar el componente
+  const loggedInUserId = JSON.parse(localStorage.getItem("user"))?.id;
+
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (!user || !user.isAdmin) {
@@ -54,6 +57,7 @@ const UserManagementPage = () => {
     try {
       await userService.updateUser(userId, updatedUserData);
       alert("Usuario actualizado con éxito!");
+      fetchUsers();
     } catch (err) {
       console.error("Error al actualizar el usuario:", err);
       alert(
@@ -65,6 +69,11 @@ const UserManagementPage = () => {
   };
 
   const handleDeleteUser = async (userId, userEmail) => {
+    if (userId === loggedInUserId) {
+      alert("No puedes eliminar tu propia cuenta de administrador.");
+      return;
+    }
+
     if (
       window.confirm(
         `¿Estás seguro de que quieres eliminar al usuario ${userEmail}? Esta acción es irreversible.`
@@ -99,7 +108,6 @@ const UserManagementPage = () => {
     <div className={styles.adminContainer}>
       <h1>Administrar Usuarios</h1>
 
-      {/* Aquí se incluye el menú */}
       <AdminMenu />
 
       {users.length === 0 ? (
@@ -133,6 +141,13 @@ const UserManagementPage = () => {
                     <button
                       className="btn btn-danger btn-sm"
                       onClick={() => handleDeleteUser(user._id, user.email)}
+                      // Deshabilita el botón de eliminar si el usuario a eliminar es el mismo que el logueado
+                      disabled={user._id === loggedInUserId}
+                      title={
+                        user._id === loggedInUserId
+                          ? "No puedes eliminar tu propia cuenta de administrador."
+                          : ""
+                      }
                     >
                       Eliminar
                     </button>

@@ -1,3 +1,4 @@
+// src/assets/layout/Footer.jsx
 import React from "react";
 import { FaFacebookF, FaTwitter, FaInstagram, FaYoutube } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
@@ -77,7 +78,10 @@ export const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/register" className="text-light text-decoration-none">
+                <Link
+                  to="/register"
+                  className="text-light text-decoration-none"
+                >
                   Sign Up
                 </Link>
               </li>
@@ -85,19 +89,36 @@ export const Footer = () => {
           </div>
 
           {/* Social Media */}
-          <div className="col-6 col-md-3 mb-4">
+
+          <div className="col-6 col-md-3 mb-4 text-center">
             <h5 className="text-uppercase mb-3">Follow Us</h5>
             <div className="social-icons-container">
-              <a href="#" className="text-light fs-5" onClick={handleFollowUsLink}>
+              <a
+                href="#"
+                className="text-light fs-5"
+                onClick={handleFollowUsLink}
+              >
                 <FaFacebookF />
               </a>
-              <a href="#" className="text-light fs-5" onClick={handleFollowUsLink}>
+              <a
+                href="#"
+                className="text-light fs-5"
+                onClick={handleFollowUsLink}
+              >
                 <FaTwitter />
               </a>
-              <a href="#" className="text-light fs-5" onClick={handleFollowUsLink}>
+              <a
+                href="#"
+                className="text-light fs-5"
+                onClick={handleFollowUsLink}
+              >
                 <FaInstagram />
               </a>
-              <a href="#" className="text-light fs-5" onClick={handleFollowUsLink}>
+              <a
+                href="#"
+                className="text-light fs-5"
+                onClick={handleFollowUsLink}
+              >
                 <FaYoutube />
               </a>
             </div>
@@ -107,7 +128,9 @@ export const Footer = () => {
         {/* Bottom Line */}
         <hr className="bg-secondary" />
         <div className="text-center">
-          <p className="mb-0">&copy; {new Date().getFullYear()} BookApp. All rights reserved.</p>
+          <p className="mb-0">
+            &copy; {new Date().getFullYear()} BookApp. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>
@@ -115,4 +138,3 @@ export const Footer = () => {
 };
 
 export default Footer;
-
