@@ -5,6 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import chisatoAvatar from "../assets/img/register.webp";
 import ChisatoZone from "../assets/img/logo-chisato-zone.png";
 import "../css/Profile.css";
+import { API_BASE_URL } from "../services/api";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ const Profile = () => {
         };
 
         const { data } = await axios.get(
-          "http://localhost:5000/api/users/me",
+          "https://chizatoback.onrender.com/api/users/me",
           config
         );
 
@@ -85,7 +86,7 @@ const Profile = () => {
       if (password.trim()) updateData.password = password;
 
       await axios.put(
-        `http://localhost:5000/api/users/${userId}`,
+        `${API_BASE_URL}/api/users/${userId}`,
         updateData,
         config
       );

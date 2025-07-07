@@ -134,7 +134,7 @@ Este proyecto ha sido desarrollado siguiendo buenas prácticas de la industria:
     npm start
     # o node server.js
     ```
-    El backend estará corriendo en `http://localhost:5000` (o el puerto que hayas configurado).
+    El backend estará corriendo en `https://chizatoback.onrender.com` (o el puerto que hayas configurado).
 
 ### Configuración del Frontend:
 
@@ -150,7 +150,7 @@ Este proyecto ha sido desarrollado siguiendo buenas prácticas de la industria:
     ```
 3.  Crea un archivo `.env` en la raíz del proyecto y configura la URL de tu backend:
     ```env
-    REACT_APP_BACKEND_URL=http://localhost:5000/api
+    REACT_APP_BACKEND_URL=https://chizatoback.onrender.com/api
     ```
 4.  Inicia la aplicación React:
     ```bash
