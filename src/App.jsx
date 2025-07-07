@@ -33,7 +33,7 @@ import CartPage from "./component/CartPage";
 import MyPurchases from "./component/MyPurchases";
 
 // Perfil
-import Profile from "./component/profile";
+import Profile from "./component/Profile";
 
 // Olvidaste tu contraseña
 
