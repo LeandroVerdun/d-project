@@ -15,9 +15,10 @@ const ForgotPassword = () => {
     setError("");
 
     try {
-      const response = await axios.post("/api/users/forgot-password", {
-        email,
-      });
+      const response = await axios.post(
+        `${API_BASE_URL}/api/users/forgot-password`,
+        { email }
+      );
 
       if (response.status === 200) {
         setShowModal(true);
