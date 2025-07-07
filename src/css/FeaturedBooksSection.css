@@ -76,6 +76,7 @@
 /* Control de truncado para la descripción */
 .text-truncate-lines-2 {
   display: -webkit-box;
+  -webkit-line-clamp: 2; /* Limita a 2 líneas */
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -200,6 +201,7 @@
   .featured-book-info-overlay .card-text {
     font-size: 0.75rem; /* Más pequeño para la descripción/autor */
     margin-bottom: 0.1rem;
+    -webkit-line-clamp: 1; /* Limitar la descripción a una línea para ahorrar espacio */
   }
 
   .featured-book-info-overlay h5.text-success {

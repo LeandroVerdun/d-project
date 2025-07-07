@@ -9,7 +9,7 @@ const FeaturedBooksSection = () => {
   const [featuredBooks, setFeaturedBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [chunkSize, setChunkSize] = useState(3); // Estado para el tamaño de chunk
+  const [chunkSize, setChunkSize] = useState(3);
 
   // Función auxiliar para mezclar un array (algoritmo de Fisher-Yates)
   const shuffleArray = (array) => {
