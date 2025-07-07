@@ -28,10 +28,19 @@ const Profile = () => {
 
         const user = JSON.parse(localStorage.getItem("user"));
         const userId = user?.id;
+        const isAdmin = user?.isAdmin;
 
         if (!userId) {
           setError("ID de usuario no encontrado en la sesión.");
           navigate("/login");
+          return;
+        }
+
+        if (isAdmin) {
+          setError(
+            "Los administradores gestionan su perfil desde el panel de administración."
+          );
+          navigate("/admin");
           return;
         }
 

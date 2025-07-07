@@ -1,4 +1,3 @@
-// navbar.jsx
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
@@ -38,7 +37,7 @@ export const Navbar = () => {
   };
 
   const handleCartClick = () => {
-    navigate("/cart"); // Navega a la ruta del carrito
+    navigate("/cart");
   };
 
   const handleLogout = () => {
@@ -137,11 +136,13 @@ export const Navbar = () => {
                     className="dropdown-menu dropdown-menu-end dropdown-menu-user"
                     aria-labelledby="dropdownAccount"
                   >
-                    <li>
-                      <Link className="dropdown-item" to="/profile">
-                        Profile
-                      </Link>
-                    </li>
+                    {!currentUser?.isAdmin && (
+                      <li>
+                        <Link className="dropdown-item" to="/profile">
+                          Profile
+                        </Link>
+                      </li>
+                    )}
                     {!currentUser?.isAdmin && (
                       <li>
                         <Link className="dropdown-item" to="/mypurchases">
@@ -168,7 +169,6 @@ export const Navbar = () => {
                     </li>
                   </ul>
                 </div>
-                {/* Botón del Carrito */}
                 <button
                   className="btn btn-outline-warning"
                   onClick={handleCartClick}
