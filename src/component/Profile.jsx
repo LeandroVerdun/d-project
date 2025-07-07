@@ -31,7 +31,7 @@ const Profile = () => {
         };
 
         const { data } = await axios.get(
-          "https://chizatoback.onrender.com/api/users/me",
+          `${API_BASE_URL}/api/users/${userId}`,
           config
         );
 
