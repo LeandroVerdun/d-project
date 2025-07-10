@@ -9,16 +9,16 @@ export const Footer = () => {
   const navigate = useNavigate();
   const userString = localStorage.getItem("user");
   const user = userString ? JSON.parse(userString) : null;
-  const isLoggedIn = !!user;
+  const estaLogueado = !!user;
 
-  const handleProfileLink = (e) => {
-    if (!isLoggedIn) {
+  const manejarLinkPerfil = (e) => {
+    if (!estaLogueado) {
       e.preventDefault();
       navigate("/404");
     }
   };
 
-  const handleFollowUsLink = (e) => {
+  const manejarLinkRedes = (e) => {
     e.preventDefault();
     navigate("/404");
   };
@@ -35,46 +35,46 @@ export const Footer = () => {
     >
       <div className="container">
         <div className="row footer-grid">
-          {/* Navigation */}
+          {/* Navegación */}
           <div className="col-6 col-md-3 mb-4">
-            <h5 className="text-uppercase mb-3">Navigation</h5>
+            <h5 className="text-uppercase mb-3">Navegación</h5>
             <ul className="list-unstyled">
               <li>
                 <Link to="/" className="text-light text-decoration-none">
-                  Home
+                  Inicio
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Help */}
+          {/* Ayuda */}
           <div className="col-6 col-md-3 mb-4">
-            <h5 className="text-uppercase mb-3">Help</h5>
+            <h5 className="text-uppercase mb-3">Ayuda</h5>
             <ul className="list-unstyled">
               <li>
                 <Link to="/about" className="text-light text-decoration-none">
-                  About Us
+                  Sobre Nosotros
                 </Link>
               </li>
               <li>
                 <Link to="/terms" className="text-light text-decoration-none">
-                  Terms of Service
+                  Términos del Servicio
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Account */}
+          {/* Cuenta */}
           <div className="col-6 col-md-3 mb-4">
-            <h5 className="text-uppercase mb-3">Account</h5>
+            <h5 className="text-uppercase mb-3">Cuenta</h5>
             <ul className="list-unstyled">
               <li>
                 <Link
                   to="/profile"
                   className="text-light text-decoration-none"
-                  onClick={handleProfileLink}
+                  onClick={manejarLinkPerfil}
                 >
-                  My Profile
+                  Mi Perfil
                 </Link>
               </li>
               <li>
@@ -82,42 +82,41 @@ export const Footer = () => {
                   to="/register"
                   className="text-light text-decoration-none"
                 >
-                  Sign Up
+                  Registrarse
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Social Media */}
-
+          {/* Redes Sociales */}
           <div className="col-6 col-md-3 mb-4 text-center">
-            <h5 className="text-uppercase mb-3">Follow Us</h5>
+            <h5 className="text-uppercase mb-3">Seguinos</h5>
             <div className="social-icons-container">
               <a
                 href="#"
                 className="text-light fs-5"
-                onClick={handleFollowUsLink}
+                onClick={manejarLinkRedes}
               >
                 <FaFacebookF />
               </a>
               <a
                 href="#"
                 className="text-light fs-5"
-                onClick={handleFollowUsLink}
+                onClick={manejarLinkRedes}
               >
                 <FaTwitter />
               </a>
               <a
                 href="#"
                 className="text-light fs-5"
-                onClick={handleFollowUsLink}
+                onClick={manejarLinkRedes}
               >
                 <FaInstagram />
               </a>
               <a
                 href="#"
                 className="text-light fs-5"
-                onClick={handleFollowUsLink}
+                onClick={manejarLinkRedes}
               >
                 <FaYoutube />
               </a>
@@ -125,11 +124,11 @@ export const Footer = () => {
           </div>
         </div>
 
-        {/* Bottom Line */}
+        {/* Línea inferior */}
         <hr className="bg-secondary" />
         <div className="text-center">
           <p className="mb-0">
-            &copy; {new Date().getFullYear()} BookApp. All rights reserved.
+            &copy; {new Date().getFullYear()} BookApp. Todos los derechos reservados.
           </p>
         </div>
       </div>

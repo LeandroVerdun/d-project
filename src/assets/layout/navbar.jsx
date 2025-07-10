@@ -1,61 +1,61 @@
+// src/assets/layout/Navbar.jsx
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-
 import { BsCart } from "react-icons/bs";
 import "../../css/Navbar.css";
 import logoImg from "../../assets/img/home.png";
 
 export const Navbar = () => {
-  const [query, setQuery] = useState("");
-  const [triggerSearch, setTriggerSearch] = useState(false);
+  const [busqueda, setBusqueda] = useState("");
+  const [dispararBusqueda, setDispararBusqueda] = useState(false);
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
+  const [estaLogueado, setEstaLogueado] = useState(false);
+  const [usuarioActual, setUsuarioActual] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
   const dropdownRef = useRef(null);
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    setIsLoggedIn(!!user);
-    setCurrentUser(user);
+    const usuario = JSON.parse(localStorage.getItem("user"));
+    setEstaLogueado(!!usuario);
+    setUsuarioActual(usuario);
   }, [location]);
 
-  const handleInputChange = (e) => {
-    setQuery(e.target.value);
-    setTriggerSearch(false);
+  const manejarCambioInput = (e) => {
+    setBusqueda(e.target.value);
+    setDispararBusqueda(false);
     setDropdownVisible(false);
   };
 
-  const handleSubmit = (e) => {
+  const manejarSubmit = (e) => {
     e.preventDefault();
-    if (query.trim()) {
-      navigate(`/search/books/${encodeURIComponent(query)}`);
+    if (busqueda.trim()) {
+      navigate(`/search/books/${encodeURIComponent(busqueda)}`);
     } else {
       navigate("/404");
     }
   };
 
-  const handleCartClick = () => {
+  const manejarClickCarrito = () => {
     navigate("/cart");
   };
 
-  const handleLogout = () => {
+  const manejarLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    setIsLoggedIn(false);
-    setCurrentUser(null);
+    setEstaLogueado(false);
+    setUsuarioActual(null);
     navigate("/login");
   };
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const manejarClickFuera = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setDropdownVisible(false);
       }
     };
-    document.addEventListener("click", handleClickOutside);
-    return () => document.removeEventListener("click", handleClickOutside);
+    document.addEventListener("click", manejarClickFuera);
+    return () => document.removeEventListener("click", manejarClickFuera);
   }, []);
 
   useEffect(() => {
@@ -76,7 +76,7 @@ export const Navbar = () => {
           data-bs-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent"
           aria-expanded="false"
-          aria-label="Toggle navigation"
+          aria-label="Alternar navegación"
         >
           <span className="navbar-toggler-icon"></span>
         </button>
@@ -85,7 +85,7 @@ export const Navbar = () => {
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
               <Link className="nav-link active text-white" to="/">
-                Home
+                Inicio
               </Link>
             </li>
           </ul>
@@ -93,15 +93,15 @@ export const Navbar = () => {
           <form
             className="d-flex align-items-center position-relative me-3"
             role="search"
-            onSubmit={handleSubmit}
+            onSubmit={manejarSubmit}
           >
             <input
               className="form-control me-2"
               type="search"
-              placeholder="Search book"
-              value={query}
-              onChange={handleInputChange}
-              aria-label="Search"
+              placeholder="Buscar libro"
+              value={busqueda}
+              onChange={manejarCambioInput}
+              aria-label="Buscar"
             />
             <button className="btn btn-outline-success" type="submit">
               <i className="bi bi-search"></i>
@@ -109,13 +109,13 @@ export const Navbar = () => {
           </form>
 
           <div className="d-flex align-items-center me-3">
-            {!isLoggedIn ? (
+            {!estaLogueado ? (
               <>
                 <Link to="/register" className="btn btn-outline-primary me-2">
-                  Register
+                  Registrarse
                 </Link>
                 <Link to="/login" className="btn btn-outline-success me-2">
-                  Login
+                  Iniciar Sesión
                 </Link>
               </>
             ) : (
@@ -128,29 +128,29 @@ export const Navbar = () => {
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
-                    {currentUser?.username ||
-                      currentUser?.email ||
-                      "My Account"}{" "}
+                    {usuarioActual?.username ||
+                      usuarioActual?.email ||
+                      "Mi Cuenta"}{" "}
                   </button>
                   <ul
                     className="dropdown-menu dropdown-menu-end dropdown-menu-user"
                     aria-labelledby="dropdownAccount"
                   >
-                    {!currentUser?.isAdmin && (
+                    {!usuarioActual?.isAdmin && (
                       <li>
                         <Link className="dropdown-item" to="/profile">
-                          Profile
+                          Perfil
                         </Link>
                       </li>
                     )}
-                    {!currentUser?.isAdmin && (
+                    {!usuarioActual?.isAdmin && (
                       <li>
                         <Link className="dropdown-item" to="/mypurchases">
                           Mis Compras
                         </Link>
                       </li>
                     )}
-                    {currentUser?.isAdmin && (
+                    {usuarioActual?.isAdmin && (
                       <>
                         <li>
                           <hr className="dropdown-divider" />
@@ -163,16 +163,16 @@ export const Navbar = () => {
                       </>
                     )}
                     <li>
-                      <button className="dropdown-item" onClick={handleLogout}>
-                        Logout
+                      <button className="dropdown-item" onClick={manejarLogout}>
+                        Cerrar Sesión
                       </button>
                     </li>
                   </ul>
                 </div>
                 <button
                   className="btn btn-outline-warning"
-                  onClick={handleCartClick}
-                  title="Cart"
+                  onClick={manejarClickCarrito}
+                  title="Carrito"
                 >
                   <BsCart size={20} />
                 </button>

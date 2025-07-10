@@ -72,23 +72,22 @@ const MyPurchases = () => {
               <div className="card-body">
                 <h5 className="card-title">Orden ID: {order._id}</h5>
                 <p className="card-text">
-                  Fecha: {new Date(order.createdAt).toLocaleDateString()}{" "}
+                  Fecha: {new Date(order.createdAt).toLocaleDateString()}
                 </p>
                 <p className="card-text">
                   Estado: <strong>{translateStatus(order.status)}</strong>
-                </p>{" "}
+                </p>
                 <p className="card-text">
-                  Total: ${order.totalAmount.toFixed(2)}
+                  Total: ${order.totalAmount?.toFixed(2) || "0.00"}
                 </p>
                 <h6>Productos:</h6>
                 <ul className="list-group list-group-flush">
-                  {order.items.map((item) => (
+                  {order.items?.filter(item => item && item.product).map((item, index) => (
                     <li
-                      key={item.product._id}
+                      key={item.product._id || index}
                       className="list-group-item bg-secondary text-white"
                     >
-                      {item.name} - Cantidad: {item.quantity} - Precio Unitario:
-                      ${item.priceAtPurchase.toFixed(2)}{" "}
+                      {item.product.name || "Producto sin nombre"} - Cantidad: {item.quantity} - Precio Unitario: ${item.priceAtPurchase?.toFixed(2) || "0.00"}
                     </li>
                   ))}
                 </ul>
