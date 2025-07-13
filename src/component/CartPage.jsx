@@ -1,4 +1,3 @@
-// src\component\CartPage.jsx
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import * as cartService from "../services/cartService";
@@ -6,6 +5,7 @@ import * as orderService from "../services/orderService";
 import "../css/CartPage.css";
 import CheckoutModal from "./CheckoutModal";
 import PurchaseSuccessModal from "./PurchaseSuccessModal";
+import eventEmitter from "../utils/eventEmitter";
 
 const CartPage = () => {
   const [cart, setCart] = useState(null);
@@ -16,28 +16,20 @@ const CartPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("CartPage: useEffect de montaje. Llamando fetchCart.");
     fetchCart();
   }, []);
-
-  useEffect(() => {
-    console.log("CartPage: showCheckoutModal cambió a:", showCheckoutModal);
-  }, [showCheckoutModal]);
-
-  useEffect(() => {
-    console.log("CartPage: showSuccessModal cambió a:", showSuccessModal);
-  }, [showSuccessModal]);
 
   const fetchCart = async () => {
     setLoading(true);
     setError(null);
     try {
-      console.log("CartPage: Iniciando fetchCart...");
       const data = await cartService.getMyCart();
       setCart(data);
-      console.log("CartPage: Carrito obtenido con éxito.", data);
+
+      // Emitir evento con la cantidad total actualizada
+      const totalCount = data.items.reduce((acc, item) => acc + item.quantity, 0);
+      eventEmitter.emit("cartUpdated", totalCount);
     } catch (err) {
-      console.error("CartPage: Error al obtener el carrito:", err);
       if (
         err.message.includes("No autorizado") ||
         err.message.includes("token")
@@ -51,7 +43,6 @@ const CartPage = () => {
       }
     } finally {
       setLoading(false);
-      console.log("CartPage: fetchCart finalizado. Loading:", false);
     }
   };
 
@@ -70,14 +61,9 @@ const CartPage = () => {
     }
 
     try {
-      console.log(
-        `CartPage: Actualizando cantidad para producto ${productId} a ${newQuantity}`
-      );
       await cartService.addOrUpdateItemInCart(productId, newQuantity);
-      fetchCart();
-      console.log("CartPage: Cantidad actualizada. Refetching cart.");
+      await fetchCart();
     } catch (err) {
-      console.error("CartPage: Error al actualizar cantidad:", err);
       alert(
         `Error al actualizar la cantidad: ${err.message || "Error desconocido"}`
       );
@@ -91,12 +77,9 @@ const CartPage = () => {
       )
     ) {
       try {
-        console.log(`CartPage: Eliminando producto ${productId}`);
         await cartService.removeItemFromCart(productId);
-        fetchCart();
-        console.log("CartPage: Producto eliminado. Refetching cart.");
+        await fetchCart();
       } catch (err) {
-        console.error("CartPage: Error al eliminar producto:", err);
         alert(
           `Error al eliminar el producto: ${err.message || "Error desconocido"}`
         );
@@ -109,13 +92,10 @@ const CartPage = () => {
       window.confirm("¿Estás seguro de que quieres vaciar todo el carrito?")
     ) {
       try {
-        console.log("CartPage: Vaciando carrito...");
         await cartService.clearMyCart();
-        fetchCart();
+        await fetchCart();
         alert("Carrito vaciado con éxito.");
-        console.log("CartPage: Carrito vaciado. Refetching cart.");
       } catch (err) {
-        console.error("CartPage: Error al vaciar el carrito:", err);
         alert(
           `Error al vaciar el carrito: ${err.message || "Error desconocido"}`
         );
@@ -134,42 +114,27 @@ const CartPage = () => {
   };
 
   const handleShowCheckoutModal = () => {
-    console.log(
-      "CartPage: handleShowCheckoutModal llamado. Setting showCheckoutModal a true."
-    );
     setShowCheckoutModal(true);
   };
 
   const handleCloseCheckoutModal = () => {
-    console.log(
-      "CartPage: handleCloseCheckoutModal llamado. Setting showCheckoutModal a false."
-    );
     setShowCheckoutModal(false);
   };
 
   const handleCloseSuccessModal = () => {
-    console.log(
-      "CartPage: handleCloseSuccessModal llamado. Setting showSuccessModal a false."
-    );
     setShowSuccessModal(false);
   };
 
   const handlePurchaseSuccess = async (orderDetailsFromCheckout) => {
-    console.log(
-      "CartPage: handlePurchaseSuccess (prop de CheckoutModal) llamado con detalles:",
-      orderDetailsFromCheckout
-    );
     try {
       const currentCart = await cartService.getMyCart();
 
       if (!currentCart || currentCart.items.length === 0) {
-        console.warn("CartPage: Intento de crear orden con carrito vacío.");
         alert("Error: El carrito está vacío, no se puede finalizar la compra.");
         setShowCheckoutModal(false);
         return;
       }
 
-      // Preparar los datos para la orden, combinando items del carrito y detalles del checkout
       const orderData = {
         items: currentCart.items.map((item) => ({
           product: item.product._id,
@@ -182,25 +147,14 @@ const CartPage = () => {
         ...orderDetailsFromCheckout,
       };
 
-      console.log("CartPage: Creando orden con datos COMBINADOS:", orderData);
       const newOrder = await orderService.createOrder(orderData);
-      console.log("CartPage: Orden creada en el backend:", newOrder);
 
-      console.log("CartPage: Limpiando carrito después de compra exitosa...");
       await cartService.clearMyCart();
-      fetchCart();
-      console.log("CartPage: Carrito limpiado y refeteado.");
+      await fetchCart();
 
       setShowCheckoutModal(false);
       setShowSuccessModal(true);
-      console.log(
-        "CartPage: CheckoutModal cerrado y PurchaseSuccessModal abierto."
-      );
     } catch (err) {
-      console.error(
-        "CartPage: Error en handlePurchaseSuccess (creando orden o limpiando carrito):",
-        err
-      );
       const errorMessage =
         err.response && err.response.data && err.response.data.message
           ? err.response.data.message
@@ -209,13 +163,6 @@ const CartPage = () => {
       setShowCheckoutModal(false);
     }
   };
-
-  console.log(
-    "CartPage: Renderizando. showCheckoutModal actual:",
-    showCheckoutModal,
-    "showSuccessModal actual:",
-    showSuccessModal
-  );
 
   if (loading) {
     return (
