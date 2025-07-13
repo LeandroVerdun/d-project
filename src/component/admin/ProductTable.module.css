@@ -1,76 +1,86 @@
 .tableContainer {
   margin-top: 20px;
-  background-color: #343a40; /* Fondo oscuro de Bootstrap 'dark' */
+  background-color: #343a40;
   border-radius: 8px;
-  overflow-x: auto; /* Permite desplazamiento horizontal en pantallas pequeñas */
   padding: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-.tableContainer table {
+/* Solo encabezado, sin scroll */
+.tableContainer > table {
   width: 100%;
   margin-bottom: 0;
-  color: #f8f9fa; /* Texto claro para la tabla */
+  color: #f8f9fa;
 }
 
-/* Estilos para encabezados de tabla */
+/* Scroll en el cuerpo */
+.scrollBody {
+  max-height: 400px; /* Altura limitada para mostrar aprox. 5 filas */
+  overflow-y: auto;
+}
+
+.scrollBody table {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+/* Encabezados */
 .tableContainer th {
-  background-color: #495057; /* Un gris un poco más claro para los encabezados */
-  color: #ffc107; /* Amarillo para los títulos de las columnas */
+  background-color: #495057;
+  color: #ffc107;
   vertical-align: middle;
-  padding: 12px 10px; /* Más padding para los encabezados */
+  padding: 12px 10px;
   font-weight: 600;
 }
 
-/* Estilos para celdas de tabla */
+/* Celdas */
 .tableContainer td {
   vertical-align: middle;
   padding: 10px;
 }
 
-/* Estilos para filas impares (striped) */
+/* Fila impar */
 .tableContainer .table-striped tbody tr:nth-of-type(odd) {
-  background-color: rgba(0, 0, 0, 0.08); /* Ligeramente más oscuro */
+  background-color: rgba(0, 0, 0, 0.08);
 }
 
-/* Estilos para hover en filas */
+/* Hover */
 .tableContainer .table-hover tbody tr:hover {
-  background-color: #5a6268; /* Un gris más claro al hacer hover */
+  background-color: #5a6268;
 }
 
-/* Estilo para las imágenes dentro de la tabla */
+/* Imágenes */
 .tableContainer img {
   border-radius: 4px;
-  display: block; /* Elimina espacio extra debajo de la imagen */
-  margin: auto; /* Centra la imagen */
+  display: block;
+  margin: auto;
 }
 
-/* Estilos para los botones de acción en la tabla */
+/* Botones */
 .tableContainer .btn-warning,
 .tableContainer .btn-danger {
   padding: 5px 10px;
   font-size: 0.85em;
-  display: inline-flex; /* Para alinear el icono y el texto */
+  display: inline-flex;
   align-items: center;
-  gap: 5px; /* Espacio entre icono y texto */
+  gap: 5px;
 }
 
-.tableContainer .btn-warning:hover {
-  filter: brightness(1.1); /* Ligeramente más brillante al hover */
-}
-
+.tableContainer .btn-warning:hover,
 .tableContainer .btn-danger:hover {
-  filter: brightness(1.1); /* Ligeramente más brillante al hover */
+  filter: brightness(1.1);
 }
 
-/* Media queries para responsividad */
+/* Responsive */
 @media (max-width: 992px) {
   .tableContainer {
     padding: 10px;
   }
-  .tableContainer table {
+
+  .scrollBody table {
     font-size: 0.95em;
   }
+
   .tableContainer th,
   .tableContainer td {
     padding: 8px;
@@ -81,14 +91,26 @@
   .tableContainer {
     padding: 5px;
   }
-  .tableContainer table {
+
+  .scrollBody table {
     font-size: 0.85em;
   }
+
   .tableContainer th,
   .tableContainer td {
     padding: 6px;
   }
+
   .tableContainer img {
-    width: 40px; /* Un poco más pequeña en móviles */
+    width: 40px;
   }
 }
+
+.descripcion {
+  max-height: calc(1.2em * 8); /* 8 líneas de alto */
+  overflow-y: auto;
+  line-height: 1.2em;
+  display: block;
+  white-space: normal;
+}
+

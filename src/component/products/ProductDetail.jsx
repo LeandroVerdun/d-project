@@ -1,14 +1,15 @@
-// src/component/products/ProductDetail.jsx
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import * as productService from "../../services/productService.js";
-import * as cartService from "../../services/cartService.js"; // Importamos el servicio de carrito
+import * as cartService from "../../services/cartService";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [adding, setAdding] = useState(false);
+  const [quantityInCart, setQuantityInCart] = useState(0);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -16,53 +17,62 @@ const ProductDetail = () => {
       setError(null);
       try {
         const data = await productService.getProductById(id);
-        console.log(
-          "1. Datos recibidos del backend (dentro de fetchProduct):",
-          data
-        );
         setProduct(data);
-        console.log(
-          "2. Estado del producto después de setProduct (dentro de fetchProduct):",
-          data
-        );
       } catch (err) {
-        console.error(`Error al cargar el producto ${id}:`, err);
-        console.error(
-          "Detalles del error:",
-          err.response ? err.response.data : err.message
-        );
+        console.error("Error al cargar el producto:", err);
         setError(
           err.response?.data?.message ||
-            "No se pudo cargar el detalle del libro. Asegúrate de que el ID es correcto y el backend funciona."
+            "No se pudo cargar el detalle del libro."
         );
       } finally {
         setLoading(false);
       }
     };
 
-    if (id) {
-      fetchProduct();
-    }
+    if (id) fetchProduct();
   }, [id]);
 
-  // Función para manejar el clic en "Añadir al Carrito"
+  useEffect(() => {
+    const fetchCart = async () => {
+      try {
+        const cart = await cartService.getMyCart();
+        const item = cart.items.find((item) => item.product._id === id);
+        if (item) {
+          setQuantityInCart(item.quantity);
+        } else {
+          setQuantityInCart(0);
+        }
+      } catch (err) {
+        console.warn("No se pudo obtener el carrito:", err.message);
+      }
+    };
+
+    fetchCart();
+  }, [id]);
+
   const handleAddToCart = async () => {
-    if (!product || product.stock <= 0) {
-      alert("Este producto no está disponible o no tiene stock.");
-      return;
-    }
+    if (!product || product.stock <= 0 || adding) return;
+
+    setAdding(true);
     try {
-      await cartService.addOrUpdateItemInCart(product._id, 1);
-      alert(`${product.name} ha sido añadido al carrito.`);
+      await cartService.addOrUpdateItemInCart(product._id, quantityInCart + 1);
+      setTimeout(() => {
+        setQuantityInCart((prev) => prev + 1);
+        setAdding(false);
+      }, 1000);
     } catch (error) {
-      console.error("Error al añadir al carrito desde el detalle:", error);
-      alert(
-        `No se pudo añadir ${product.name} al carrito. Motivo: ${
-          error.message || "Error desconocido"
-        }`
-      );
+      console.error("Error al añadir al carrito:", error);
+      alert("Debes iniciar sesión para comprar.");
+      setAdding(false);
     }
   };
+
+  const formattedPrice = new Intl.NumberFormat("es-AR", {
+    style: "currency",
+    currency: "ARS",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(product?.price || 0);
 
   if (loading) {
     return (
@@ -83,14 +93,6 @@ const ProductDetail = () => {
       </div>
     );
   }
-
-  // Formatear el precio aquí para la vista de detalle
-  const formattedPrice = new Intl.NumberFormat("es-AR", {
-    style: "currency",
-    currency: "ARS",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(product.price);
 
   return (
     <div className="container mt-5 text-light">
@@ -117,21 +119,29 @@ const ProductDetail = () => {
           <p>
             <strong>Stock Disponible:</strong> {product.stock}
           </p>
-          {/* ELIMINADO: Muestra el Rating (ya no visible al cliente) */}
-          {/* <p>
-            <strong>Rating:</strong> {product.rating} / 5
-          </p> */}
+
           <h3 className="text-primary mt-3">
             <strong>Precio: {formattedPrice}</strong>
           </h3>
-          {/* Aquí añadimos el botón "Añadir al Carrito" */}
+
           <div className="mt-4">
             {product.stock > 0 ? (
               <button
-                className="btn btn-success btn-lg w-100" // Botón grande y ancho
+                className="btn btn-success btn-lg w-100 d-flex justify-content-center align-items-center"
                 onClick={handleAddToCart}
+                disabled={adding}
               >
-                Añadir al Carrito
+                {adding ? (
+                  <div
+                    className="spinner-border spinner-border-sm text-light"
+                    role="status"
+                    style={{ width: "1.2rem", height: "1.2rem" }}
+                  />
+                ) : quantityInCart > 0 ? (
+                  <>Añadido ({quantityInCart})</>
+                ) : (
+                  "Añadir al Carrito"
+                )}
               </button>
             ) : (
               <button className="btn btn-secondary btn-lg w-100" disabled>

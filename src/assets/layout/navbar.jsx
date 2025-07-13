@@ -1,9 +1,10 @@
-// src/assets/layout/Navbar.jsx
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { BsCart } from "react-icons/bs";
 import "../../css/Navbar.css";
 import logoImg from "../../assets/img/home.png";
+import * as cartService from "../../services/cartService";
+import eventEmitter from "../../utils/eventEmitter";
 
 export const Navbar = () => {
   const [busqueda, setBusqueda] = useState("");
@@ -11,6 +12,8 @@ export const Navbar = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [estaLogueado, setEstaLogueado] = useState(false);
   const [usuarioActual, setUsuarioActual] = useState(null);
+  const [cartCount, setCartCount] = useState(0);
+
   const navigate = useNavigate();
   const location = useLocation();
   const dropdownRef = useRef(null);
@@ -20,6 +23,30 @@ export const Navbar = () => {
     setEstaLogueado(!!usuario);
     setUsuarioActual(usuario);
   }, [location]);
+
+  // Obtener cantidad inicial del carrito
+  useEffect(() => {
+    const fetchCartCount = async () => {
+      try {
+        const cart = await cartService.getMyCart();
+        const count = cart.items.reduce((acc, item) => acc + item.quantity, 0);
+        setCartCount(count);
+      } catch (err) {
+        setCartCount(0);
+      }
+    };
+    fetchCartCount();
+
+    // Listener para actualizar contador en tiempo real
+    const updateCartCount = (newCount) => {
+      setCartCount(newCount);
+    };
+    eventEmitter.on("cartUpdated", updateCartCount);
+
+    return () => {
+      eventEmitter.off("cartUpdated", updateCartCount);
+    };
+  }, []);
 
   const manejarCambioInput = (e) => {
     setBusqueda(e.target.value);
@@ -169,13 +196,24 @@ export const Navbar = () => {
                     </li>
                   </ul>
                 </div>
-                <button
-                  className="btn btn-outline-warning"
-                  onClick={manejarClickCarrito}
-                  title="Carrito"
-                >
-                  <BsCart size={20} />
-                </button>
+
+                <div className="position-relative">
+                  <button
+                    className="btn btn-outline-warning"
+                    onClick={manejarClickCarrito}
+                    title="Carrito"
+                  >
+                    <BsCart size={20} />
+                  </button>
+                  {cartCount > 0 && (
+                    <span
+                      className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                      style={{ fontSize: "0.7rem", padding: "4px 6px" }}
+                    >
+                      {cartCount > 10 ? "10+" : cartCount}
+                    </span>
+                  )}
+                </div>
               </>
             )}
           </div>

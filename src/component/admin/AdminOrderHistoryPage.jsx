@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import * as orderService from "../../services/orderService";
-import styles from "./AdminPage.module.css"; 
-import { format } from "date-fns"; 
-import { es } from "date-fns/locale"; 
-
-import AdminMenu from "./AdminMenu"; 
+import styles from "./AdminPage.module.css";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
+import AdminMenu from "./AdminMenu";
 
 const orderStatuses = ["processing", "shipped", "completed", "cancelled"];
 
@@ -60,9 +59,11 @@ const AdminOrderHistoryPage = () => {
 
     orders.forEach((order) => {
       totalRev += order.totalAmount;
-      const userId = order.user._id;
-      const userName = order.user.name || order.user.email;
-      const userEmail = order.user.email;
+      const userId = order.user?._id;
+      const userName = order.user?.name || order.user?.email || "Desconocido";
+      const userEmail = order.user?.email || "N/A";
+
+      if (!userId) return; // Ignorar si no hay usuario
 
       if (!customerSpending.has(userId)) {
         customerSpending.set(userId, {
@@ -88,11 +89,7 @@ const AdminOrderHistoryPage = () => {
   }, [orders]);
 
   if (loading) {
-    return (
-      <div className="text-white text-center mt-5">
-        Cargando historial de órdenes...
-      </div>
-    );
+    return <div className="text-white text-center mt-5">Cargando historial de órdenes...</div>;
   }
 
   if (error) {
@@ -101,10 +98,8 @@ const AdminOrderHistoryPage = () => {
 
   return (
     <div className={styles.adminContainer}>
-      {/* Contenedor flex para título y menú */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
         <h1>Historial de Órdenes (Administrador)</h1>
-        {/* Usamos el menú admin aquí */}
         <AdminMenu onNewProduct={() => alert("Implementa aquí la función de nuevo producto o navega")} />
       </div>
 
@@ -176,8 +171,8 @@ const AdminOrderHistoryPage = () => {
               {orders.map((order) => (
                 <tr key={order._id}>
                   <td>{order._id}</td>
-                  <td>{order.user.name || order.user.email}</td>
-                  <td>{order.user.email}</td>
+                  <td>{order.user?.name || order.user?.email || "Desconocido"}</td>
+                  <td>{order.user?.email || "N/A"}</td>
                   <td>
                     {format(new Date(order.createdAt), "dd/MM/yyyy HH:mm", {
                       locale: es,
