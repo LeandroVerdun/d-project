@@ -143,7 +143,7 @@ const Register = () => {
       placeholder: "Tu apellido aquí",
       max: 30,
     },
-    
+
     {
       id: "email",
       label: "Email",
@@ -209,7 +209,9 @@ const Register = () => {
             <div className="input-group">
               <input
                 type={showPassword ? "text" : "password"}
-                className={`form-control ${errors.password ? "is-invalid" : ""}`}
+                className={`form-control ${
+                  errors.password ? "is-invalid" : ""
+                }`}
                 id="password"
                 name="password"
                 placeholder="Mínimo 6 caracteres"
@@ -223,7 +225,9 @@ const Register = () => {
                 className="btn btn-outline-secondary"
                 onClick={() => setShowPassword((show) => !show)}
                 tabIndex={-1}
-                aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                aria-label={
+                  showPassword ? "Ocultar contraseña" : "Mostrar contraseña"
+                }
               >
                 {showPassword ? "Ocultar" : "Mostrar"}
               </button>
@@ -261,14 +265,18 @@ const Register = () => {
                 onClick={() => setShowConfirmPassword((show) => !show)}
                 tabIndex={-1}
                 aria-label={
-                  showConfirmPassword ? "Ocultar contraseña" : "Mostrar contraseña"
+                  showConfirmPassword
+                    ? "Ocultar contraseña"
+                    : "Mostrar contraseña"
                 }
               >
                 {showConfirmPassword ? "Ocultar" : "Mostrar"}
               </button>
             </div>
             {errors.confirmPassword && (
-              <div className="invalid-feedback d-block">{errors.confirmPassword}</div>
+              <div className="invalid-feedback d-block">
+                {errors.confirmPassword}
+              </div>
             )}
           </div>
 
@@ -288,14 +296,14 @@ const Register = () => {
             />
           </div>
 
-          <div className="mb-3 form-check">
+          <div className="mb-3 form-check text-white">
             <input
               type="checkbox"
               className="form-check-input"
               id="checkRobot"
               required
             />
-            <label className="form-check-label" htmlFor="checkRobot">
+            <label className="form-check-label text-white" htmlFor="checkRobot">
               Confirmo que no soy un robot
             </label>
           </div>

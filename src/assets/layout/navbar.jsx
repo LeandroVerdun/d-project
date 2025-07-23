@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { BsCart } from "react-icons/bs";
-import axios from "axios"; 
+import axios from "axios";
 import "../../css/Navbar.css";
 import logoImg from "../../assets/img/home.png";
 import * as cartService from "../../services/cartService";
 import eventEmitter from "../../utils/eventEmitter";
 
-//const API_BASE_URL = "http://localhost:5000"; 
-const API_BASE_URL = "https://chizatoback.onrender.com";
+const API_BASE_URL = "http://localhost:5000";
+//const API_BASE_URL = "https://chizatoback.onrender.com";
 
 export const Navbar = () => {
   const [busqueda, setBusqueda] = useState("");
@@ -38,7 +38,10 @@ export const Navbar = () => {
           headers: { Authorization: `Bearer ${token}` },
         };
 
-        const response = await axios.get(`${API_BASE_URL}/api/users/${userId}`, config);
+        const response = await axios.get(
+          `${API_BASE_URL}/api/users/${userId}`,
+          config
+        );
 
         setUsuarioActual(response.data);
         setEstaLogueado(true);
@@ -182,7 +185,9 @@ export const Navbar = () => {
                     {usuarioActual?.name || "Mi Cuenta"}
                   </button>
                   <ul
-                    className={`dropdown-menu dropdown-menu-end dropdown-menu-user ${dropdownVisible ? "show" : ""}`}
+                    className={`dropdown-menu dropdown-menu-end dropdown-menu-user ${
+                      dropdownVisible ? "show" : ""
+                    }`}
                     aria-labelledby="dropdownAccount"
                   >
                     {!usuarioActual?.isAdmin && (

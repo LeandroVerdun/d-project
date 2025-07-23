@@ -1,3 +1,4 @@
+// src/component/CartPage.jsx
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import * as cartService from "../services/cartService";
@@ -5,6 +6,7 @@ import * as orderService from "../services/orderService";
 import "../css/CartPage.css";
 import CheckoutModal from "./CheckoutModal";
 import PurchaseSuccessModal from "./PurchaseSuccessModal";
+import MessageModal from "./MessageModal"; // <-- Importamos el nuevo modal
 import eventEmitter from "../utils/eventEmitter";
 
 const CartPage = () => {
@@ -13,6 +15,17 @@ const CartPage = () => {
   const [error, setError] = useState(null);
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+  // --- Nuevo estado para el modal genérico ---
+  const [messageModal, setMessageModal] = useState({
+    show: false,
+    type: "info",
+    title: "",
+    message: "",
+    onConfirm: null,
+  });
+  // ------------------------------------------
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,8 +39,10 @@ const CartPage = () => {
       const data = await cartService.getMyCart();
       setCart(data);
 
-      // Emitir evento con la cantidad total actualizada
-      const totalCount = data.items.reduce((acc, item) => acc + item.quantity, 0);
+      const totalCount = data.items.reduce(
+        (acc, item) => acc + item.quantity,
+        0
+      );
       eventEmitter.emit("cartUpdated", totalCount);
     } catch (err) {
       if (
@@ -35,8 +50,23 @@ const CartPage = () => {
         err.message.includes("token")
       ) {
         navigate("/login");
+        // Aquí también podríamos usar el modal de mensaje para indicar que necesita iniciar sesión
+        setMessageModal({
+          show: true,
+          type: "error",
+          title: "Sesión Requerida",
+          message: "Necesitas iniciar sesión para ver tu carrito.",
+          onConfirm: () => navigate("/login"), // Podría redirigir al cerrar el modal
+        });
         setError("Necesitas iniciar sesión para ver tu carrito.");
       } else {
+        setMessageModal({
+          show: true,
+          type: "error",
+          title: "Error al Cargar Carrito",
+          message:
+            "No se pudo cargar el carrito. Por favor, inténtalo de nuevo más tarde.",
+        });
         setError(
           "No se pudo cargar el carrito. Por favor, inténtalo de nuevo más tarde."
         );
@@ -45,6 +75,16 @@ const CartPage = () => {
       setLoading(false);
     }
   };
+
+  // --- Función para mostrar el modal de mensaje genérico ---
+  const showMessage = (type, title, message, onConfirm = null) => {
+    setMessageModal({ show: true, type, title, message, onConfirm });
+  };
+
+  const handleCloseMessageModal = () => {
+    setMessageModal({ ...messageModal, show: false });
+  };
+  // --------------------------------------------------------
 
   const handleUpdateQuantity = async (productId, newQuantity) => {
     if (newQuantity < 1) return;
@@ -56,51 +96,82 @@ const CartPage = () => {
       itemInCart.product &&
       itemInCart.product.stock < newQuantity
     ) {
-      alert("No hay suficiente stock disponible para esta cantidad.");
+      showMessage(
+        "warning",
+        "Stock Insuficiente",
+        "No hay suficiente stock disponible para esta cantidad."
+      );
       return;
     }
 
     try {
       await cartService.addOrUpdateItemInCart(productId, newQuantity);
       await fetchCart();
+      // Opcional: mostrar un mensaje de éxito al actualizar cantidad
+      // showMessage("success", "Cantidad Actualizada", "La cantidad del producto ha sido actualizada.");
     } catch (err) {
-      alert(
-        `Error al actualizar la cantidad: ${err.message || "Error desconocido"}`
+      showMessage(
+        "error",
+        "Error al Actualizar Cantidad",
+        `Hubo un problema al actualizar la cantidad: ${
+          err.message || "Error desconocido"
+        }`
       );
     }
   };
 
   const handleRemoveItem = async (productId) => {
-    if (
-      window.confirm(
-        "¿Estás seguro de que quieres eliminar este producto del carrito?"
-      )
-    ) {
-      try {
-        await cartService.removeItemFromCart(productId);
-        await fetchCart();
-      } catch (err) {
-        alert(
-          `Error al eliminar el producto: ${err.message || "Error desconocido"}`
-        );
+    showMessage(
+      "confirm",
+      "Confirmar Eliminación",
+      "¿Estás seguro de que quieres eliminar este producto del carrito?",
+      async () => {
+        try {
+          await cartService.removeItemFromCart(productId);
+          await fetchCart();
+          showMessage(
+            "success",
+            "Producto Eliminado",
+            "El producto ha sido eliminado del carrito."
+          );
+        } catch (err) {
+          showMessage(
+            "error",
+            "Error al Eliminar Producto",
+            `Hubo un problema al eliminar el producto: ${
+              err.message || "Error desconocido"
+            }`
+          );
+        }
       }
-    }
+    );
   };
 
   const handleClearCart = async () => {
-    if (
-      window.confirm("¿Estás seguro de que quieres vaciar todo el carrito?")
-    ) {
-      try {
-        await cartService.clearMyCart();
-        await fetchCart();
-        alert("Carrito vaciado con éxito.");
-      } catch (err) {
-        alert(
-          `Error al vaciar el carrito: ${err.message || "Error desconocido"}`
-        );
+    showMessage(
+      "confirm",
+      "Confirmar Vaciado de Carrito",
+      "¿Estás seguro de que quieres vaciar todo el carrito?",
+      async () => {
+        try {
+          await cartService.clearMyCart();
+          await fetchCart();
+          showMessage(
+            "success",
+            "Carrito Vaciado",
+            "El carrito ha sido vaciado con éxito."
+          );
+        } catch (err) {
+          showMessage(
+            "error",
+            "Error al Vaciar Carrito",
+            `Hubo un problema al vaciar el carrito: ${
+              err.message || "Error desconocido"
+            }`
+          );
+        }
       }
-    }
+    );
   };
 
   const calculateTotal = () => {
@@ -130,7 +201,11 @@ const CartPage = () => {
       const currentCart = await cartService.getMyCart();
 
       if (!currentCart || currentCart.items.length === 0) {
-        alert("Error: El carrito está vacío, no se puede finalizar la compra.");
+        showMessage(
+          "error",
+          "Carrito Vacío",
+          "Error: El carrito está vacío, no se puede finalizar la compra."
+        );
         setShowCheckoutModal(false);
         return;
       }
@@ -153,13 +228,17 @@ const CartPage = () => {
       await fetchCart();
 
       setShowCheckoutModal(false);
-      setShowSuccessModal(true);
+      setShowSuccessModal(true); // Mantén este modal específico si te gusta para el éxito de compra.
     } catch (err) {
       const errorMessage =
         err.response && err.response.data && err.response.data.message
           ? err.response.data.message
           : err.message || "Error desconocido";
-      alert(`Hubo un error al finalizar la compra: ${errorMessage}`);
+      showMessage(
+        "error",
+        "Error al Finalizar Compra",
+        `Hubo un error al finalizar la compra: ${errorMessage}`
+      );
       setShowCheckoutModal(false);
     }
   };
@@ -289,6 +368,17 @@ const CartPage = () => {
         show={showSuccessModal}
         handleClose={handleCloseSuccessModal}
       />
+
+      {/* --- Renderizar el nuevo MessageModal --- */}
+      <MessageModal
+        show={messageModal.show}
+        handleClose={handleCloseMessageModal}
+        type={messageModal.type}
+        title={messageModal.title}
+        message={messageModal.message}
+        onConfirm={messageModal.onConfirm}
+      />
+      {/* -------------------------------------- */}
     </div>
   );
 };

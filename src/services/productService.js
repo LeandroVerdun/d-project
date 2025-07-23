@@ -61,7 +61,7 @@ export const searchProducts = async (query) => {
     const encodedQuery = encodeURIComponent(query);
     const response = await apiClient.get(
       `/api/products/search?q=${encodedQuery}`
-    ); // <-- CAMBIO AQUÍ
+    );
     return response.data;
   } catch (error) {
     console.error(`Error en searchProducts para query "${query}":`, error);
