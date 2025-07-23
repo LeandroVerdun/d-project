@@ -27,9 +27,17 @@
   border-color: #0056b3;
 }
 /* Estilos para los labels de los checkboxes */
+/* --- CAMBIO AQUÍ: Añadir un fondo claro al label del checkbox --- */
 .registration-form .form-check-label {
-  color: #333333 !important; /* Color de texto oscuro, por ejemplo, gris oscuro o negro */
+  color: #ffffff !important; /* Un gris oscuro o negro para mayor contraste */
+  font-weight: bold; /* Hacer el texto más negrita para mejor legibilidad */
+  padding: 0px 5px; /* Un poco de padding alrededor del texto */
+  border-radius: 5px; /* Bordes ligeramente redondeados */
+  display: inline-block; /* Para que el fondo solo abarque el texto */
+  margin-left: 2px; /* Separación del checkbox */
 }
+/* ---------------------------------------------------------------- */
+
 /* Media Queries para Responsividad (ejemplos, ajusta según tus necesidades) */
 @media (max-width: 768px) {
   .register-form .btn-register {

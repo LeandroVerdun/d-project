@@ -1,3 +1,4 @@
+// src/component/Register.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -5,6 +6,7 @@ import chisatoAvatar from "../assets/img/register.webp";
 import ChisatoZone from "../assets/img/logo-chisato-zone.png";
 
 import { registerUser } from "../services/api";
+import MessageModal from "./MessageModal";
 
 import "../css/Register.css";
 
@@ -20,15 +22,47 @@ const Register = () => {
     avatar: "",
   });
 
-  // Estado para mostrar/ocultar contraseñas
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [generalError, setGeneralError] = useState("");
+
+  const [messageModal, setMessageModal] = useState({
+    show: false,
+    type: "info",
+    title: "",
+    message: "",
+    onConfirm: null, // Solo se usa para modales de confirmación
+    onModalCloseRedirect: null, // <-- Nuevo prop para redireccionar al cerrar el modal
+  });
 
   const navigate = useNavigate();
+
+  const showMessage = (
+    type,
+    title,
+    message,
+    onConfirm = null,
+    onModalCloseRedirect = null
+  ) => {
+    setMessageModal({
+      show: true,
+      type,
+      title,
+      message,
+      onConfirm,
+      onModalCloseRedirect,
+    });
+  };
+
+  const handleCloseMessageModal = () => {
+    // Si hay una función de redirección al cerrar, la ejecutamos
+    if (messageModal.onModalCloseRedirect) {
+      messageModal.onModalCloseRedirect();
+    }
+    setMessageModal({ ...messageModal, show: false });
+  };
 
   const validateField = (name, value) => {
     let error = "";
@@ -42,7 +76,6 @@ const Register = () => {
           error = "Este campo es obligatorio.";
         }
         break;
-      // No validamos lastName como obligatorio
       default:
         break;
     }
@@ -78,18 +111,35 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setGeneralError("");
     setIsLoading(true);
 
     const newErrors = {};
-    // Valida todos los campos antes de enviar
     Object.keys(formData).forEach((key) => {
-      validateField(key, formData[key]);
-      if (errors[key]) newErrors[key] = errors[key];
+      if (
+        key === "firstName" ||
+        key === "username" ||
+        key === "email" ||
+        key === "password" ||
+        key === "confirmPassword"
+      ) {
+        validateField(key, formData[key]);
+        if (errors[key]) newErrors[key] = errors[key];
+      }
     });
 
     if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = "Las contraseñas no coinciden.";
+    }
+
+    const isRobotChecked = e.target.elements.checkRobot.checked;
+    if (!isRobotChecked) {
+      showMessage(
+        "warning",
+        "Verificación Requerida",
+        "Por favor, confirma que no eres un robot para continuar."
+      );
+      setIsLoading(false);
+      return;
     }
 
     if (Object.values(newErrors).some((error) => error)) {
@@ -98,7 +148,6 @@ const Register = () => {
       return;
     }
 
-    // Construimos el nombre completo sin apellido si está vacío
     const fullName =
       formData.firstName.trim() +
       (formData.lastName.trim() ? ` ${formData.lastName.trim()}` : "");
@@ -114,15 +163,20 @@ const Register = () => {
     try {
       const registeredUser = await registerUser(newUser);
       console.log("User registered successfully:", registeredUser);
-      alert("¡Registro exitoso! Ahora puedes iniciar sesión.");
-      navigate("/login");
+      showMessage(
+        "success",
+        "¡Registro Exitoso!",
+        "¡Tu cuenta ha sido creada con éxito! Ahora puedes iniciar sesión.",
+        null, // No onConfirm aquí
+        () => navigate("/login") // <-- Pasa la función de redirección aquí
+      );
     } catch (error) {
       console.error("Error al registrar usuario:", error);
-      setGeneralError(
+      const errorMessage =
         error.response?.data?.message ||
-          error.message ||
-          "Fallo el registro. Por favor, inténtalo de nuevo."
-      );
+        error.message ||
+        "Fallo el registro. Por favor, inténtalo de nuevo.";
+      showMessage("error", "Error de Registro", errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -143,7 +197,13 @@ const Register = () => {
       placeholder: "Tu apellido aquí",
       max: 30,
     },
-
+    {
+      id: "username",
+      label: "Nombre de Usuario",
+      type: "text",
+      placeholder: "Tu nombre de usuario",
+      max: 20,
+    },
     {
       id: "email",
       label: "Email",
@@ -151,7 +211,6 @@ const Register = () => {
       placeholder: "ejemplo@dominio.com",
       max: 30,
     },
-    // Para password y confirmPassword los trataremos aparte
   ];
 
   return (
@@ -175,7 +234,6 @@ const Register = () => {
         </div>
       </div>
 
-      {/* Parte izquierda (formulario) */}
       <div className="registration-form col-lg-6 col-md-12 border border-white p-4 rounded">
         <h1 className="fw-bold fs-1 text-start">Regístrate</h1>
         <form onSubmit={handleSubmit}>
@@ -193,7 +251,7 @@ const Register = () => {
                 maxLength={max}
                 value={formData[id]}
                 onChange={handleChange}
-                {...(id !== "lastName" ? { required: true } : {})} // Quitar required solo en lastName
+                {...(id !== "lastName" ? { required: true } : {})}
               />
               {errors[id] && (
                 <div className="invalid-feedback d-block">{errors[id]}</div>
@@ -201,7 +259,6 @@ const Register = () => {
             </div>
           ))}
 
-          {/* Campo de contraseña con botón mostrar/ocultar */}
           <div className="mb-3">
             <label htmlFor="password" className="form-label text-start d-block">
               Contraseña
@@ -237,7 +294,6 @@ const Register = () => {
             )}
           </div>
 
-          {/* Campo de confirmar contraseña con botón mostrar/ocultar */}
           <div className="mb-3">
             <label
               htmlFor="confirmPassword"
@@ -280,7 +336,6 @@ const Register = () => {
             )}
           </div>
 
-          {/* Campo de teléfono, si lo necesitas */}
           <div className="mb-3">
             <label htmlFor="phone" className="form-label text-start d-block">
               Teléfono (Opcional)
@@ -296,21 +351,17 @@ const Register = () => {
             />
           </div>
 
-          <div className="mb-3 form-check text-white">
+          <div className="mb-3 form-check">
             <input
               type="checkbox"
               className="form-check-input"
               id="checkRobot"
               required
             />
-            <label className="form-check-label text-white" htmlFor="checkRobot">
+            <label className="form-check-label" htmlFor="checkRobot">
               Confirmo que no soy un robot
             </label>
           </div>
-
-          {generalError && (
-            <div className="alert alert-danger text-center">{generalError}</div>
-          )}
 
           <button
             type="submit"
@@ -322,7 +373,6 @@ const Register = () => {
         </form>
       </div>
 
-      {/* Imágenes para versión de escritorio */}
       <div className="registration-image col-lg-6 col-md-12 d-flex flex-column justify-content-center align-items-center border border-white p-3 bg-dark img-container-1">
         <img
           src={ChisatoZone}
@@ -340,6 +390,15 @@ const Register = () => {
           }}
         />
       </div>
+
+      <MessageModal
+        show={messageModal.show}
+        handleClose={handleCloseMessageModal} // <-- Esto ahora maneja la redirección
+        type={messageModal.type}
+        title={messageModal.title}
+        message={messageModal.message}
+        onConfirm={messageModal.onConfirm}
+      />
     </div>
   );
 };
