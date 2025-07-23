@@ -4,22 +4,64 @@ import { jwtDecode } from "jwt-decode";
 import Chisato from "../assets/img/Loging.jpg";
 import { loginUser } from "../services/api";
 import { Link } from "react-router-dom";
+import MessageModal from "./MessageModal";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [mostrarPassword, setMostrarPassword] = useState(false);
-  const [error, setError] = useState("");
+
   const navigate = useNavigate();
+
+  const [messageModal, setMessageModal] = useState({
+    show: false,
+    type: "info",
+    title: "",
+    message: "",
+    onConfirm: null,
+    onModalCloseRedirect: null,
+  });
+
+  const showMessage = (
+    type,
+    title,
+    message,
+    onConfirm = null,
+    onModalCloseRedirect = null
+  ) => {
+    setMessageModal({
+      show: true,
+      type,
+      title,
+      message,
+      onConfirm,
+      onModalCloseRedirect,
+    });
+  };
+
+  const handleCloseMessageModal = () => {
+    if (messageModal.onModalCloseRedirect) {
+      messageModal.onModalCloseRedirect();
+    }
+    setMessageModal({ ...messageModal, show: false });
+  };
 
   useEffect(() => {
     setEmail("");
     setPassword("");
+
+    setMessageModal({
+      show: false,
+      type: "info",
+      title: "",
+      message: "",
+      onConfirm: null,
+      onModalCloseRedirect: null,
+    });
   }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
 
     try {
       const userData = await loginUser({ email, password });
@@ -41,20 +83,32 @@ const Login = () => {
           navigate("/");
         }
       } else {
-        throw new Error("Faltan datos o token inválido.");
+        throw new Error("Faltan datos o token inválido en la respuesta.");
       }
     } catch (err) {
       console.error("Error en el inicio de sesión:", err);
-      setError("Correo o contraseña incorrectos.");
-      setPassword(""); // Limpia el campo después de error
+
+      showMessage(
+        "error",
+        "Error de Inicio de Sesión",
+        "Correo o contraseña incorrectos. Por favor, inténtalo de nuevo."
+      );
+      setPassword("");
     }
   };
 
   return (
-    <div className="container d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
+    <div
+      className="container d-flex justify-content-center align-items-center"
+      style={{ minHeight: "100vh" }}
+    >
       <div
         className="text-white border border-white p-4 rounded"
-        style={{ width: "30%", minWidth: "300px", backgroundColor: "rgba(0, 0, 0, 0.7)" }}
+        style={{
+          width: "30%",
+          minWidth: "300px",
+          backgroundColor: "rgba(0, 0, 0, 0.7)",
+        }}
       >
         <h2 className="text-center">Iniciar sesión</h2>
 
@@ -66,8 +120,6 @@ const Login = () => {
             style={{ width: "150px", height: "150px", objectFit: "cover" }}
           />
         </div>
-
-        {error && <div className="alert alert-danger">{error}</div>}
 
         <form onSubmit={handleSubmit} autoComplete="off">
           <div className="mb-3">
@@ -122,6 +174,16 @@ const Login = () => {
           </p>
         </div>
       </div>
+
+      <MessageModal
+        show={messageModal.show}
+        handleClose={handleCloseMessageModal}
+        type={messageModal.type}
+        title={messageModal.title}
+        message={messageModal.message}
+        onConfirm={messageModal.onConfirm}
+        onModalCloseRedirect={messageModal.onModalCloseRedirect}
+      />
     </div>
   );
 };

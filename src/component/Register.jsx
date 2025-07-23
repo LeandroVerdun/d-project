@@ -1,4 +1,3 @@
-// src/component/Register.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -33,8 +32,8 @@ const Register = () => {
     type: "info",
     title: "",
     message: "",
-    onConfirm: null, // Solo se usa para modales de confirmación
-    onModalCloseRedirect: null, // <-- Nuevo prop para redireccionar al cerrar el modal
+    onConfirm: null,
+    onModalCloseRedirect: null,
   });
 
   const navigate = useNavigate();
@@ -57,7 +56,6 @@ const Register = () => {
   };
 
   const handleCloseMessageModal = () => {
-    // Si hay una función de redirección al cerrar, la ejecutamos
     if (messageModal.onModalCloseRedirect) {
       messageModal.onModalCloseRedirect();
     }
@@ -167,8 +165,8 @@ const Register = () => {
         "success",
         "¡Registro Exitoso!",
         "¡Tu cuenta ha sido creada con éxito! Ahora puedes iniciar sesión.",
-        null, // No onConfirm aquí
-        () => navigate("/login") // <-- Pasa la función de redirección aquí
+        null,
+        () => navigate("/login")
       );
     } catch (error) {
       console.error("Error al registrar usuario:", error);
@@ -393,7 +391,7 @@ const Register = () => {
 
       <MessageModal
         show={messageModal.show}
-        handleClose={handleCloseMessageModal} // <-- Esto ahora maneja la redirección
+        handleClose={handleCloseMessageModal}
         type={messageModal.type}
         title={messageModal.title}
         message={messageModal.message}

@@ -1,4 +1,3 @@
-// src/component/Profile.jsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -7,7 +6,7 @@ import chisatoAvatar from "../assets/img/register.webp";
 import ChisatoZone from "../assets/img/logo-chisato-zone.png";
 import "../css/Profile.css";
 import { API_BASE_URL } from "../services/api";
-import MessageModal from "./MessageModal"; // <-- Importamos el MessageModal
+import MessageModal from "./MessageModal";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -15,23 +14,19 @@ const Profile = () => {
     firstName: "",
     lastName: "",
     email: "",
-    password: "", // Contraseña vacía por seguridad, se llena solo si se va a cambiar
+    password: "",
     isAdmin: false,
   });
-  // const [error, setError] = useState(""); // Ya no usaremos este para mostrar el error directamente
 
-  // --- Nuevo estado para el modal genérico ---
   const [messageModal, setMessageModal] = useState({
     show: false,
     type: "info",
     title: "",
     message: "",
     onConfirm: null,
-    onModalCloseRedirect: null, // Para redireccionar al cerrar el modal
+    onModalCloseRedirect: null,
   });
-  // ------------------------------------------
 
-  // --- Función para mostrar el modal de mensaje genérico ---
   const showMessage = (
     type,
     title,
@@ -55,14 +50,12 @@ const Profile = () => {
     }
     setMessageModal({ ...messageModal, show: false });
   };
-  // --------------------------------------------------------
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const token = localStorage.getItem("token");
         if (!token) {
-          // Si no hay token, redirige y muestra un modal informativo
           showMessage(
             "info",
             "Sesión Expirada",
@@ -130,13 +123,11 @@ const Profile = () => {
     };
 
     fetchUser();
-  }, [navigate]); // Añadimos navigate a las dependencias del useEffect
+  }, [navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserData((prev) => ({ ...prev, [name]: value }));
-    // Si había un error previo, lo limpiamos al cambiar un campo
-    // setError(""); // Ya no necesario, el modal se oculta automáticamente
   };
 
   const handleSave = async () => {
@@ -174,11 +165,10 @@ const Profile = () => {
       ).trim();
 
       const updateData = {};
-      // Solo incluye campos si tienen un valor válido para actualizar
+
       if (fullName) updateData.name = fullName;
       if (userData.email.trim()) updateData.email = userData.email;
       if (userData.password.trim()) {
-        // Validación básica de contraseña si se va a cambiar
         if (userData.password.length < 6) {
           showMessage(
             "warning",
@@ -190,7 +180,6 @@ const Profile = () => {
         updateData.password = userData.password;
       }
 
-      // Si no hay datos para actualizar, informamos al usuario
       if (Object.keys(updateData).length === 0) {
         showMessage(
           "info",
@@ -211,8 +200,7 @@ const Profile = () => {
         "¡Actualización Exitosa!",
         "Tu perfil ha sido actualizado correctamente."
       );
-      setUserData((prev) => ({ ...prev, password: "" })); // Limpiar campo de contraseña
-      // setError(""); // Ya no necesario
+      setUserData((prev) => ({ ...prev, password: "" }));
     } catch (err) {
       console.error("Error al actualizar perfil:", err);
       const errorMessage =
@@ -244,9 +232,6 @@ const Profile = () => {
 
       <div className="profile-form col-lg-6 col-md-12 border border-white p-4 rounded">
         <h1 className="fw-bold fs-1 text-start">Editar perfil</h1>
-
-        {/* El error ahora se muestra a través del MessageModal */}
-        {/* {error && <div className="alert alert-danger">{error}</div>} */}
 
         <form>
           <div className="mb-3">
@@ -339,7 +324,6 @@ const Profile = () => {
         />
       </div>
 
-      {/* --- Renderizar el MessageModal --- */}
       <MessageModal
         show={messageModal.show}
         handleClose={handleCloseMessageModal}
@@ -348,7 +332,6 @@ const Profile = () => {
         message={messageModal.message}
         onConfirm={messageModal.onConfirm}
       />
-      {/* ---------------------------------- */}
     </div>
   );
 };

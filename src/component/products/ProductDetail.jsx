@@ -2,27 +2,64 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import * as productService from "../../services/productService.js";
 import * as cartService from "../../services/cartService";
+import MessageModal from "../MessageModal";
+import { useNavigate } from "react-router-dom";
 
 const ProductDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [adding, setAdding] = useState(false);
   const [quantityInCart, setQuantityInCart] = useState(0);
+
+  const [messageModal, setMessageModal] = useState({
+    show: false,
+    type: "info",
+    title: "",
+    message: "",
+    onConfirm: null,
+    onModalCloseRedirect: null,
+  });
+
+  const showMessage = (
+    type,
+    title,
+    message,
+    onConfirm = null,
+    onModalCloseRedirect = null
+  ) => {
+    setMessageModal({
+      show: true,
+      type,
+      title,
+      message,
+      onConfirm,
+      onModalCloseRedirect,
+    });
+  };
+
+  const handleCloseMessageModal = () => {
+    if (messageModal.onModalCloseRedirect) {
+      messageModal.onModalCloseRedirect();
+    }
+    setMessageModal({ ...messageModal, show: false });
+  };
 
   useEffect(() => {
     const fetchProduct = async () => {
       setLoading(true);
-      setError(null);
       try {
         const data = await productService.getProductById(id);
         setProduct(data);
       } catch (err) {
         console.error("Error al cargar el producto:", err);
-        setError(
+        const errorMessage =
           err.response?.data?.message ||
-            "No se pudo cargar el detalle del libro."
+          "No se pudo cargar el detalle del libro. Puede que no exista.";
+        showMessage("error", "Error de Carga", errorMessage, null, () =>
+          navigate("/products")
         );
       } finally {
         setLoading(false);
@@ -30,7 +67,7 @@ const ProductDetail = () => {
     };
 
     if (id) fetchProduct();
-  }, [id]);
+  }, [id, navigate]);
 
   useEffect(() => {
     const fetchCart = async () => {
@@ -43,7 +80,10 @@ const ProductDetail = () => {
           setQuantityInCart(0);
         }
       } catch (err) {
-        console.warn("No se pudo obtener el carrito:", err.message);
+        console.warn(
+          "No se pudo obtener el carrito (posiblemente no logueado):",
+          err.message
+        );
       }
     };
 
@@ -59,10 +99,30 @@ const ProductDetail = () => {
       setTimeout(() => {
         setQuantityInCart((prev) => prev + 1);
         setAdding(false);
-      }, 1000);
+        showMessage(
+          "success",
+          "Producto Añadido",
+          `"${product.name}" ha sido añadido al carrito.`
+        );
+      }, 500);
     } catch (error) {
       console.error("Error al añadir al carrito:", error);
-      alert("Debes iniciar sesión para comprar.");
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "Ocurrió un error al añadir el producto al carrito.";
+
+      if (error.response && error.response.status === 401) {
+        showMessage(
+          "warning",
+          "Inicia Sesión para Comprar",
+          "Debes iniciar sesión para poder añadir productos al carrito.",
+          null,
+          () => navigate("/login")
+        );
+      } else {
+        showMessage("error", "Error al Añadir", errorMessage);
+      }
       setAdding(false);
     }
   };
@@ -76,19 +136,20 @@ const ProductDetail = () => {
 
   if (loading) {
     return (
-      <div className="text-center mt-5" style={{ color: "black" }}>
-        Cargando detalles del libro...
+      <div className="d-flex justify-content-center align-items-center vh-100 text-black">
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">
+            Cargando detalles del libro...
+          </span>
+        </div>
+        <p className="ms-2">Cargando detalles del libro...</p>
       </div>
     );
   }
 
-  if (error) {
-    return <div className="text-danger text-center mt-5">Error: {error}</div>;
-  }
-
   if (!product) {
     return (
-      <div className="text-center mt-5" style={{ color: "black" }}>
+      <div className="text-center mt-5 text-black">
         Libro no encontrado o datos no disponibles.
       </div>
     );
@@ -151,6 +212,15 @@ const ProductDetail = () => {
           </div>
         </div>
       </div>
+      <MessageModal
+        show={messageModal.show}
+        handleClose={handleCloseMessageModal}
+        type={messageModal.type}
+        title={messageModal.title}
+        message={messageModal.message}
+        onConfirm={messageModal.onConfirm}
+        onModalCloseRedirect={messageModal.onModalCloseRedirect}
+      />
     </div>
   );
 };

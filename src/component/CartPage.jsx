@@ -1,4 +1,3 @@
-// src/component/CartPage.jsx
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import * as cartService from "../services/cartService";
@@ -6,7 +5,7 @@ import * as orderService from "../services/orderService";
 import "../css/CartPage.css";
 import CheckoutModal from "./CheckoutModal";
 import PurchaseSuccessModal from "./PurchaseSuccessModal";
-import MessageModal from "./MessageModal"; // <-- Importamos el nuevo modal
+import MessageModal from "./MessageModal";
 import eventEmitter from "../utils/eventEmitter";
 
 const CartPage = () => {
@@ -16,7 +15,6 @@ const CartPage = () => {
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
-  // --- Nuevo estado para el modal genérico ---
   const [messageModal, setMessageModal] = useState({
     show: false,
     type: "info",
@@ -24,7 +22,6 @@ const CartPage = () => {
     message: "",
     onConfirm: null,
   });
-  // ------------------------------------------
 
   const navigate = useNavigate();
 
@@ -50,13 +47,13 @@ const CartPage = () => {
         err.message.includes("token")
       ) {
         navigate("/login");
-        // Aquí también podríamos usar el modal de mensaje para indicar que necesita iniciar sesión
+
         setMessageModal({
           show: true,
           type: "error",
           title: "Sesión Requerida",
           message: "Necesitas iniciar sesión para ver tu carrito.",
-          onConfirm: () => navigate("/login"), // Podría redirigir al cerrar el modal
+          onConfirm: () => navigate("/login"),
         });
         setError("Necesitas iniciar sesión para ver tu carrito.");
       } else {
@@ -76,7 +73,6 @@ const CartPage = () => {
     }
   };
 
-  // --- Función para mostrar el modal de mensaje genérico ---
   const showMessage = (type, title, message, onConfirm = null) => {
     setMessageModal({ show: true, type, title, message, onConfirm });
   };
@@ -84,7 +80,6 @@ const CartPage = () => {
   const handleCloseMessageModal = () => {
     setMessageModal({ ...messageModal, show: false });
   };
-  // --------------------------------------------------------
 
   const handleUpdateQuantity = async (productId, newQuantity) => {
     if (newQuantity < 1) return;
@@ -107,8 +102,6 @@ const CartPage = () => {
     try {
       await cartService.addOrUpdateItemInCart(productId, newQuantity);
       await fetchCart();
-      // Opcional: mostrar un mensaje de éxito al actualizar cantidad
-      // showMessage("success", "Cantidad Actualizada", "La cantidad del producto ha sido actualizada.");
     } catch (err) {
       showMessage(
         "error",
@@ -228,7 +221,7 @@ const CartPage = () => {
       await fetchCart();
 
       setShowCheckoutModal(false);
-      setShowSuccessModal(true); // Mantén este modal específico si te gusta para el éxito de compra.
+      setShowSuccessModal(true);
     } catch (err) {
       const errorMessage =
         err.response && err.response.data && err.response.data.message
@@ -369,7 +362,6 @@ const CartPage = () => {
         handleClose={handleCloseSuccessModal}
       />
 
-      {/* --- Renderizar el nuevo MessageModal --- */}
       <MessageModal
         show={messageModal.show}
         handleClose={handleCloseMessageModal}
@@ -378,7 +370,6 @@ const CartPage = () => {
         message={messageModal.message}
         onConfirm={messageModal.onConfirm}
       />
-      {/* -------------------------------------- */}
     </div>
   );
 };
