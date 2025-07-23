@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { BsCart } from "react-icons/bs";
-import axios from "axios"; // <--- Asegurate de tener axios instalado
+import axios from "axios"; 
 import "../../css/Navbar.css";
 import logoImg from "../../assets/img/home.png";
 import * as cartService from "../../services/cartService";
 import eventEmitter from "../../utils/eventEmitter";
 
-const API_BASE_URL = "http://localhost:5000"; // Pon acá la URL de tu backend
+//const API_BASE_URL = "http://localhost:5000"; 
+const API_BASE_URL = "https://chizatoback.onrender.com";
 
 export const Navbar = () => {
   const [busqueda, setBusqueda] = useState("");
