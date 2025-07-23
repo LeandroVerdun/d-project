@@ -98,10 +98,13 @@ const AdminOrderHistoryPage = () => {
 
   return (
     <div className={styles.adminContainer}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
+      <div className="text-center mb-4">
         <h1>Historial de Órdenes (Administrador)</h1>
-        <AdminMenu onNewProduct={() => alert("Implementa aquí la función de nuevo producto o navega")} />
+        <div className="d-flex justify-content-center mt-3">
+          <AdminMenu />
+        </div>
       </div>
+
 
       <div className="mb-4">
         <h2 className="text-white mb-3">Estadísticas Clave</h2>

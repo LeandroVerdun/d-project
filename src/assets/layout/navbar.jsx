@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { BsCart } from "react-icons/bs";
+import axios from "axios"; // <--- Asegurate de tener axios instalado
 import "../../css/Navbar.css";
 import logoImg from "../../assets/img/home.png";
 import * as cartService from "../../services/cartService";
 import eventEmitter from "../../utils/eventEmitter";
 
+const API_BASE_URL = "http://localhost:5000"; // Pon acá la URL de tu backend
+
 export const Navbar = () => {
   const [busqueda, setBusqueda] = useState("");
-  const [dispararBusqueda, setDispararBusqueda] = useState(false);
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [estaLogueado, setEstaLogueado] = useState(false);
   const [usuarioActual, setUsuarioActual] = useState(null);
@@ -19,12 +21,36 @@ export const Navbar = () => {
   const dropdownRef = useRef(null);
 
   useEffect(() => {
-    const usuario = JSON.parse(localStorage.getItem("user"));
-    setEstaLogueado(!!usuario);
-    setUsuarioActual(usuario);
+    const fetchUserFromBackend = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setEstaLogueado(false);
+        setUsuarioActual(null);
+        return;
+      }
+      try {
+        // Decodificar el token para obtener el id de usuario (sin librería)
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        const userId = payload.id;
+
+        const config = {
+          headers: { Authorization: `Bearer ${token}` },
+        };
+
+        const response = await axios.get(`${API_BASE_URL}/api/users/${userId}`, config);
+
+        setUsuarioActual(response.data);
+        setEstaLogueado(true);
+      } catch (error) {
+        console.error("Error al obtener usuario del backend", error);
+        setEstaLogueado(false);
+        setUsuarioActual(null);
+      }
+    };
+
+    fetchUserFromBackend();
   }, [location]);
 
-  // Obtener cantidad inicial del carrito
   useEffect(() => {
     const fetchCartCount = async () => {
       try {
@@ -37,12 +63,10 @@ export const Navbar = () => {
     };
     fetchCartCount();
 
-    // Listener para actualizar contador en tiempo real
     const updateCartCount = (newCount) => {
       setCartCount(newCount);
     };
     eventEmitter.on("cartUpdated", updateCartCount);
-
     return () => {
       eventEmitter.off("cartUpdated", updateCartCount);
     };
@@ -50,7 +74,6 @@ export const Navbar = () => {
 
   const manejarCambioInput = (e) => {
     setBusqueda(e.target.value);
-    setDispararBusqueda(false);
     setDropdownVisible(false);
   };
 
@@ -69,7 +92,6 @@ export const Navbar = () => {
 
   const manejarLogout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("user");
     setEstaLogueado(false);
     setUsuarioActual(null);
     navigate("/login");
@@ -147,20 +169,19 @@ export const Navbar = () => {
               </>
             ) : (
               <>
-                <div className="dropdown me-2">
+                <div className="dropdown me-2" ref={dropdownRef}>
                   <button
                     className="btn btn-outline-secondary dropdown-toggle text-white"
                     type="button"
                     id="dropdownAccount"
                     data-bs-toggle="dropdown"
-                    aria-expanded="false"
+                    aria-expanded={dropdownVisible}
+                    onClick={() => setDropdownVisible(!dropdownVisible)}
                   >
-                    {usuarioActual?.username ||
-                      usuarioActual?.email ||
-                      "Mi Cuenta"}{" "}
+                    {usuarioActual?.name || "Mi Cuenta"}
                   </button>
                   <ul
-                    className="dropdown-menu dropdown-menu-end dropdown-menu-user"
+                    className={`dropdown-menu dropdown-menu-end dropdown-menu-user ${dropdownVisible ? "show" : ""}`}
                     aria-labelledby="dropdownAccount"
                   >
                     {!usuarioActual?.isAdmin && (

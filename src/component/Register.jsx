@@ -20,6 +20,10 @@ const Register = () => {
     avatar: "",
   });
 
+  // Estado para mostrar/ocultar contraseñas
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [generalError, setGeneralError] = useState("");
@@ -30,7 +34,6 @@ const Register = () => {
     let error = "";
     switch (name) {
       case "firstName":
-      case "lastName":
       case "username":
       case "email":
       case "password":
@@ -39,6 +42,7 @@ const Register = () => {
           error = "Este campo es obligatorio.";
         }
         break;
+      // No validamos lastName como obligatorio
       default:
         break;
     }
@@ -94,8 +98,13 @@ const Register = () => {
       return;
     }
 
+    // Construimos el nombre completo sin apellido si está vacío
+    const fullName =
+      formData.firstName.trim() +
+      (formData.lastName.trim() ? ` ${formData.lastName.trim()}` : "");
+
     const newUser = {
-      name: `${formData.firstName} ${formData.lastName}`,
+      name: fullName,
       username: formData.username,
       email: formData.email,
       password: formData.password,
@@ -134,13 +143,7 @@ const Register = () => {
       placeholder: "Tu apellido aquí",
       max: 30,
     },
-    {
-      id: "username",
-      label: "Nombre de Usuario",
-      type: "text",
-      placeholder: "Elige un nombre de usuario",
-      max: 20,
-    },
+    
     {
       id: "email",
       label: "Email",
@@ -148,20 +151,7 @@ const Register = () => {
       placeholder: "ejemplo@dominio.com",
       max: 30,
     },
-    {
-      id: "password",
-      label: "Contraseña",
-      type: "password",
-      placeholder: "Mínimo 6 caracteres",
-      max: 10,
-    },
-    {
-      id: "confirmPassword",
-      label: "Confirmar Contraseña",
-      type: "password",
-      placeholder: "Repite tu contraseña",
-      max: 10,
-    },
+    // Para password y confirmPassword los trataremos aparte
   ];
 
   return (
@@ -203,13 +193,84 @@ const Register = () => {
                 maxLength={max}
                 value={formData[id]}
                 onChange={handleChange}
-                required
+                {...(id !== "lastName" ? { required: true } : {})} // Quitar required solo en lastName
               />
               {errors[id] && (
                 <div className="invalid-feedback d-block">{errors[id]}</div>
               )}
             </div>
           ))}
+
+          {/* Campo de contraseña con botón mostrar/ocultar */}
+          <div className="mb-3">
+            <label htmlFor="password" className="form-label text-start d-block">
+              Contraseña
+            </label>
+            <div className="input-group">
+              <input
+                type={showPassword ? "text" : "password"}
+                className={`form-control ${errors.password ? "is-invalid" : ""}`}
+                id="password"
+                name="password"
+                placeholder="Mínimo 6 caracteres"
+                maxLength={10}
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+              <button
+                type="button"
+                className="btn btn-outline-secondary"
+                onClick={() => setShowPassword((show) => !show)}
+                tabIndex={-1}
+                aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+              >
+                {showPassword ? "Ocultar" : "Mostrar"}
+              </button>
+            </div>
+            {errors.password && (
+              <div className="invalid-feedback d-block">{errors.password}</div>
+            )}
+          </div>
+
+          {/* Campo de confirmar contraseña con botón mostrar/ocultar */}
+          <div className="mb-3">
+            <label
+              htmlFor="confirmPassword"
+              className="form-label text-start d-block"
+            >
+              Confirmar Contraseña
+            </label>
+            <div className="input-group">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                className={`form-control ${
+                  errors.confirmPassword ? "is-invalid" : ""
+                }`}
+                id="confirmPassword"
+                name="confirmPassword"
+                placeholder="Repite tu contraseña"
+                maxLength={10}
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                required
+              />
+              <button
+                type="button"
+                className="btn btn-outline-secondary"
+                onClick={() => setShowConfirmPassword((show) => !show)}
+                tabIndex={-1}
+                aria-label={
+                  showConfirmPassword ? "Ocultar contraseña" : "Mostrar contraseña"
+                }
+              >
+                {showConfirmPassword ? "Ocultar" : "Mostrar"}
+              </button>
+            </div>
+            {errors.confirmPassword && (
+              <div className="invalid-feedback d-block">{errors.confirmPassword}</div>
+            )}
+          </div>
 
           {/* Campo de teléfono, si lo necesitas */}
           <div className="mb-3">
@@ -218,7 +279,7 @@ const Register = () => {
             </label>
             <input
               type="tel"
-              className="form-control" // Aplica también tus estilos personalizados para form-control
+              className="form-control"
               id="phone"
               name="phone"
               placeholder="Ej: +5491112345678"
@@ -234,7 +295,6 @@ const Register = () => {
               id="checkRobot"
               required
             />
-
             <label className="form-check-label" htmlFor="checkRobot">
               Confirmo que no soy un robot
             </label>

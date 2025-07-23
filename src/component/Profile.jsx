@@ -10,7 +10,8 @@ import { API_BASE_URL } from "../services/api";
 const Profile = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
     isAdmin: false,
@@ -37,9 +38,7 @@ const Profile = () => {
         }
 
         if (isAdmin) {
-          setError(
-            "Los administradores gestionan su perfil desde el panel de administración."
-          );
+          setError("Los administradores gestionan su perfil desde el panel de administración.");
           navigate("/admin");
           return;
         }
@@ -48,20 +47,23 @@ const Profile = () => {
           headers: { Authorization: `Bearer ${token}` },
         };
 
-        const { data } = await axios.get(
-          `${API_BASE_URL}/api/users/${userId}`,
-          config
-        );
+        const { data } = await axios.get(`${API_BASE_URL}/api/users/${userId}`, config);
+
+        // Separa el nombre completo en firstName y lastName
+        const nameParts = (data.name || "").trim().split(" ");
+        const firstName = nameParts.shift() || "";
+        const lastName = nameParts.join(" ") || "";
 
         setUserData({
-          name: data.name || "",
+          firstName,
+          lastName,
           email: data.email || "",
           password: "",
           isAdmin: data.isAdmin || false,
         });
       } catch (err) {
         console.error(err);
-        setError("Error al cargar perfil. Por favor inicia sesión nuevamente.");
+        setError("Error al cargar perfil.");
       }
     };
 
@@ -75,13 +77,6 @@ const Profile = () => {
   };
 
   const handleSave = async () => {
-    const { name, email, password } = userData;
-
-    if (!name || !email) {
-      setError("El nombre y email son obligatorios.");
-      return;
-    }
-
     try {
       const token = localStorage.getItem("token");
       if (!token) {
@@ -99,14 +94,15 @@ const Profile = () => {
         return;
       }
 
-      const updateData = { name, email };
-      if (password.trim()) updateData.password = password;
+      // Unir firstName y lastName para enviar como name
+      const fullName = (userData.firstName.trim() + " " + userData.lastName.trim()).trim();
 
-      await axios.put(
-        `${API_BASE_URL}/api/users/${userId}`,
-        updateData,
-        config
-      );
+      const updateData = {};
+      if (fullName) updateData.name = fullName;
+      if (userData.email.trim()) updateData.email = userData.email;
+      if (userData.password.trim()) updateData.password = userData.password;
+
+      await axios.put(`${API_BASE_URL}/api/users/${userId}`, updateData, config);
       alert("Perfil actualizado correctamente");
       setUserData((prev) => ({ ...prev, password: "" }));
       setError("");
@@ -120,20 +116,10 @@ const Profile = () => {
     <div className="container p-0 d-flex flex-wrap justify-content-between text-white p-md-5 m-0">
       <div className="profile-image col-lg-6 col-md-12 d-flex justify-content-between p-3 bg-dark border border-white d-none img-container-2">
         <div className="profile-image-container col-6 col-md-3 d-flex flex-column justify-content-center align-items-start">
-          <img
-            src={ChisatoZone}
-            alt="logo_chisato_zone"
-            className="img-fluid mb-3"
-            style={{ width: "100%", height: "auto" }}
-          />
+          <img src={ChisatoZone} alt="logo_chisato_zone" className="img-fluid mb-3" />
         </div>
         <div className="profile-image-container col-6 col-md-3 d-flex flex-column justify-content-center align-items-end">
-          <img
-            src={chisatoAvatar}
-            alt="chisato_profile"
-            className="img-fluid rounded"
-            style={{ width: "100%", height: "auto" }}
-          />
+          <img src={chisatoAvatar} alt="chisato_profile" className="img-fluid rounded" />
         </div>
       </div>
 
@@ -144,24 +130,33 @@ const Profile = () => {
 
         <form>
           <div className="mb-3">
-            <label htmlFor="name" className="form-label">
-              Nombre
-            </label>
+            <label htmlFor="firstName" className="form-label">Nombre</label>
             <input
               type="text"
               className="form-control bg-dark text-white border-secondary"
-              id="name"
-              name="name"
-              value={userData.name}
+              id="firstName"
+              name="firstName"
+              value={userData.firstName}
               onChange={handleChange}
-              placeholder="Nombre completo"
+              placeholder="Tu nombre"
             />
           </div>
 
           <div className="mb-3">
-            <label htmlFor="email" className="form-label">
-              Email
-            </label>
+            <label htmlFor="lastName" className="form-label">Apellido</label>
+            <input
+              type="text"
+              className="form-control bg-dark text-white border-secondary"
+              id="lastName"
+              name="lastName"
+              value={userData.lastName}
+              onChange={handleChange}
+              placeholder="Tu apellido"
+            />
+          </div>
+
+          <div className="mb-3">
+            <label htmlFor="email" className="form-label">Email</label>
             <input
               type="email"
               className="form-control bg-dark text-white border-secondary"
@@ -174,9 +169,7 @@ const Profile = () => {
           </div>
 
           <div className="mb-3">
-            <label htmlFor="password" className="form-label">
-              Nueva Contraseña (Opcional)
-            </label>
+            <label htmlFor="password" className="form-label">Nueva Contraseña (opcional)</label>
             <input
               type="password"
               className="form-control bg-dark text-white border-secondary"
@@ -194,29 +187,15 @@ const Profile = () => {
             </div>
           )}
 
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={handleSave}
-          >
+          <button type="button" className="btn btn-primary" onClick={handleSave}>
             Guardar Cambios
           </button>
         </form>
       </div>
 
       <div className="profile-image col-lg-6 col-md-12 d-flex flex-column justify-content-center align-items-center border border-white p-3 bg-dark img-container-1">
-        <img
-          src={ChisatoZone}
-          alt="logo_chisato_zone"
-          className="mb-3"
-          style={{ width: "200px", height: "auto" }}
-        />
-        <img
-          src={chisatoAvatar}
-          alt="chisato_profile"
-          className="img-fluid rounded"
-          style={{ maxWidth: "100%", height: "auto" }}
-        />
+        <img src={ChisatoZone} alt="logo_chisato_zone" className="mb-3" style={{ width: "200px" }} />
+        <img src={chisatoAvatar} alt="chisato_profile" className="img-fluid rounded" />
       </div>
     </div>
   );

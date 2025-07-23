@@ -108,7 +108,10 @@ const UserManagementPage = () => {
     <div className={styles.adminContainer}>
       <h1>Administrar Usuarios</h1>
 
-      <AdminMenu />
+      <div className="d-flex justify-content-center mb-4">
+        <AdminMenu />
+      </div>
+
 
       {users.length === 0 ? (
         <p className="text-white">No hay usuarios registrados.</p>
