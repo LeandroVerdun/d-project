@@ -1,21 +1,53 @@
-// src/component/admin/UserManagementPage.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import * as userService from "../../services/userService";
 import styles from "./AdminPage.module.css";
 import EditUserModal from "./EditUserModal";
 import AdminMenu from "./AdminMenu";
+import MessageModal from "../MessageModal";
 
 const UserManagementPage = () => {
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [userToEdit, setUserToEdit] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  // Obtener el ID del usuario logueado al cargar el componente
   const loggedInUserId = JSON.parse(localStorage.getItem("user"))?.id;
+
+  const [messageModal, setMessageModal] = useState({
+    show: false,
+    type: "info",
+    title: "",
+    message: "",
+    onConfirm: null,
+    onModalCloseRedirect: null,
+  });
+
+  const showMessage = (
+    type,
+    title,
+    message,
+    onConfirm = null,
+    onModalCloseRedirect = null
+  ) => {
+    setMessageModal({
+      show: true,
+      type,
+      title,
+      message,
+      onConfirm,
+      onModalCloseRedirect,
+    });
+  };
+
+  const handleCloseMessageModal = () => {
+    if (messageModal.onModalCloseRedirect) {
+      messageModal.onModalCloseRedirect();
+    }
+    setMessageModal({ ...messageModal, show: false });
+  };
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -28,13 +60,14 @@ const UserManagementPage = () => {
 
   const fetchUsers = async () => {
     setLoading(true);
-    setError(null);
     try {
       const data = await userService.getAllUsers();
       setUsers(data);
     } catch (err) {
       console.error("Error al obtener los usuarios:", err);
-      setError(
+      showMessage(
+        "error",
+        "Error de Carga",
         "No se pudieron cargar los usuarios. Asegúrate de que tu backend esté funcionando y que tengas permisos de administrador."
       );
     } finally {
@@ -56,11 +89,17 @@ const UserManagementPage = () => {
   const handleUpdateUser = async (userId, updatedUserData) => {
     try {
       await userService.updateUser(userId, updatedUserData);
-      alert("Usuario actualizado con éxito!");
+      showMessage(
+        "success",
+        "Usuario Actualizado",
+        "Usuario actualizado con éxito!"
+      );
       fetchUsers();
     } catch (err) {
       console.error("Error al actualizar el usuario:", err);
-      alert(
+      showMessage(
+        "error",
+        "Error al Actualizar Usuario",
         `Error al actualizar el usuario: ${
           err.response?.data?.message || err.message || "Error desconocido"
         }. Revisa la consola.`
@@ -70,38 +109,56 @@ const UserManagementPage = () => {
 
   const handleDeleteUser = async (userId, userEmail) => {
     if (userId === loggedInUserId) {
-      alert("No puedes eliminar tu propia cuenta de administrador.");
+      showMessage(
+        "info",
+        "Acción No Permitida",
+        "No puedes eliminar tu propia cuenta de administrador."
+      );
       return;
     }
 
-    if (
-      window.confirm(
-        `¿Estás seguro de que quieres eliminar al usuario ${userEmail}? Esta acción es irreversible.`
-      )
-    ) {
-      try {
-        await userService.deleteUser(userId);
-        alert("Usuario eliminado con éxito!");
-        fetchUsers();
-      } catch (err) {
-        console.error("Error al eliminar el usuario:", err);
-        alert(
-          `Error al eliminar el usuario: ${
-            err.response?.data?.message || err.message || "Error desconocido"
-          }. Revisa la consola.`
-        );
+    showMessage(
+      "warning",
+      "Confirmar Eliminación",
+      `¿Estás seguro de que quieres eliminar al usuario ${userEmail}? Esta acción es irreversible.`,
+      async () => {
+        try {
+          await userService.deleteUser(userId);
+          showMessage(
+            "success",
+            "Usuario Eliminado",
+            "Usuario eliminado con éxito!"
+          );
+          fetchUsers();
+        } catch (err) {
+          console.error("Error al eliminar el usuario:", err);
+          showMessage(
+            "error",
+            "Error al Eliminar Usuario",
+            `Error al eliminar el usuario: ${
+              err.response?.data?.message || err.message || "Error desconocido"
+            }. Revisa la consola.`
+          );
+        }
       }
-    }
+    );
   };
+
+  const filteredUsers = useMemo(() => {
+    const lowerCaseSearchTerm = searchTerm.toLowerCase();
+    return users.filter(
+      (user) =>
+        user.email.toLowerCase().includes(lowerCaseSearchTerm) ||
+        user._id.toLowerCase().includes(lowerCaseSearchTerm) ||
+        user.name?.toLowerCase().includes(lowerCaseSearchTerm) ||
+        (user.isAdmin ? "sí" : "no").includes(lowerCaseSearchTerm)
+    );
+  }, [users, searchTerm]);
 
   if (loading) {
     return (
       <div className="text-white text-center mt-5">Cargando usuarios...</div>
     );
-  }
-
-  if (error) {
-    return <div className="text-danger text-center mt-5">Error: {error}</div>;
   }
 
   return (
@@ -112,9 +169,22 @@ const UserManagementPage = () => {
         <AdminMenu />
       </div>
 
+      <div className="mb-3">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Buscar por email, ID, nombre o rol de administrador..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
 
-      {users.length === 0 ? (
+      {filteredUsers.length === 0 && !searchTerm ? (
         <p className="text-white">No hay usuarios registrados.</p>
+      ) : filteredUsers.length === 0 && searchTerm ? (
+        <p className="text-white">
+          No hay usuarios que coincidan con la búsqueda.
+        </p>
       ) : (
         <div className="table-responsive">
           <table className="table table-dark table-striped table-hover">
@@ -128,7 +198,7 @@ const UserManagementPage = () => {
               </tr>
             </thead>
             <tbody>
-              {users.map((user) => (
+              {filteredUsers.map((user) => (
                 <tr key={user._id}>
                   <td>{user._id}</td>
                   <td>{user.email}</td>
@@ -144,7 +214,6 @@ const UserManagementPage = () => {
                     <button
                       className="btn btn-danger btn-sm"
                       onClick={() => handleDeleteUser(user._id, user.email)}
-                      // Deshabilita el botón de eliminar si el usuario a eliminar es el mismo que el logueado
                       disabled={user._id === loggedInUserId}
                       title={
                         user._id === loggedInUserId
@@ -167,6 +236,15 @@ const UserManagementPage = () => {
         onClose={closeEditModal}
         userToEdit={userToEdit}
         onUpdateUser={handleUpdateUser}
+      />
+      <MessageModal
+        show={messageModal.show}
+        handleClose={handleCloseMessageModal}
+        type={messageModal.type}
+        title={messageModal.title}
+        message={messageModal.message}
+        onConfirm={messageModal.onConfirm}
+        onModalCloseRedirect={messageModal.onModalCloseRedirect}
       />
     </div>
   );

@@ -35,7 +35,7 @@ const AddProductModal = ({
         author: "",
         image: "",
         rating: 1,
-        price: 0, // <-- ¡Resetear el precio a 0 cuando no se edita!
+        price: 0,
       });
     }
   }, [productToEdit]);
@@ -54,7 +54,7 @@ const AddProductModal = ({
       ...productData,
       stock: parseInt(productData.stock, 10),
       rating: parseInt(productData.rating, 10),
-      price: parseFloat(productData.price), // <-- ¡Parsear el precio como flotante!
+      price: parseFloat(productData.price),
     };
 
     if (isEditMode) {
@@ -158,7 +158,6 @@ const AddProductModal = ({
             />
           </Form.Group>
 
-          {/* ¡NUEVO CAMPO AÑADIDO AQUÍ PARA EL PRECIO! */}
           <Form.Group className="mb-3">
             <Form.Label>Precio (ARS)</Form.Label>
             <Form.Control

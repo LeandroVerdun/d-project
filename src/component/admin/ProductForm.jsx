@@ -15,11 +15,11 @@ const ProductForm = ({ productToEdit, onSave, onCancel }) => {
 
   useEffect(() => {
     if (productToEdit) {
-      setFormData(productToEdit); // Carga los datos del producto si estamos editando
+      setFormData(productToEdit);
     } else {
-      setFormData(initialState); // Resetea el formulario si estamos agregando
+      setFormData(initialState);
     }
-  }, [productToEdit]); // Se ejecuta cuando productToEdit cambia
+  }, [productToEdit]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,7 +27,6 @@ const ProductForm = ({ productToEdit, onSave, onCancel }) => {
       ...formData,
       [name]: value,
     });
-    // Limpiar error tan pronto como el usuario empiece a escribir
     if (errors[name]) {
       setErrors({ ...errors, [name]: "" });
     }
@@ -53,10 +52,9 @@ const ProductForm = ({ productToEdit, onSave, onCancel }) => {
     )
       newErrors.stock = "El stock debe ser un número no negativo";
     if (!formData.image) newErrors.image = "La URL de la imagen es requerida";
-    // Puedes añadir más validaciones aquí
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; // Retorna true si no hay errores
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = (e) => {

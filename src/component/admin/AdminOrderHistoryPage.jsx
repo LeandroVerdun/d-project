@@ -5,6 +5,7 @@ import styles from "./AdminPage.module.css";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import AdminMenu from "./AdminMenu";
+import MessageModal from "../MessageModal";
 
 const orderStatuses = ["processing", "shipped", "completed", "cancelled"];
 
@@ -12,7 +13,40 @@ const AdminOrderHistoryPage = () => {
   const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const [messageModal, setMessageModal] = useState({
+    show: false,
+    type: "info",
+    title: "",
+    message: "",
+    onConfirm: null,
+    onModalCloseRedirect: null,
+  });
+
+  const showMessage = (
+    type,
+    title,
+    message,
+    onConfirm = null,
+    onModalCloseRedirect = null
+  ) => {
+    setMessageModal({
+      show: true,
+      type,
+      title,
+      message,
+      onConfirm,
+      onModalCloseRedirect,
+    });
+  };
+
+  const handleCloseMessageModal = () => {
+    if (messageModal.onModalCloseRedirect) {
+      messageModal.onModalCloseRedirect();
+    }
+    setMessageModal({ ...messageModal, show: false });
+  };
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -25,13 +59,14 @@ const AdminOrderHistoryPage = () => {
 
   const fetchOrders = async () => {
     setLoading(true);
-    setError(null);
     try {
       const data = await orderService.getAllOrders();
       setOrders(data);
     } catch (err) {
       console.error("Error al obtener todas las órdenes:", err);
-      setError(
+      showMessage(
+        "error",
+        "Error de Carga",
         "No se pudieron cargar las órdenes. Asegúrate de que el backend esté funcionando y tengas permisos de administrador."
       );
     } finally {
@@ -41,17 +76,43 @@ const AdminOrderHistoryPage = () => {
 
   const handleStatusChange = async (orderId, newStatus) => {
     try {
-      const updatedOrder = await orderService.updateOrderStatus(orderId, newStatus);
+      const updatedOrder = await orderService.updateOrderStatus(
+        orderId,
+        newStatus
+      );
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
-          order._id === orderId ? { ...order, status: updatedOrder.status } : order
+          order._id === orderId
+            ? { ...order, status: updatedOrder.status }
+            : order
         )
+      );
+      showMessage(
+        "success",
+        "Estado Actualizado",
+        "El estado de la orden ha sido actualizado con éxito."
       );
     } catch (error) {
       console.error("Error al actualizar el estado de la orden:", error);
-      alert("No se pudo actualizar el estado. Intente nuevamente.");
+      showMessage(
+        "error",
+        "Error al Actualizar",
+        "No se pudo actualizar el estado de la orden. Intente nuevamente."
+      );
     }
   };
+
+  const filteredOrders = useMemo(() => {
+    const lowerCaseSearchTerm = searchTerm.toLowerCase();
+    return orders.filter(
+      (order) =>
+        order._id.toLowerCase().includes(lowerCaseSearchTerm) ||
+        order.user?.name?.toLowerCase().includes(lowerCaseSearchTerm) ||
+        order.user?.email?.toLowerCase().includes(lowerCaseSearchTerm) ||
+        order.status.toLowerCase().includes(lowerCaseSearchTerm) ||
+        order.totalAmount.toString().includes(lowerCaseSearchTerm)
+    );
+  }, [orders, searchTerm]);
 
   const { topCustomers, totalRevenue } = useMemo(() => {
     const customerSpending = new Map();
@@ -63,7 +124,7 @@ const AdminOrderHistoryPage = () => {
       const userName = order.user?.name || order.user?.email || "Desconocido";
       const userEmail = order.user?.email || "N/A";
 
-      if (!userId) return; // Ignorar si no hay usuario
+      if (!userId) return;
 
       if (!customerSpending.has(userId)) {
         customerSpending.set(userId, {
@@ -89,11 +150,11 @@ const AdminOrderHistoryPage = () => {
   }, [orders]);
 
   if (loading) {
-    return <div className="text-white text-center mt-5">Cargando historial de órdenes...</div>;
-  }
-
-  if (error) {
-    return <div className="text-danger text-center mt-5">Error: {error}</div>;
+    return (
+      <div className="text-white text-center mt-5">
+        Cargando historial de órdenes...
+      </div>
+    );
   }
 
   return (
@@ -104,7 +165,6 @@ const AdminOrderHistoryPage = () => {
           <AdminMenu />
         </div>
       </div>
-
 
       <div className="mb-4">
         <h2 className="text-white mb-3">Estadísticas Clave</h2>
@@ -155,8 +215,20 @@ const AdminOrderHistoryPage = () => {
       </div>
 
       <h2 className="text-white mb-3">Todas las Órdenes</h2>
-      {orders.length === 0 ? (
-        <p className="text-white">No hay órdenes registradas.</p>
+      <div className="mb-3">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Buscar por ID de orden, cliente, email o estado..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+
+      {filteredOrders.length === 0 ? (
+        <p className="text-white">
+          No hay órdenes que coincidan con la búsqueda.
+        </p>
       ) : (
         <div className="table-responsive">
           <table className="table table-dark table-striped table-hover">
@@ -171,10 +243,12 @@ const AdminOrderHistoryPage = () => {
               </tr>
             </thead>
             <tbody>
-              {orders.map((order) => (
+              {filteredOrders.map((order) => (
                 <tr key={order._id}>
                   <td>{order._id}</td>
-                  <td>{order.user?.name || order.user?.email || "Desconocido"}</td>
+                  <td>
+                    {order.user?.name || order.user?.email || "Desconocido"}
+                  </td>
                   <td>{order.user?.email || "N/A"}</td>
                   <td>
                     {format(new Date(order.createdAt), "dd/MM/yyyy HH:mm", {
@@ -185,7 +259,9 @@ const AdminOrderHistoryPage = () => {
                   <td>
                     <select
                       value={order.status}
-                      onChange={(e) => handleStatusChange(order._id, e.target.value)}
+                      onChange={(e) =>
+                        handleStatusChange(order._id, e.target.value)
+                      }
                       className="form-select form-select-sm"
                     >
                       {orderStatuses.map((status) => (
@@ -201,6 +277,15 @@ const AdminOrderHistoryPage = () => {
           </table>
         </div>
       )}
+      <MessageModal
+        show={messageModal.show}
+        handleClose={handleCloseMessageModal}
+        type={messageModal.type}
+        title={messageModal.title}
+        message={messageModal.message}
+        onConfirm={messageModal.onConfirm}
+        onModalCloseRedirect={messageModal.onModalCloseRedirect}
+      />
     </div>
   );
 };
