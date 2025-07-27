@@ -44,10 +44,11 @@ function App() {
     <Router>
       <Navbar />
       <main
-        style={{ backgroundColor: "black", minHeight: "100vh" }}
+        style={{ backgroundColor: "black" }}
         className="d-flex justify-content-center align-items-center"
       >
-        <div className="container py-5 border border-white rounded mt-4 mb-4">
+        <div className="container py-lg-5 py-3 border border-white rounded mt-4 mb-4">
+
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/products" element={<ProductList />} />

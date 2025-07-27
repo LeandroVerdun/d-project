@@ -162,51 +162,95 @@ const UserManagementPage = () => {
   }
 
   return (
-    <div className={styles.adminContainer}>
-      <h1>Administrar Usuarios</h1>
+    <div className={`${styles.adminContainer} container py-4`}>
+      <div className="row">
+        <div className="col-12 text-center mb-3">
+          <h1 className="text-white">Administrar Usuarios</h1>
+        </div>
 
-      <div className="d-flex justify-content-center mb-4">
-        <AdminMenu />
-      </div>
+        <div className="col-12 d-flex justify-content-center mb-4">
+          <AdminMenu />
+        </div>
 
-      <div className="mb-3">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Buscar por email, ID, nombre o rol de administrador..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
+        <div className="col-12 mb-3">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Buscar por email, ID, nombre o rol de administrador..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
 
-      {filteredUsers.length === 0 && !searchTerm ? (
-        <p className="text-white">No hay usuarios registrados.</p>
-      ) : filteredUsers.length === 0 && searchTerm ? (
-        <p className="text-white">
-          No hay usuarios que coincidan con la búsqueda.
-        </p>
-      ) : (
-        <div className="table-responsive">
-          <table className="table table-dark table-striped table-hover">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Email</th>
-                <th>Nombre</th>
-                <th>Admin</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredUsers.map((user) => (
-                <tr key={user._id}>
-                  <td>{user._id}</td>
-                  <td>{user.email}</td>
-                  <td>{user.name || "N/A"}</td>
-                  <td>{user.isAdmin ? "Sí" : "No"}</td>
-                  <td>
+        {/* Vista de tabla para desktop */}
+        <div className="col-12 d-none d-md-block my-4" style={{ maxHeight: "600px", overflowY: "auto" }}>
+          {filteredUsers.length === 0 ? (
+            <p className="text-white">
+              {searchTerm ? "No hay coincidencias." : "No hay usuarios registrados."}
+            </p>
+          ) : (
+            <div className="table-responsive">
+              <table className="table table-dark table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Email</th>
+                    <th>Nombre</th>
+                    <th>Admin</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredUsers.map((user) => (
+                    <tr key={user._id}>
+                      <td>{user._id}</td>
+                      <td>{user.email}</td>
+                      <td>{user.name || "N/A"}</td>
+                      <td>{user.isAdmin ? "Sí" : "No"}</td>
+                      <td>
+                        <div className="d-flex flex-column flex-sm-row">
+                          <button
+                            className="btn btn-primary btn-sm mb-2 mb-sm-0 me-sm-2"
+                            onClick={() => handleEditClick(user)}
+                          >
+                            Editar
+                          </button>
+                          <button
+                            className="btn btn-danger btn-sm"
+                            onClick={() => handleDeleteUser(user._id, user.email)}
+                            disabled={user._id === loggedInUserId}
+                          >
+                            Eliminar
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+
+        {/* Vista tipo tarjeta para móviles */}
+        <div className="col-12 d-md-none my-4">
+          {filteredUsers.length === 0 ? (
+            <p className="text-white">
+              {searchTerm ? "No hay coincidencias." : "No hay usuarios registrados."}
+            </p>
+          ) : (
+            filteredUsers.map((user) => (
+              <div key={user._id} className="card bg-dark text-white mb-3">
+                <div className="card-body">
+                  <h5 className="card-title">{user.name || "Sin nombre"}</h5>
+                  <p className="card-text">
+                    <strong>Email:</strong> {user.email}<br />
+                    <strong>ID:</strong> {user._id}<br />
+                    <strong>Admin:</strong> {user.isAdmin ? "Sí" : "No"}
+                  </p>
+                  <div className="d-flex flex-column">
                     <button
-                      className="btn btn-primary btn-sm me-2"
+                      className="btn btn-primary btn-sm mb-2"
                       onClick={() => handleEditClick(user)}
                     >
                       Editar
@@ -215,21 +259,16 @@ const UserManagementPage = () => {
                       className="btn btn-danger btn-sm"
                       onClick={() => handleDeleteUser(user._id, user.email)}
                       disabled={user._id === loggedInUserId}
-                      title={
-                        user._id === loggedInUserId
-                          ? "No puedes eliminar tu propia cuenta de administrador."
-                          : ""
-                      }
                     >
                       Eliminar
                     </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
         </div>
-      )}
+      </div>
 
       <EditUserModal
         isOpen={isEditModalOpen}

@@ -5,6 +5,8 @@ import Chisato from "../assets/img/Loging.jpg";
 import { loginUser } from "../services/api";
 import { Link } from "react-router-dom";
 import MessageModal from "./MessageModal";
+import "../css/Login.css";
+
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -98,10 +100,8 @@ const Login = () => {
   };
 
   return (
-    <div
-      className="container d-flex justify-content-center align-items-center"
-      style={{ minHeight: "100vh" }}
-    >
+    <div className="container d-flex justify-content-center align-items-center min-height-desktop">
+
       <div
         className="text-white border border-white p-4 rounded"
         style={{

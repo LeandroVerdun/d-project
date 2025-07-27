@@ -185,34 +185,38 @@ const AdminOrderHistoryPage = () => {
       </div>
 
       <div className="mb-4">
-        <h2 className="text-white mb-3">Clientes con Mayor Gasto</h2>
-        {topCustomers.length > 0 ? (
-          <div className="table-responsive">
-            <table className="table table-dark table-striped table-hover">
-              <thead>
-                <tr>
-                  <th>Cliente</th>
-                  <th>Email</th>
-                  <th>Total Gastado</th>
-                  <th>Órdenes</th>
-                </tr>
-              </thead>
-              <tbody>
-                {topCustomers.map((customer, index) => (
-                  <tr key={index}>
-                    <td>{customer.name}</td>
-                    <td>{customer.email}</td>
-                    <td>${customer.totalSpent.toFixed(2)}</td>
-                    <td>{customer.orderCount}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+  <h2 className="text-white mb-3">Clientes con Mayor Gasto</h2>
+  {topCustomers.length > 0 ? (
+    <div
+      style={{
+        maxHeight: "500px",
+        overflowY: "auto",
+        paddingRight: "1rem",
+      }}
+      className="d-flex flex-column gap-3"
+    >
+      {topCustomers.map((customer, index) => (
+        <div key={index} className="card bg-dark text-white p-3">
+          <div className="mb-2">
+            <strong>Cliente:</strong> {customer.name}
           </div>
-        ) : (
-          <p className="text-white">No hay datos de clientes aún.</p>
-        )}
-      </div>
+          <div className="mb-2">
+            <strong>Email:</strong> {customer.email}
+          </div>
+          <div className="mb-2">
+            <strong>Total Gastado:</strong> ${customer.totalSpent.toFixed(2)}
+          </div>
+          <div>
+            <strong>Órdenes:</strong> {customer.orderCount}
+          </div>
+        </div>
+      ))}
+    </div>
+  ) : (
+    <p className="text-white">No hay datos de clientes aún.</p>
+  )}
+</div>
+
 
       <h2 className="text-white mb-3">Todas las Órdenes</h2>
       <div className="mb-3">
@@ -230,53 +234,57 @@ const AdminOrderHistoryPage = () => {
           No hay órdenes que coincidan con la búsqueda.
         </p>
       ) : (
-        <div className="table-responsive">
-          <table className="table table-dark table-striped table-hover">
-            <thead>
-              <tr>
-                <th>ID Orden</th>
-                <th>Cliente</th>
-                <th>Email Cliente</th>
-                <th>Fecha</th>
-                <th>Cantidad Total</th>
-                <th>Estado</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredOrders.map((order) => (
-                <tr key={order._id}>
-                  <td>{order._id}</td>
-                  <td>
-                    {order.user?.name || order.user?.email || "Desconocido"}
-                  </td>
-                  <td>{order.user?.email || "N/A"}</td>
-                  <td>
-                    {format(new Date(order.createdAt), "dd/MM/yyyy HH:mm", {
-                      locale: es,
-                    })}
-                  </td>
-                  <td>${order.totalAmount.toFixed(2)}</td>
-                  <td>
-                    <select
-                      value={order.status}
-                      onChange={(e) =>
-                        handleStatusChange(order._id, e.target.value)
-                      }
-                      className="form-select form-select-sm"
-                    >
-                      {orderStatuses.map((status) => (
-                        <option key={status} value={status}>
-                          {status.charAt(0).toUpperCase() + status.slice(1)}
-                        </option>
-                      ))}
-                    </select>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div
+          style={{
+            maxHeight: "700px",
+            overflowY: "auto",
+            paddingRight: "1rem",
+          }}
+          className="d-flex flex-column gap-3"
+        >
+          {filteredOrders.map((order) => (
+            <div key={order._id} className="card bg-dark text-white p-3">
+              <div className="mb-2">
+                <strong>ID Orden:</strong> {order._id}
+              </div>
+              <div className="mb-2">
+                <strong>Cliente:</strong>{" "}
+                {order.user?.name || order.user?.email || "Desconocido"}
+              </div>
+              <div className="mb-2">
+                <strong>Email:</strong> {order.user?.email || "N/A"}
+              </div>
+              <div className="mb-2">
+                <strong>Fecha:</strong>{" "}
+                {format(new Date(order.createdAt), "dd/MM/yyyy HH:mm", {
+                  locale: es,
+                })}
+              </div>
+              <div className="mb-2">
+                <strong>Total:</strong> ${order.totalAmount.toFixed(2)}
+              </div>
+              <div>
+                <strong>Estado:</strong>{" "}
+                <select
+                  value={order.status}
+                  onChange={(e) =>
+                    handleStatusChange(order._id, e.target.value)
+                  }
+                  className="form-select form-select-sm mt-1"
+                  style={{ maxWidth: "200px" }}
+                >
+                  {orderStatuses.map((status) => (
+                    <option key={status} value={status}>
+                      {status.charAt(0).toUpperCase() + status.slice(1)}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          ))}
         </div>
       )}
+
       <MessageModal
         show={messageModal.show}
         handleClose={handleCloseMessageModal}
