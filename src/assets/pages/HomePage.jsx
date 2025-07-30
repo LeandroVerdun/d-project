@@ -5,6 +5,7 @@ import CategoryCarousel from "../../component/CategoryCarousel";
 import LogoChisato from "../../assets/img/logo-main.png";
 
 export const HomePage = () => {
+  console.warn("Hola chicos");
   return (
     <div className="container text-white">
       {/* Logo centrado */}
