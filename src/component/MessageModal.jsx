@@ -1,4 +1,3 @@
-// src/component/MessageModal.jsx
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
 import {
@@ -7,15 +6,15 @@ import {
   FaTimesCircle,
   FaInfoCircle,
   FaQuestionCircle,
-} from "react-icons/fa"; // Iconos para los diferentes tipos de mensajes
+} from "react-icons/fa";
 
 const MessageModal = ({
   show,
   handleClose,
-  type = "info", // 'success', 'error', 'warning', 'info', 'confirm'
+  type = "info",
   title = "Mensaje",
   message,
-  onConfirm, // Para el tipo 'confirm'
+  onConfirm,
   confirmButtonText = "Aceptar",
   cancelButtonText = "Cancelar",
 }) => {
@@ -50,13 +49,13 @@ const MessageModal = ({
         };
       case "confirm":
         return {
-          headerClass: "bg-primary text-white", // Puedes ajustar este color
+          headerClass: "bg-primary text-white",
           icon: <FaQuestionCircle className="me-2" />,
           iconClass: "text-primary",
           defaultTitle: "Confirmación",
           centered: true,
           backdrop: "static",
-          keyboard: false, // No se cierra con ESC
+          keyboard: false,
         };
       case "info":
       default:
@@ -94,7 +93,7 @@ const MessageModal = ({
         <p className="lead">{message}</p>
       </Modal.Body>
       <Modal.Footer className="bg-light d-flex justify-content-center">
-        {type === "confirm" ? (
+        {type === "confirm" || type === "warning" ? (
           <>
             <Button variant="secondary" onClick={handleClose}>
               {cancelButtonText}
