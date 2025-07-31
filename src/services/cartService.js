@@ -1,4 +1,3 @@
-// src\services\cartService.js
 import apiClient from "./api";
 
 // Obtener el carrito del usuario actual

@@ -1,5 +1,4 @@
-// src\services\userService.js
-import apiClient from "./api"; // Importa el cliente Axios desde api.js
+import apiClient from "./api";
 
 // Obtener todos los usuarios (solo para administradores)
 export const getAllUsers = async () => {

@@ -1,4 +1,3 @@
-// chizatoFront/src/services/orderService.js
 import axios from "./api";
 
 const API_URL = "/api/orders";

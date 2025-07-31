@@ -22,15 +22,16 @@ export const Navbar = () => {
   const dropdownRef = useRef(null);
 
   useEffect(() => {
-    const fetchUserFromBackend = async () => {
+    const fetchUserAndCartData = async () => {
       const token = localStorage.getItem("token");
       if (!token) {
         setEstaLogueado(false);
         setUsuarioActual(null);
+        setCartCount(0);
         return;
       }
+
       try {
-        // Decodificar el token para obtener el id de usuario (sin librería)
         const payload = JSON.parse(atob(token.split(".")[1]));
         const userId = payload.id;
 
@@ -38,34 +39,37 @@ export const Navbar = () => {
           headers: { Authorization: `Bearer ${token}` },
         };
 
-        const response = await axios.get(
+        const userResponse = await axios.get(
           `${API_BASE_URL}/api/users/${userId}`,
           config
         );
 
-        setUsuarioActual(response.data);
+        setUsuarioActual(userResponse.data);
         setEstaLogueado(true);
+
+        try {
+          const cart = await cartService.getMyCart();
+          const count = cart.items.reduce(
+            (acc, item) => acc + item.quantity,
+            0
+          );
+          setCartCount(count);
+        } catch (cartError) {
+          console.error("Error al obtener el carrito:", cartError);
+          setCartCount(0);
+        }
       } catch (error) {
-        console.error("Error al obtener usuario del backend", error);
+        console.error("Error al obtener usuario o verificar token:", error);
         setEstaLogueado(false);
         setUsuarioActual(null);
-      }
-    };
-
-    fetchUserFromBackend();
-  }, [location]);
-
-  useEffect(() => {
-    const fetchCartCount = async () => {
-      try {
-        const cart = await cartService.getMyCart();
-        const count = cart.items.reduce((acc, item) => acc + item.quantity, 0);
-        setCartCount(count);
-      } catch (err) {
         setCartCount(0);
+        if (error.response && error.response.status === 401) {
+          localStorage.removeItem("token");
+        }
       }
     };
-    fetchCartCount();
+
+    fetchUserAndCartData();
 
     const updateCartCount = (newCount) => {
       setCartCount(newCount);
@@ -74,7 +78,7 @@ export const Navbar = () => {
     return () => {
       eventEmitter.off("cartUpdated", updateCartCount);
     };
-  }, []);
+  }, [location, estaLogueado]);
 
   const manejarCambioInput = (e) => {
     setBusqueda(e.target.value);
@@ -98,6 +102,7 @@ export const Navbar = () => {
     localStorage.removeItem("token");
     setEstaLogueado(false);
     setUsuarioActual(null);
+    setCartCount(0);
     navigate("/login");
   };
 
