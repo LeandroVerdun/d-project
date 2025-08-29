@@ -42,67 +42,67 @@ import ForgotPassword from "./component/ForgotPassword";
 function App() {
   return (
     <Router>
-      <Navbar />
-      <main
-        style={{ backgroundColor: "black" }}
-        className="d-flex justify-content-center align-items-center"
-      >
-        <div className="container py-lg-5 py-3 border border-white rounded mt-4 mb-4">
-
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/products" element={<ProductList />} />
-            <Route path="/products/:id" element={<ProductDetail />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/cart" element={<CartPage />} />
-            <Route
-              path="/search/books/:query"
-              element={<SearchResultsPage />}
-            />
-            <Route path="/mypurchases" element={<MyPurchases />} />
-            <Route path="/about" element={<AboutUs />} />
-            <Route path="/terms" element={<TermsofService />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route
-              path="/admin/stock"
-              element={
-                <ProtectedUserAdmin>
-                  <AdminPage />
-                </ProtectedUserAdmin>
-              }
-            />
-            <Route
-              path="/admin"
-              element={
-                <ProtectedUserAdmin>
-                  <AdminPage />
-                </ProtectedUserAdmin>
-              }
-            />
-            <Route
-              path="/admin/users"
-              element={
-                <ProtectedUserAdmin>
-                  <UserManagementPage />
-                </ProtectedUserAdmin>
-              }
-            />
-            <Route
-              path="/admin/orders"
-              element={
-                <ProtectedUserAdmin>
-                  <AdminOrderHistoryPage />
-                </ProtectedUserAdmin>
-              }
-            />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </div>
-      </main>
-
-      <Footer />
+      <div className="d-flex flex-column min-vh-100">
+        <Navbar />
+        <main
+          style={{ backgroundColor: "black" }}
+          className="d-flex flex-column flex-grow-1"
+        >
+          <div className="container py-lg-5 py-3 border border-white rounded mt-4 mb-4 flex-grow-1">
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/products" element={<ProductList />} />
+              <Route path="/products/:id" element={<ProductDetail />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/cart" element={<CartPage />} />
+              <Route
+                path="/search/books/:query"
+                element={<SearchResultsPage />}
+              />
+              <Route path="/mypurchases" element={<MyPurchases />} />
+              <Route path="/about" element={<AboutUs />} />
+              <Route path="/terms" element={<TermsofService />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route
+                path="/admin/stock"
+                element={
+                  <ProtectedUserAdmin>
+                    <AdminPage />
+                  </ProtectedUserAdmin>
+                }
+              />
+              <Route
+                path="/admin"
+                element={
+                  <ProtectedUserAdmin>
+                    <AdminPage />
+                  </ProtectedUserAdmin>
+                }
+              />
+              <Route
+                path="/admin/users"
+                element={
+                  <ProtectedUserAdmin>
+                    <UserManagementPage />
+                  </ProtectedUserAdmin>
+                }
+              />
+              <Route
+                path="/admin/orders"
+                element={
+                  <ProtectedUserAdmin>
+                    <AdminOrderHistoryPage />
+                  </ProtectedUserAdmin>
+                }
+              />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </div>
+        </main>
+        <Footer />
+      </div>
     </Router>
   );
 }
