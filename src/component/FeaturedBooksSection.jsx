@@ -32,29 +32,20 @@ const FeaturedBooksSection = () => {
       setLoading(true);
       setError(null);
       try {
-        console.log("Iniciando la carga de libros destacados...");
         const allBooks = await getAllProducts();
-        console.log("Libros recibidos de getAllProducts():", allBooks);
 
         const booksWithFiveRating = allBooks.filter(
           (book) => book.rating === 5
         );
-        console.log("Libros con rating 5:", booksWithFiveRating);
 
         const shuffledBooks = shuffleArray([...booksWithFiveRating]);
         const selectedFeaturedBooks = shuffledBooks.slice(0, 12);
 
         setFeaturedBooks(selectedFeaturedBooks);
-        console.log(
-          "Libros destacados (rating 5 y aleatorios):",
-          selectedFeaturedBooks
-        );
       } catch (err) {
-        console.error("Error al cargar libros destacados:", err);
         setError("No se pudieron cargar los libros destacados.");
       } finally {
         setLoading(false);
-        console.log("Carga de libros destacados finalizada. Loading:", false);
       }
     };
 
@@ -120,7 +111,6 @@ const FeaturedBooksSection = () => {
         {bookChunks.map((chunk, index) => (
           <Carousel.Item key={index}>
             <div className="d-flex justify-content-center align-items-stretch gap-4 featured-books-row">
-              {" "}
               {chunk.map((book) => (
                 <Card
                   key={book._id}

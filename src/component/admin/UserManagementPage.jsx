@@ -149,7 +149,6 @@ const UserManagementPage = () => {
     return users.filter(
       (user) =>
         user.email.toLowerCase().includes(lowerCaseSearchTerm) ||
-        user._id.toLowerCase().includes(lowerCaseSearchTerm) ||
         user.name?.toLowerCase().includes(lowerCaseSearchTerm) ||
         (user.isAdmin ? "sí" : "no").includes(lowerCaseSearchTerm)
     );
@@ -176,7 +175,7 @@ const UserManagementPage = () => {
           <input
             type="text"
             className="form-control"
-            placeholder="Buscar por email, ID, nombre o rol de administrador..."
+            placeholder="Buscar por email, nombre o rol de administrador..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -193,7 +192,6 @@ const UserManagementPage = () => {
               <table className="table table-dark table-striped table-hover">
                 <thead>
                   <tr>
-                    <th>ID</th>
                     <th>Email</th>
                     <th>Nombre</th>
                     <th>Admin</th>
@@ -203,7 +201,6 @@ const UserManagementPage = () => {
                 <tbody>
                   {filteredUsers.map((user) => (
                     <tr key={user._id}>
-                      <td>{user._id}</td>
                       <td>{user.email}</td>
                       <td>{user.name || "N/A"}</td>
                       <td>{user.isAdmin ? "Sí" : "No"}</td>
@@ -245,7 +242,6 @@ const UserManagementPage = () => {
                   <h5 className="card-title">{user.name || "Sin nombre"}</h5>
                   <p className="card-text">
                     <strong>Email:</strong> {user.email}<br />
-                    <strong>ID:</strong> {user._id}<br />
                     <strong>Admin:</strong> {user.isAdmin ? "Sí" : "No"}
                   </p>
                   <div className="d-flex flex-column">

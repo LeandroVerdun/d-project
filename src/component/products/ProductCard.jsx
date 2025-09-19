@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as cartService from "../../services/cartService";
 import MessageModal from "../MessageModal";
-import { useNavigate } from "react-router-dom";
 import eventEmitter from "../../utils/eventEmitter";
 
 const ProductCard = ({ product }) => {
   const [loading, setLoading] = useState(false);
   const [quantityInCart, setQuantityInCart] = useState(0);
-  const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   const [messageModal, setMessageModal] = useState({
     show: false,
@@ -44,7 +43,7 @@ const ProductCard = ({ product }) => {
     setMessageModal({ ...messageModal, show: false });
   };
 
-  // useEffect para verificar el estado de login
+  // Verificar el estado de login
   useEffect(() => {
     const checkLoginStatus = () => {
       const token = localStorage.getItem("token");
@@ -55,10 +54,9 @@ const ProductCard = ({ product }) => {
     return () => window.removeEventListener("storage", checkLoginStatus);
   }, []);
 
-  // useEffect para obtener la cantidad del producto en el carrito
+  // Obtener la cantidad del producto en el carrito
   useEffect(() => {
     const fetchCart = async () => {
-      // Solo intentar obtener el carrito si el usuario está logueado
       if (!isLoggedIn) {
         setQuantityInCart(0);
         return;
@@ -69,19 +67,8 @@ const ProductCard = ({ product }) => {
         const item = cart.items.find(
           (item) => item.product._id === product._id
         );
-        if (item) {
-          setQuantityInCart(item.quantity);
-        } else {
-          setQuantityInCart(0);
-        }
-      } catch (err) {
-        if (err.response && err.response.status === 401) {
-          console.log(
-            "Intento de verificar carrito sin autenticación. Ignorando 401."
-          );
-        } else {
-          console.error("Error al verificar el carrito:", err.message);
-        }
+        setQuantityInCart(item ? item.quantity : 0);
+      } catch {
         setQuantityInCart(0);
       }
     };
@@ -123,11 +110,9 @@ const ProductCard = ({ product }) => {
           "Producto Añadido",
           `"${product.name}" ha sido añadido al carrito.`
         );
-
         eventEmitter.emit("cartUpdated");
       }, 500);
     } catch (error) {
-      console.error("Error al añadir al carrito:", error);
       const errorMessage =
         error.response?.data?.message ||
         error.message ||

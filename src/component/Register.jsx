@@ -1,3 +1,4 @@
+// src/component/Register.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -159,8 +160,7 @@ const Register = () => {
     };
 
     try {
-      const registeredUser = await registerUser(newUser);
-      console.log("User registered successfully:", registeredUser);
+      await registerUser(newUser);
       showMessage(
         "success",
         "¡Registro Exitoso!",
@@ -169,7 +169,6 @@ const Register = () => {
         () => navigate("/login")
       );
     } catch (error) {
-      console.error("Error al registrar usuario:", error);
       const errorMessage =
         error.response?.data?.message ||
         error.message ||
